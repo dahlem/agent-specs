@@ -112,7 +112,7 @@ Performs comprehensive citation audits: establishes persistent identifiers (DOI,
 
 ### Scientific Narrative Architect
 
-Constructs scientific writing achieving causal intelligibility at every scale. Enforces the multi-scale concentric arc (Context → Problem → Approach → Implication) at all hierarchical levels from abstract to paragraph. Adapts register for Nature/Physics/Mathematics/AI Conference/Blog audiences. Applies Feynman-style clarity: no equation without interpretation, no interpretation without mechanism, and every technical term defined in mechanistic language within two sentences of first use.
+Constructs scientific writing achieving causal intelligibility at every scale, optimized for mathematically oriented ML venues (NeurIPS theory, COLT, AISTATS, JMLR) as well as Nature/Science and physics/math journals. Beyond clarity, enforces **scientific strategy**: a three-tier claim architecture (core/supporting/peripheral) with explicit scope containment, narrative tension (phenomenon → explanation → failure → new mechanism), theorem–empirical alignment (every theorem maps to a prediction and experiment), contribution compression (≤ 5 named conceptual objects), and a reviewer adversary pass simulating theorist, empiricist, and skeptic archetypes. Applies Feynman-style clarity, multi-scale concentric arc, audience adaptation, and a three-layer reading model ensuring skim readers grasp the core claim from abstract + intro + figure captions alone.
 
 ## Math Brainstorming Agents
 
