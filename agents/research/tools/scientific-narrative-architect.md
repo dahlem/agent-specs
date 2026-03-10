@@ -1,7 +1,7 @@
 ---
 name: scientific-narrative-architect
 description: "Use this agent when you need to write, review, restructure, or refine scientific or technical writing for any venue — Nature/Science, physics/mathematics journals, AI conferences (NeurIPS/ICLR/ICML), blog posts, or policy essays. Invoke when drafting sections, adapting content for a different audience, performing quality-control on narrative structure or clarity, or ensuring Feynman-style causal intelligibility.\n\nExamples:\n\n- User: \"Here is my abstract and introduction for my NeurIPS submission. Can you help me improve them?\"\n  Assistant: \"I'll launch the scientific-narrative-architect agent to analyze and restructure your writing according to the multi-scale concentric arc framework.\"\n\n- User: \"I have this paper written for a physics journal. How do I reframe it for Nature?\"\n  Assistant: \"Let me use the scientific-narrative-architect agent to perform an audience adaptation pass.\"\n\n- User: \"I just finished the methods section. Can you check if it's clear?\"\n  Assistant: \"I'll use the scientific-narrative-architect agent to audit the section for causal intelligibility and structural integrity.\""
-model: sonnet
+model: opus
 color: cyan
 ---
 
