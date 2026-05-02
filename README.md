@@ -4,11 +4,12 @@ Specialized Claude Code agents for rigorous AI research workflows, designed to s
 
 ## Overview
 
-This repository contains agent specifications organized into three categories:
+This repository contains agent specifications organized into four categories:
 
 1. **Research Workflow** — A structured 10-phase methodology for taking research from problem framing through submission, plus cross-phase tools.
-2. **Math Brainstorming** — An iterative ecosystem of agents for mathematical problem exploration, construction, and synthesis.
-3. **Formal Verification** — Agents for Lean 4 proof development, validation, and documentation.
+2. **Peer Review** — A coordinated, cutoff-bounded review pipeline that produces structured artifacts for the AI paper reviewer to ground its verdicts in.
+3. **Math Brainstorming** — An iterative ecosystem of agents for mathematical problem exploration, construction, and synthesis.
+4. **Formal Verification** — Agents for Lean 4 proof development, validation, and documentation.
 
 The research framework operationalizes both **benevolent** and **hostile** reviewer perspectives:
 
@@ -35,10 +36,17 @@ agent-specs/
 │   │   │   ├── 08-research-revision-validator.md
 │   │   │   ├── 09-research-validation-qa.md
 │   │   │   └── 10-scholarly-submission-strategist.md
-│   │   └── tools/                               # Cross-phase utility agents
-│   │       ├── ai-paper-reviewer.md
-│   │       ├── citation-provenance-auditor.md
-│   │       └── scientific-narrative-architect.md
+│   │   ├── tools/                               # Cross-phase utility agents
+│   │   │   ├── ai-paper-reviewer.md
+│   │   │   ├── citation-provenance-auditor.md
+│   │   │   └── scientific-narrative-architect.md
+│   │   └── peer-review/                         # Coordinated review pipeline (artifacts → ai-paper-reviewer)
+│   │       ├── paper-compressor.md
+│   │       ├── literature-expansion.md
+│   │       ├── baseline-scout.md
+│   │       ├── domain-historian.md
+│   │       ├── claim-interrogator.md
+│   │       └── math-review-router.md
 │   ├── math-brainstorming/                      # Iterative problem exploration ecosystem
 │   │   ├── reframer.md
 │   │   ├── perturber.md
@@ -113,6 +121,67 @@ Performs comprehensive citation audits: establishes persistent identifiers (DOI,
 ### Scientific Narrative Architect
 
 Constructs scientific writing achieving causal intelligibility at every scale, optimized for mathematically oriented ML venues (NeurIPS theory, COLT, AISTATS, JMLR) as well as Nature/Science and physics/math journals. Beyond clarity, enforces **scientific strategy** through three interlocking frameworks: a **three-tier claim architecture** (core/supporting/peripheral) with explicit scope containment; the **Three Axes of Contribution** model (Theory/Method/Evaluation) requiring axis dominance declaration, alignment verification, and venue-specific coverage; and **Single Mechanism Architecture** ensuring all results derive from one central mechanism (structural principle + mathematical representation + observable consequences). Also enforces narrative tension, theorem–empirical alignment, contribution compression (≤ 5 named objects), figure architecture (four roles), a three-layer reading model, reviewer adversary simulation, and Feynman-style clarity at every scale.
+
+## Peer Review Ecosystem
+
+The peer-review agents form a **coordinated pipeline** that produces structured artifacts the `ai-paper-reviewer` consumes in its Pipeline Mode. Unlike the math-brainstorming ecosystem, ordering matters: each agent depends on artifacts from the agents upstream of it. The pipeline addresses the failure modes of single-prompt review — anachronistic prior-art, missing baseline scouting, ungrounded significance verdicts, and theory-paper math gaps.
+
+```
+paper-compressor              ──► compressed_paper.md
+       │
+       ├──► literature-expansion ──► prior_art_bundle.md
+       │            │
+       │            └──► (hands bibkeys to) citation-provenance-auditor
+       │
+       ├──► domain-historian        ──► significance_rubric.md
+       ├──► baseline-scout          ──► baseline_gap_report.md
+       ├──► claim-interrogator      ──► interrogation_log.md
+       └──► math-review-router*     ──► math_review_bundle.md
+                  (* iff theory_heavy=true; delegates to math-brainstorming agents)
+                  │
+                  ▼
+           ai-paper-reviewer (Pipeline Mode)
+           — dual benevolent/hostile lens grounded in upstream artifacts
+```
+
+### Paper Compressor
+
+First stage. Converts a paper into a precise, lossless-on-claims artifact: Tier-1/2/3 claim inventory with verbatim quotes and section pointers, method skeleton, exhaustive datasets/baselines/metrics tables, paper-stated and implicit assumptions, theorem index, and an inferred `cutoff_date_inferred` that bounds all downstream prior-art search. Issues no judgments — pure extraction with traceability.
+
+### Literature Expansion
+
+Constructs a cutoff-bounded prior-art bundle of 30–50 works across five role buckets: foundational, dataset, SOTA, direct competitor, survey. Hard temporal discipline: no work published after `cutoff_date_inferred` enters the bundle without an explicit exception. For every retrieved work, sets a `missing_from_paper` flag with severity (critical / expected / helpful), producing the Missing-Citation Report. Hands bibkeys to `citation-provenance-auditor` for metadata verification rather than duplicating that work.
+
+### Baseline Scout
+
+The highest-impact stage for empirical-claim review. Runs a strict two-pass protocol: Pass 1 independently re-derives the expected datasets and baselines from task and metric *without* anchoring on the paper's framing; Pass 2 reads the reported set; reconciliation produces a severity-tagged gap report. For each critical or expected gap, names the specific pre-cutoff SOTA reference that should have been compared against and quotes the paper's stated rationale (or `no-rationale`). Anti-anchoring discipline includes explicit restart conditions.
+
+### Domain Historian
+
+Calibrates the significance verdict. Names the specific subfield, sketches its history as 3–7 inflection points up to cutoff, enumerates open problems the field considered live as of cutoff, and defines a *subfield-specific* Tier-1/2/3 contribution rubric. Issues a four-stage calibration verdict (stated → earned → counterfactual at earlier and later dates → final tier) with stage ordering enforced to prevent counterfactual contamination of the at-time judgment. Distinct from `scientific-narrative-architect`: that agent helps writers; the historian helps reviewers.
+
+### Claim Interrogator
+
+For every Tier-1 and Tier-2 claim, generates 3–7 specific questions targeting the weakest defensible point, answers each with paper-internal evidence + external evidence (prior_art_bundle, baseline_gap_report, math_review_bundle), and issues a per-claim verdict (Supported / Partial / Unsupported / Contradicted) with severity (fatal / major / minor / none). Maintains a flat discrepancy log of every observed disagreement between paper-internal and external evidence. Becomes the evidentiary basis the final reviewer cites.
+
+### Math Review Router
+
+Activates when `theory_heavy: true`. Re-validates the gate, restates each Tier-1 theorem with assumptions named, and routes targeted questions to the math-brainstorming agents:
+
+- `reframer`: Is the formalization right? Are alternate encodings missed?
+- `perturber`: Which assumptions are essential? Where does the result fail under relaxation?
+- `math-constructor`: Counterexamples or boundary cases for Tier-1 theorems?
+- `math-strategist`: Are proof dependencies plausible? Hand-waved steps?
+- `obstructor`: Adversarial stress-test of theorems and proof technique.
+
+Preserves delegate outputs in their native formats; the synthesis section consolidates without re-judging.
+
+### Pipeline Discipline
+
+- **Cutoff date is the contract**: every downstream agent respects `cutoff_date_inferred`. Anachronism is a category-level failure.
+- **Artifacts are explicit**: each agent produces one canonical markdown file consumed by name. No implicit hand-offs.
+- **Severity calibration is shared**: `critical` / `fatal` levels propagate across `prior_art_bundle.md` (missing-citation severity) → `baseline_gap_report.md` (gap severity) → `interrogation_log.md` (verdict severity) → `ai-paper-reviewer` (fatal-flaw enumeration).
+- **Graceful degradation**: missing artifacts don't silently disable phases of the final review — they are flagged.
 
 ## Math Brainstorming Agents
 
