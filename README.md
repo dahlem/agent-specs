@@ -38,6 +38,7 @@ agent-specs/
 │   │   │   └── 10-scholarly-submission-strategist.md
 │   │   ├── tools/                               # Cross-phase utility agents
 │   │   │   ├── ai-paper-reviewer.md
+│   │   │   ├── arxiv-gap-scanner.md
 │   │   │   ├── citation-provenance-auditor.md
 │   │   │   └── scientific-narrative-architect.md
 │   │   └── peer-review/                         # Coordinated review pipeline (artifacts → ai-paper-reviewer)
@@ -113,6 +114,10 @@ These agents can be invoked at any point during the research workflow.
 ### AI Paper Reviewer
 
 Conducts rigorous pre-submission internal reviews using a dual-perspective framework. Evaluates papers across all ten research phases, applying both benevolent and hostile reviewer lenses simultaneously. Identifies fatal flaws that would trigger immediate rejection, provides a prioritized revision roadmap, and issues a conference-readiness score calibrated to top-tier venue acceptance rates (~20-25%).
+
+### Arxiv Gap Scanner
+
+Orchestrates a seven-phase literature-gap scan against a body of work — paper directory, formal-verification module, or research roadmap — over a defined arxiv window. Generates stream-specific queries from open theorems, bulk-fetches abstracts on the main thread (subagents are sandboxed from network), shards triage across parallel `02-literature-discovery-mapper` instances, downloads PDFs under a hard cap, deep-reviews the critical tier (per-paper claim catalogs and reuse plans via `05-research-analysis-interpreter` or `lean-proof-chain-validator`), and synthesises a deadline-sorted action list with an Impact × Effort × Stream matrix. Emits a working scan directory (`anchor.md`, `raw/`, `tracks/`, `pdfs/`, `reviews/`, `scan.md`, optional `roadmap_delta.md`) rather than a single report. Distinct from `02-literature-discovery-mapper` (single-pass landscape mapping) by running the full pipeline including PDF download and per-paper deep review.
 
 ### Citation Provenance Auditor
 
