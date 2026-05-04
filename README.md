@@ -4,12 +4,13 @@ Specialized Claude Code agents for rigorous AI research workflows, designed to s
 
 ## Overview
 
-This repository contains agent specifications organized into four categories:
+This repository contains agent specifications organized into five categories:
 
 1. **Research Workflow** — A structured 10-phase methodology for taking research from problem framing through submission, plus cross-phase tools.
-2. **Peer Review** — A coordinated, cutoff-bounded review pipeline that produces structured artifacts for the AI paper reviewer to ground its verdicts in.
-3. **Math Brainstorming** — An iterative ecosystem of agents for mathematical problem exploration, construction, and synthesis.
-4. **Formal Verification** — Agents for Lean 4 proof development, validation, and documentation.
+2. **Research Shaping** — A diverge-then-converge layer that turns a body of work into the one paper it should become; an expanded entry point into phase 06.
+3. **Peer Review** — A coordinated, cutoff-bounded review pipeline that produces structured artifacts for the AI paper reviewer to ground its verdicts in.
+4. **Math Brainstorming** — An iterative ecosystem of agents for mathematical problem exploration, construction, and synthesis.
+5. **Formal Verification** — Agents for Lean 4 proof development, validation, and documentation.
 
 The research framework operationalizes both **benevolent** and **hostile** reviewer perspectives:
 
@@ -41,13 +42,16 @@ agent-specs/
 │   │   │   ├── arxiv-gap-scanner.md
 │   │   │   ├── citation-provenance-auditor.md
 │   │   │   └── scientific-narrative-architect.md
-│   │   └── peer-review/                         # Coordinated review pipeline (artifacts → ai-paper-reviewer)
-│   │       ├── paper-compressor.md
-│   │       ├── literature-expansion.md
-│   │       ├── baseline-scout.md
-│   │       ├── domain-historian.md
-│   │       ├── claim-interrogator.md
-│   │       └── math-review-router.md
+│   │   ├── peer-review/                         # Coordinated review pipeline (artifacts → ai-paper-reviewer)
+│   │   │   ├── paper-compressor.md
+│   │   │   ├── literature-expansion.md
+│   │   │   ├── baseline-scout.md
+│   │   │   ├── domain-historian.md
+│   │   │   ├── claim-interrogator.md
+│   │   │   └── math-review-router.md
+│   │   └── shaping/                             # Diverge → converge: pick the paper hiding in a body of work
+│   │       ├── research-divergence-cartographer.md
+│   │       └── red-thread-selector.md
 │   ├── math-brainstorming/                      # Iterative problem exploration ecosystem
 │   │   ├── reframer.md
 │   │   ├── perturber.md
@@ -126,6 +130,55 @@ Performs comprehensive citation audits: establishes persistent identifiers (DOI,
 ### Scientific Narrative Architect
 
 Constructs scientific writing achieving causal intelligibility at every scale, optimized for mathematically oriented ML venues (NeurIPS theory, COLT, AISTATS, JMLR) as well as Nature/Science and physics/math journals. Beyond clarity, enforces **scientific strategy** through three interlocking frameworks: a **three-tier claim architecture** (core/supporting/peripheral) with explicit scope containment; the **Three Axes of Contribution** model (Theory/Method/Evaluation) requiring axis dominance declaration, alignment verification, and venue-specific coverage; and **Single Mechanism Architecture** ensuring all results derive from one central mechanism (structural principle + mathematical representation + observable consequences). Also enforces narrative tension, theorem–empirical alignment, contribution compression (≤ 5 named objects), figure architecture (four roles), a three-layer reading model, reviewer adversary simulation, and Feynman-style clarity at every scale.
+
+## Research Shaping
+
+A research project rarely has one obvious paper inside it. Bodies of work accumulate results, theorems, experiments, abandoned threads, and surprising observations — and the temptation is to cram all of it into one dense paper with multiple mechanisms and unfocused contributions. The shaping layer addresses this by **deliberately diverging over candidate paper-framings before converging on one**, then sculpting the body of work down to the single red thread that becomes the paper.
+
+This layer is an **expanded entry point into phase 06** (`argument-architect`), not a replacement. Phase 06 already validates and scopes claims that have been chosen; the shaping layer chooses them.
+
+```
+body_of_work.md (user-authored manifest)
+       │
+       ▼
+research-divergence-cartographer  ──► candidate_threads.md (5–12 threads, deliberately over-generated)
+       │
+       ▼
+red-thread-selector               ──► red_thread.md (1 chosen + runners-up + score table)
+       │
+       ▼
+scientific-narrative-architect    ──► sculpt_plan.md (keep / move-to-appendix / cut)
+   (mode: Sculpt)
+       │
+       ▼
+06-argument-architect (existing) — validates the converged claims;
+                                   open-ended distillation is replaced by validation
+                                   when red_thread.md is present.
+```
+
+If no shaping artifacts are produced, phase 06 behaves exactly as it does today.
+
+### Research Divergence Cartographer
+
+First stage. Reads a user-authored `body_of_work.md` manifest (results, theorems, experiments, datasets, prior drafts, open threads, abandoned attempts, anomalies) and over-generates 5–12 candidate red threads spanning ≥3 distinct novelty types and ≥2 distinct contribution axes. Each thread carries a structured yaml block: core tension, possible core claim, supporting claim sketches, evidence pointers, missing evidence, novelty type, contribution axis, venue fit, risk, significance hypothesis. The agent does not rank, recommend, or favor; selection is downstream. Anti-convergence guardrails prevent synonym-threads, risk-laundering, and pre-ranking.
+
+### Red Thread Selector
+
+Convergence stage. Scores every candidate on six dimensions (novelty, clarity, technical depth, significance, evidence sufficiency, narrative inevitability) and applies six penalties (density, claim sprawl, mixed mechanisms, multi-axis dominance, decorative experiments, unsupported ambition). Mandatory pass/fail mechanism checks — Paper Identity Test and Single Mechanism Test (both from `scientific-narrative-architect`) — apply before scoring; threads that fail either cannot be selected. The selector simulates the dual benevolent/hostile reviewer lens internally per candidate (vocabulary borrowed from `ai-paper-reviewer`, not invoked) and produces an auditable `red_thread.md` with the chosen thread, 2–3 runners-up with disqualifying gaps, rejected threads with reasons, and the full scoring table. If no thread passes the mandatory checks, the agent returns `selection_outcome: deferred` rather than forcing a choice.
+
+**Distinction from research-director**: `research-director` (under `agents/math-brainstorming/`) portfolios *research directions* across novelty / feasibility / insight / risk / tool-availability — its target is a research program. `red-thread-selector` picks *one paper to write now* from a body of work that already exists — its target is a single artifact. The two live in different stages of the research lifecycle.
+
+### Sculpting (in scientific-narrative-architect)
+
+Sculpting is a new **mode** of `scientific-narrative-architect`, not a separate agent. Sculpt Mode reads `red_thread.md` plus the body of work (or a complete draft), re-validates the Paper Identity and Single Mechanism Tests, and applies the **Remove-the-Mechanism Test at the element level** to every result, theorem, figure, experiment, and derivation. Each element is classified into `keep`, `move_to_appendix`, or `cut`, with a one-line justification grounded in mechanism preservation or contribution-axis alignment. The default is `cut`, not `appendix`; the appendix is for genuinely supportive material, not a holding pen for material the author cannot bear to remove. The output, `sculpt_plan.md`, hands off cleanly to phase 06 for argument validation.
+
+### When to use this layer
+
+- You have months of accumulated work and need to decide which paper it should become.
+- A draft has grown dense and unfocused; sculpting can identify what is load-bearing.
+- Multiple candidate framings are competing in your head and you want them on the page side-by-side.
+
+When the framing is already obvious, skip the shaping layer and start at phase 06.
 
 ## Peer Review Ecosystem
 
