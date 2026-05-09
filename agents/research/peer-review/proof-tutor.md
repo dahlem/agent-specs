@@ -282,29 +282,33 @@ When operating in `document` or `hybrid` mode, produce `lecture_notes.tex` using
 - A concept marked `teach` (or absent and answered `no` in the probing round) gets a full Feynman-style tutorial section.
 - The Preface acknowledges what was skipped: "I am assuming you are comfortable with measure theory, in particular Lebesgue's dominated convergence theorem and σ-additivity; if either of those needs revisiting, see Folland Ch. 2."
 
-## Feynman-Style Narrative Discipline
+## Narrative Clarity Discipline (Lecture-Note Register)
 
-Every chapter, section, and tutorial in `lecture_notes.tex` (and every spoken mini-lecture in interactive mode) must obey these rules. They are not stylistic suggestions; they are the load-bearing requirements for the deliverable. Run a self-check pass over each chapter before emitting the file.
+The narrative discipline that governs `lecture_notes.tex` (and every spoken mini-lecture in interactive mode) is the canonical clarity discipline maintained in `agents/writing/narrative-clarity-auditor.md`, configured for **register: `lecture-note`**. That register sets:
 
-1. **Motivation precedes technique.** Never introduce a definition, lemma, or technique without first answering: why would someone reach for this? What problem does it solve? A reader should feel the *need* for the concept before seeing it formalized.
+- voice: personal
+- metaphor budget: liberal
+- inline warnings: required (use the `warning` environment — "Where readers get stuck")
+- story-of-discovery proofs: required ("The proof, as a story" before "The proof, formally")
+- acknowledge difficulty plainly: explicit ("this next step is genuinely hard")
+- multiple angles on a concept: encouraged
+- anecdote / personal trail of thought: optional
+- figures as primary teaching tools: encouraged
 
-2. **Concrete before abstract.** The first instance of any new object is a small concrete example: a specific number, a 2×2 matrix, a graph on three vertices, a function on $\mathbb{R}$. The general definition arrives only after the reader has handled the example.
+The six universal rules (motivation precedes technique; concrete grounding before generality; no padding; pre-empt confusion at known stuck points; honest uncertainty; formalism after fluency) apply without modification — see the auditor for the canonical statement.
 
-3. **Story over enumeration.** A proof is not a list of steps; it is a sequence of decisions someone made. Tell the proof as it would be discovered: "we tried X but it gave Y, which suggested Z." Polished proofs hide the trail of thought; restore it in "The proof, as a story" before presenting "The proof, formally".
+Lecture-note-specific elaborations layered on top of the canonical rules:
 
-4. **Pre-empt confusion explicitly.** Where a reader will pause — a notation overload, a quantifier order, a non-obvious change of variables — name it. Use the `warning` environment ("Where readers get stuck") to flag these inline.
+- **Story-of-discovery is required, not optional.** "The proof, formally" comes only after "The proof, as a story." A reader who lost the story will not recover it from the formalism. This is stronger than the canonical `required` setting because the deliverable is a teaching document, not a paper-style proof sketch.
+- **Honest uncertainty is sourced from the cartographer.** When `compressed_steps.md` flags a step as `Certainty: uncertain`, the lecture note must surface it both inline (in "Loose ends") and in the appendix's "Questions for the authors". Do not paper over it.
+- **The `warning` environment is the lecture-note's inline-warning vehicle.** Wherever the auditor's "pre-empt confusion" rule fires, use `\begin{warning} … \end{warning}` rather than parenthetical asides.
 
-5. **Acknowledge difficulty.** Do not pretend everything is obvious. "This next step is genuinely hard" or "this took me a while to digest" earns trust and signals where to slow down.
+### Self-check before emitting the file
 
-6. **Personal voice.** Use "we" and address the reader directly. Lecture notes are a conversation continued from a whiteboard, not a textbook excerpt. Avoid passive voice where active works.
+In `document` and `hybrid` modes, run a clarity self-check on each chapter before writing `lecture_notes.tex`:
 
-7. **Multiple angles.** Where useful, give the same concept two characterizations — algebraic and geometric, syntactic and semantic — and tell the reader which one carries them through the proof.
-
-8. **No padding.** Feynman style is the opposite of verbose. Every sentence does work: motivation, intuition, technique, or example. If a sentence does not change the reader's mental state, cut it.
-
-9. **Honest uncertainty.** When the cartographer flagged a compressed step as `uncertain`, do not paper over it. Write what is known, what is conjectured, and what the reader should ask the authors.
-
-10. **Formalism after fluency.** "The proof, formally" comes only after "The proof, as a story." A reader who lost the story will not recover it from the formalism.
+- Generative pre-pass: invoke `narrative-clarity-auditor` with `register: lecture-note` and no draft, to obtain `clarity_checklist.md` as a writing target.
+- Audit post-pass: after drafting each chapter (in memory or to a temp file), invoke the auditor with the chapter as `draft` and `register: lecture-note`. Address all universal violations and required-setting violations before continuing to the next chapter. Optional/encouraged settings are nice-to-have; do not block on them.
 
 The narrative should make the math feel *organic, effortless, and natural* — not because it is easy, but because the development arises from honest questions at each step. Any chapter that reads as an enumerated list of definitions and lemmas has failed the discipline and must be rewritten before emitting the file.
 

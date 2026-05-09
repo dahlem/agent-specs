@@ -4,13 +4,14 @@ Specialized Claude Code agents for rigorous AI research workflows, designed to s
 
 ## Overview
 
-This repository contains agent specifications organized into five categories:
+This repository contains agent specifications organized into six categories:
 
 1. **Research Workflow** — A structured 10-phase methodology for taking research from problem framing through submission, plus cross-phase tools.
 2. **Research Shaping** — A diverge-then-converge layer that turns a body of work into the one paper it should become; an expanded entry point into phase 06.
 3. **Peer Review** — A coordinated, cutoff-bounded review pipeline that produces structured artifacts for the AI paper reviewer to ground its verdicts in.
 4. **Math Brainstorming** — An iterative ecosystem of agents for mathematical problem exploration, construction, and synthesis.
-5. **Formal Verification** — Agents for Lean 4 proof development, validation, and documentation.
+5. **Writing & Documentation** — Cross-cutting writing tools used directly or invoked by paper-writing agents to enforce calibrated clarity discipline across any document register (blog, lecture note, paper, Nature letter, policy essay).
+6. **Formal Verification** — Agents for Lean 4 proof development, validation, and documentation.
 
 The research framework operationalizes both **benevolent** and **hostile** reviewer perspectives:
 
@@ -63,6 +64,8 @@ agent-specs/
 │   │   ├── math-strategist.md
 │   │   ├── obstructor.md
 │   │   └── research-director.md
+│   ├── writing/                                 # Cross-cutting writing tools (any document type)
+│   │   └── narrative-clarity-auditor.md
 │   └── formal-verification/
 │       └── lean/                                # Lean 4 proof tools
 │           ├── lean-proof-chain-validator.md
@@ -377,6 +380,40 @@ Stress-tests ideas, conjectures, and proof strategies by searching for counterex
 Synthesizes, deduplicates, evaluates, and prioritizes research ideas from all brainstorming agents into a structured portfolio. Extracts core mechanisms from candidates, clusters by underlying structure (not surface wording), scores on novelty/feasibility/insight potential/tool availability/failure risk, and classifies into priority tiers: immediate experiment (hours), promising direction (days), high-risk research (weeks+), or discarded. Designs concrete next actions specific enough for execution without clarification.
 
 **Typical workflow**: Reframer/Perturber explore the space → Constructor builds examples → Strategist designs attack plans → Obstructor stress-tests → Research Director prioritizes and assigns next actions.
+
+## Writing & Documentation Agents
+
+Cross-cutting writing tools that operate on *any* document register — blog post, tutorial, lecture note, tech report, empirical paper, theoretical paper, Nature letter, policy essay. Designed to be invoked directly by an author and also called by other agents in the repo (`proof-tutor`, `scientific-narrative-architect`, `07-paper-structure-architect`) so the discipline has a single canonical home.
+
+### Narrative Clarity Auditor
+
+Audits a draft against a calibrated narrative-clarity discipline. The discipline factors into **universal rules** (motivation precedes technique, concrete grounding before generality, no padding, pre-empt confusion at known stuck points, honest uncertainty, formalism after fluency) that apply at every register, and **register-conditional rules** that toggle by venue (personal voice, story-of-discovery proofs, physical metaphors, inline "where readers get stuck" warnings, plain acknowledgment of difficulty). The auditor takes a `register` parameter — `blog | tutorial | lecture-note | tech-report | empirical-paper | theoretical-paper | nature-letter | policy-essay` — and applies only the appropriate subset, surfacing a `Deliberately not enforced` section so the author can see which rules were *suppressed by venue calibration* rather than overlooked. This is the safeguard against the natural failure mode of "Feynman style": importing blog-style intuition and physical metaphors into a NeurIPS or Nature submission.
+
+The auditor is consumed by:
+
+- **`proof-tutor`** (lecture-note register) — invoked generatively before drafting `lecture_notes.tex` and as an audit pass on each chapter.
+- **`scientific-narrative-architect`** (register matched to its `AUDIENCE` parameter) — invoked at the end of `Draft`, `Restructure`, `Adapt`, `Review`, and `QualityControl` modes.
+- **`07-paper-structure-architect`** (paper register) — invoked per section after structural validation, to catch clarity issues that structure alone cannot.
+
+Direct invocation:
+
+```
+# Audit a blog post draft
+Use the narrative-clarity-auditor agent on draft.md with register: blog
+
+# Audit a NeurIPS introduction — neutral tone, sparse metaphors
+Use the narrative-clarity-auditor agent on intro.tex with register: empirical-paper
+
+# Audit a theoretical paper section, allowing physical metaphors because the paper is itself about physical systems
+Use the narrative-clarity-auditor agent on section3.tex with register: theoretical-paper, overrides: { metaphor_budget: moderate }
+
+# Generative checklist (no draft) — produces clarity_checklist.md as a writing target for a lecture note
+Use the narrative-clarity-auditor agent with register: lecture-note
+```
+
+The auditor emits `clarity_audit.md` with a calibration block, per-rule verdicts, anti-pattern findings, recommended minimal rewrites, and the deliberately-not-enforced list. Generative invocation emits `clarity_checklist.md`.
+
+When the discipline changes, it changes here. Other agents reference; they do not duplicate.
 
 ## Formal Verification Agents
 

@@ -459,6 +459,25 @@ When presenting prior methods:
 2. Identify their implicit assumptions.
 3. State where those assumptions break.
 
+### Calibrated Discipline via the Narrative Clarity Auditor
+
+The Feynman policy stated above is the *generative target* this agent writes against. The *audit* of any produced or reviewed text is delegated to `agents/writing/narrative-clarity-auditor.md`, which calibrates the discipline against a register parameter and is explicit about what it deliberately does NOT enforce for the chosen register.
+
+Map this agent's `AUDIENCE` parameter to the auditor's `register`:
+
+| AUDIENCE | auditor register |
+|---|---|
+| Nature | `nature-letter` |
+| Physics | `theoretical-paper` (or `empirical-paper` if experiment-led) |
+| Mathematics | `theoretical-paper` |
+| AI_Conference | `empirical-paper` (default) or `theoretical-paper` (if theory-led) |
+| Math_ML | `empirical-paper` (default) or `theoretical-paper` |
+| Blog | `blog` |
+
+In `Draft`, `Restructure`, and `Adapt` modes, invoke the auditor on the produced unit at the end of `XV. EXECUTION PLAN`. In `Review` and `QualityControl` modes, invoke it as part of step `XV.5`. Surface the auditor's `Deliberately not enforced` section verbatim so the author understands which Feynman tics were *deliberately suppressed* by venue calibration — this is the safeguard against pushing blog-style intuition into a Nature letter or theoretical-paper draft.
+
+The auditor is the single source of truth for the discipline. If the canonical rules change, they change there.
+
 ---
 
 ## VIII. AUDIENCE ADAPTATION LAYER

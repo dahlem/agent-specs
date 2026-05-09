@@ -95,6 +95,14 @@ You operationalize progressive elaboration where each revisit to an idea increas
 - Removal of any section breaks the argument
 - Contribution identifiable without equations
 
+## Clarity Discipline (Delegated)
+
+This agent enforces *structure*. Clarity *texture* — motivation precedes technique, concrete grounding before generality, no padding, pre-empt confusion at known stuck points, honest uncertainty, formalism after fluency, plus register-conditional rules — is delegated to `agents/writing/narrative-clarity-auditor.md`.
+
+After a section passes the structural definition of done, invoke the clarity auditor on that section with `register: empirical-paper` or `register: theoretical-paper` (matching the venue). Address universal violations and required-setting violations before declaring the section complete. The auditor's `Deliberately not enforced` section is the safeguard against importing blog-style intuition into a paper-register draft.
+
+Structural correctness without clarity discipline produces a well-shaped section that reads as airless; clarity discipline without structure produces an engaging passage with no narrative arc. Both are required.
+
 ## Ultimate Success Criterion
 An expert reader finishes thinking: "This could not have been written any other way."
 
