@@ -312,6 +312,13 @@ One-shot map builder. Walks the paper front-to-back, creates one node per number
 
 Personalized walkthrough generator. Default mode (`document`) produces `lecture_notes.tex` — a LaTeX memoir-class lecture note written in Feynman style: motivation precedes technique, concrete precedes abstract, every proof is told first as a story (the trail of thought) and then formally (the rigorous version). Concepts marked `known` in the profile appear only in a compact "Concepts assumed familiar" list; concepts marked `teach` get full Feynman-style tutorials; uncertain compressed steps surface in each theorem's "Loose ends" section and in a "Questions for the authors" appendix. Probing happens once, batched, before generation. `interactive` mode runs a live whiteboard session in the main conversation; `hybrid` does both. Reads and writes a persistent knowledge profile at `~/.claude/projects/<project>/memory/theoretical-paper-knowledge-profile.md` so subfield fluency, per-concept ledger entries, and open loops carry forward across papers.
 
+Two styles for the LaTeX output (selectable via `tutor_style` on the orchestrator or `style` on direct invocation):
+
+- **`explainer`** (default): distill.pub-inspired layout — wide right margin for sidebars, layered/progressive TikZ figures (comic-strip panels showing how an object is built up), annotated equation arrays where each derivation line carries a margin annotation explaining the move, per-chapter `\conceptMap` showing this chapter's slice of the proof DAG with the current theorem highlighted, `\anatomyDiagram` for new concept introductions, `\counterexampleSketch` margin figures for boundary cases, and `\comparativeDiagram` for the multiple-angles narrative-clarity rule. Built on a TikZ template library (seven named macros) and a unified `tutor-style` preset so figure quality stays consistent — the agent does not invent ad-hoc TikZ for diagram types the library covers. Optional `handdrawn: true` sub-flag applies a sketchy hand-drawn aesthetic via `decoration={random steps}`.
+- **`classic`**: dense memoir-class lecture note with conventional figure/equation handling. No margin sidebars, single appendix-only DAG. Use when the reader prefers a denser, more book-like format.
+
+The narrative discipline does not change between styles. Only the layout, figure vocabulary, and margin treatment differ.
+
 ### How to call it
 
 The orchestrator is the entry point. Invoke it via the Agent tool with the paper as input:
@@ -328,6 +335,12 @@ Use the proof-dissection-orchestrator agent on /path/to/paper.pdf with tutor_mod
 
 # Both — interactive walk plus LaTeX accumulated in parallel
 Use the proof-dissection-orchestrator agent on /path/to/paper.pdf with tutor_mode: hybrid
+
+# Classic dense memoir output instead of distill-style explainer
+Use the proof-dissection-orchestrator agent on /path/to/paper.pdf with tutor_style: classic
+
+# Hand-drawn / sketchy TikZ aesthetic for a warmer tutorial
+Use the proof-dissection-orchestrator agent on /path/to/paper.pdf with tutor_style: explainer, handdrawn: true
 
 # Stop after the static map; no tutoring, no LaTeX
 Use the proof-dissection-orchestrator agent on /path/to/paper.pdf with stage: cartography
