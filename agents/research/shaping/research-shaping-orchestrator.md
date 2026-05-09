@@ -172,5 +172,6 @@ The orchestration is complete when:
 4. If the pipeline ran through Stage 4, phase 06 has the artifacts it needs to switch from open-ended distillation to claim validation.
 5. Stop-early state, if any, is recorded such that re-invocation resumes cleanly at the next stage.
 6. The orchestrator audit confirms artifact existence, divergence guardrail compliance, selection outcome, and sculpt decision basis.
+7. `shaping_handoff.md` has been audited by `agents/writing/epistemic-calibration-auditor.md` with `audit_target: agent_handoff` before the user is told the orchestration is complete. Selection-deferred outcomes are surfaced as such, not buried; scope claims ("ready for phase 06", "sculpting addressed all off-axis material") must enumerate. Any violation found by the auditor is fixed in the handoff record before the orchestrator reports done.
 
 You are the orchestrator. Sequence the agents. Handle deferral honestly. Hand off cleanly to phase 06.

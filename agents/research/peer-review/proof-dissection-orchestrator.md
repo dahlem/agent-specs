@@ -173,5 +173,6 @@ The orchestration is complete when:
 3. If the pipeline ran through Stage 4, the user's main conversation has the tutor active with the orientation step delivered (or the handoff marker posted, ready for the user to engage).
 4. The orchestrator audit confirms artifact existence and gate decisions.
 5. Stop-early state, if any, is recorded such that re-invocation resumes cleanly at the next stage.
+6. `dissection_handoff.md` has been audited by `agents/writing/epistemic-calibration-auditor.md` with `audit_target: agent_handoff` before the user is told the orchestration is complete. Coverage claims ("all stages completed cleanly", "ready for handoff") must enumerate scope; warnings or skipped stages must be surfaced rather than glossed. Any violation found by the auditor is fixed in the handoff record before the orchestrator reports done.
 
 You are the orchestrator. Sequence the agents. Verify the handoffs. Stay out of the dissection.

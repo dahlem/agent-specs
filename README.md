@@ -65,7 +65,8 @@ agent-specs/
 │   │   ├── obstructor.md
 │   │   └── research-director.md
 │   ├── writing/                                 # Cross-cutting writing tools (any document type)
-│   │   └── narrative-clarity-auditor.md
+│   │   ├── narrative-clarity-auditor.md
+│   │   └── epistemic-calibration-auditor.md
 │   └── formal-verification/
 │       └── lean/                                # Lean 4 proof tools
 │           ├── lean-proof-chain-validator.md
@@ -414,6 +415,40 @@ Use the narrative-clarity-auditor agent with register: lecture-note
 The auditor emits `clarity_audit.md` with a calibration block, per-rule verdicts, anti-pattern findings, recommended minimal rewrites, and the deliberately-not-enforced list. Generative invocation emits `clarity_checklist.md`.
 
 When the discipline changes, it changes here. Other agents reference; they do not duplicate.
+
+### Epistemic Calibration Auditor
+
+Audits any agent output, draft, audit document, handoff record, or end-of-turn summary for the systemic positivity bias of LLM agents: language stronger than the evidence supports ("we show" when the evidence is consistent with X under conditions Y); coverage inflation ("Done", "all stages completed cleanly" without enumeration); marketing adjectives asserted rather than earned ("comprehensive", "robust", "novel"); and verdicts that have not been adversarially stress-tested. Three audit passes plus a devil's-advocate pass:
+
+- **Language calibration** — does each claim's verb match the evidence ladder (proof / strong empirical / moderate empirical / weak / none)?
+- **Coverage calibration** — are scope claims (Done, complete, all, every, fully, comprehensive) enumerated rather than asserted?
+- **Negative-result surfacing** — are failed experiments, ablations that hurt, warnings encountered, and counter-evidence first-class outputs rather than glossed?
+- **Devil's advocate** — for each load-bearing claim, what is the strongest plausible counter-argument? The author resolves; the auditor surfaces.
+
+Critical design constraint: the auditor flags both **overclaim** *and* **underclaim**. Forced hedging on proven results is also a violation — the discipline is *match language to evidence*, not "always hedge". Strictness is set by an `audit_target` parameter (`paper | audit_document | agent_handoff | status_report | blog | informal`) so that paper claims are checked harder than internal status reports, but coverage enumeration is required at every target because "Done" without scope is the most common agent overclaim pattern.
+
+The auditor is consumed by:
+
+- **`06-argument-architect`** — invoked after the claim-evidence matrix is built, with `audit_target: paper`, before phase 06 declares done. Devil's-advocate alternatives must be addressed in the document, not merely acknowledged.
+- **`08-research-revision-validator`** — invoked alongside its own linguistic-precision pass; the two complement (08 audits vagueness, this audits overclaim).
+- **`proof-dissection-orchestrator`, `research-shaping-orchestrator`** — invoked on `dissection_handoff.md` / `shaping_handoff.md` with `audit_target: agent_handoff` before reporting done. Catches "all stages completed cleanly" overclaim.
+
+Direct invocation:
+
+```
+# Audit a paper draft (strictest)
+Use the epistemic-calibration-auditor agent on draft.tex with audit_target: paper
+
+# Audit an end-of-turn agent summary
+Use the epistemic-calibration-auditor agent on summary.md with audit_target: status_report
+
+# Devil's advocate pass on an audit document
+Use the epistemic-calibration-auditor agent on prior_audit.md with audit_target: audit_document, evidence_sources: [experiment_logs.md, theorems.tex]
+```
+
+The auditor emits `calibration_audit.md` with the strictness profile, per-rule verdicts (overclaim/underclaim direction named), anti-pattern findings, the devil's-advocate alternatives with plausibility ratings, and minimal recommended rewrites.
+
+The two writing auditors compose: `narrative-clarity-auditor` checks *how* the prose reads at the venue's register; `epistemic-calibration-auditor` checks *what the prose claims relative to evidence*. Both can run on the same draft, in either order.
 
 ## Formal Verification Agents
 

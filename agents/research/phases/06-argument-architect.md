@@ -94,6 +94,7 @@ Argument construction is complete when:
 6. All original research questions are explicitly resolved or reframed
 7. An informed skeptic can understand exactly what is proven, assumed, and conjectured
 8. When `red_thread.md` is present upstream, claim distillation in Section 1 has been replaced by claim *validation*; the chosen Core and Supporting claims are explicitly cited and traced to the body-of-work evidence pointers carried in the red thread
+9. The claim-evidence matrix has been audited by `agents/writing/epistemic-calibration-auditor.md` with `audit_target: paper`. The auditor's language-calibration pass verifies that each claim's verb (we prove / we show / we observe / we hypothesize) matches the evidence column's strength; its devil's-advocate pass produces one strongest counter-argument per Tier-1 claim, which item 4 above must explicitly address rather than acknowledge in passing. The auditor surfaces both overclaim and underclaim — neither passes. Items 1–8 may be structurally complete and still fail this gate.
 
 ## Your Success Criteria
 
