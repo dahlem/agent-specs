@@ -48,8 +48,12 @@ agent-specs/
 │   │   │   ├── baseline-scout.md
 │   │   │   ├── domain-historian.md
 │   │   │   ├── claim-interrogator.md
-│   │   │   └── math-review-router.md
+│   │   │   ├── math-review-router.md
+│   │   │   ├── proof-dissection-orchestrator.md  # Proof-dissection track (parallel to review pipeline)
+│   │   │   ├── proof-chain-cartographer.md
+│   │   │   └── proof-tutor.md
 │   │   └── shaping/                             # Diverge → converge: pick the paper hiding in a body of work
+│   │       ├── research-shaping-orchestrator.md  # User-callable entry point
 │   │       ├── research-divergence-cartographer.md
 │   │       └── red-thread-selector.md
 │   ├── math-brainstorming/                      # Iterative problem exploration ecosystem
@@ -141,14 +145,17 @@ This layer is an **expanded entry point into phase 06** (`argument-architect`), 
 body_of_work.md (user-authored manifest)
        │
        ▼
+research-shaping-orchestrator (user-callable entry point; sequences the four stages below)
+       │
+       ▼
 research-divergence-cartographer  ──► candidate_threads.md (5–12 threads, deliberately over-generated)
        │
        ▼
-red-thread-selector               ──► red_thread.md (1 chosen + runners-up + score table)
+red-thread-selector               ──► red_thread.md (1 chosen + runners-up + score table; or selection_outcome: deferred)
        │
        ▼
 scientific-narrative-architect    ──► sculpt_plan.md (keep / move-to-appendix / cut)
-   (mode: Sculpt)
+   (mode: Sculpt; auto-conditional)
        │
        ▼
 06-argument-architect (existing) — validates the converged claims;
@@ -157,6 +164,28 @@ scientific-narrative-architect    ──► sculpt_plan.md (keep / move-to-appen
 ```
 
 If no shaping artifacts are produced, phase 06 behaves exactly as it does today.
+
+### Research Shaping Orchestrator
+
+User-callable entry point. Sequences the four stages, enforces preconditions at every handoff, handles `selection_outcome: deferred` as a first-class outcome rather than retrying with relaxed thresholds, and supports stop-early flags (`diverge | select | sculpt | argue`) and resume-at-stage when prior artifacts are valid. Auto-conditional sculpting: invokes Sculpt Mode whenever a draft is provided, or whenever `body_of_work.md` lists ≥ 1 abandoned thread, decorative experiment, or off-axis result. Hands off to `06-argument-architect` with `red_thread.md` and (if produced) `sculpt_plan.md` so phase 06 switches from open-ended distillation to claim validation.
+
+Invocation:
+
+```
+# Full pipeline through phase-06 handoff
+Use the research-shaping-orchestrator agent on body_of_work.md
+
+# Stop after selection so you can review before sculpting
+Use the research-shaping-orchestrator agent on body_of_work.md with stage: select
+
+# Sculpt against an existing complete draft, reusing red_thread.md from a prior run
+Use the research-shaping-orchestrator agent on body_of_work.md with stage: sculpt, draft: paper_draft.tex
+
+# Skip sculpting and hand off directly to phase 06
+Use the research-shaping-orchestrator agent on body_of_work.md with sculpt: off
+```
+
+The orchestrator emits `shaping_handoff.md` recording which stages ran, the selection outcome (`selected` or `deferred` with diagnosis), the sculpt decision basis, and any conditional findings phase 06 should address.
 
 ### Research Divergence Cartographer
 
@@ -240,6 +269,78 @@ Preserves delegate outputs in their native formats; the synthesis section consol
 - **Artifacts are explicit**: each agent produces one canonical markdown file consumed by name. No implicit hand-offs.
 - **Severity calibration is shared**: `critical` / `fatal` levels propagate across `prior_art_bundle.md` (missing-citation severity) → `baseline_gap_report.md` (gap severity) → `interrogation_log.md` (verdict severity) → `ai-paper-reviewer` (fatal-flaw enumeration).
 - **Graceful degradation**: missing artifacts don't silently disable phases of the final review — they are flagged.
+
+## Proof Dissection Track
+
+A parallel track to the peer-review pipeline, intended for *reading* a theoretical paper rather than reviewing it. When the math is outside your comfort zone — unfamiliar techniques, citations to results you don't know, hand-waved compressed steps — this track produces a static map of the paper's proof architecture and then walks you through it interactively, teaching only the background you actually lack and remembering what you already know across papers.
+
+```
+paper (PDF / arxiv id)
+       │
+       ▼
+paper-compressor              ──► compressed_paper.md             (precondition; reused if present)
+       │
+       ▼
+proof-chain-cartographer      ──► proof_chain.md                  (DAG over theorems / lemmas / external citations)
+                                  concept_inventory.md            (prerequisite concepts, per subfield, with difficulty)
+                                  compressed_steps.md             (every "clearly" / "by standard arguments", flagged)
+       │
+       ├──► math-review-router (optional, auto-conditional) ──► math_review_bundle.md
+       │
+       ▼
+proof-tutor (interactive, in main conversation)
+       — probes background concept-by-concept ("yes / refresh / no")
+       — delivers ≤400-word mini-lectures only on confirmed gaps
+       — walks proofs in dependency order, with a confidence check per Tier-1 theorem
+       — reads/writes a persistent knowledge profile so the next paper skips what you already know
+```
+
+### Proof Dissection Orchestrator
+
+User-callable entry point. Sequences the four stages, enforces preconditions at every handoff, and supports stop-early flags. Reuses `compressed_paper.md` if already produced; auto-invokes `math-review-router` only when the cartographer raises ≥ 5 plausibility flags or any Tier-1 theorem has compressed steps with `uncertain` certainty (or when the user opts in explicitly). Hands off to `proof-tutor` in the main conversation rather than spawning it as a subagent — the tutor needs to ask you questions and receive answers.
+
+### Proof Chain Cartographer
+
+One-shot map builder. Walks the paper front-to-back, creates one node per numbered/named result with role / formal statement / informal restatement / dependencies (in-paper, external, background concept), and produces a topological ordering of prerequisite concepts grouped by subfield. Light plausibility flags (notation overloading, quantifier-order changes, unstated regularity conditions) are surfaced as side-output; adversarial review is delegated to `math-review-router`. The cartographer does not teach.
+
+### Proof Tutor
+
+Interactive whiteboard tutor. Probes one concept at a time, delivers mini-lectures (definition, origin, why-it-applies-here, minimal example, what-can-go-wrong) only on confirmed gaps, walks each Tier-1 theorem in dependency order with cartographer-tagged certainty levels (`directly_stated | inferred | standard_background | uncertain`), and ends each theorem with a confidence check that asks the reader to restate the proof strategy. Reads and writes a persistent knowledge profile at `~/.claude/projects/<project>/memory/theoretical-paper-knowledge-profile.md` so subfield fluency, per-concept ledger entries, and open loops carry forward across papers.
+
+### How to call it
+
+The orchestrator is the entry point. Invoke it via the Agent tool with the paper as input:
+
+```
+Use the proof-dissection-orchestrator agent on /path/to/paper.pdf
+```
+
+By default it runs the full pipeline through tutor handoff. Common variants:
+
+```
+# Stop after the static map; no tutoring
+Use the proof-dissection-orchestrator agent on /path/to/paper.pdf with stage: cartography
+
+# Force adversarial soundness review
+Use the proof-dissection-orchestrator agent on /path/to/paper.pdf with adversarial: on
+
+# Skip adversarial review entirely
+Use the proof-dissection-orchestrator agent on /path/to/paper.pdf with adversarial: off
+
+# Resume in a later session — re-invoke with stage: tutor; the cartography artifacts and knowledge profile
+# from the prior session are reused, the tutor resumes at the next undelivered node
+Use the proof-dissection-orchestrator agent on /path/to/paper.pdf with stage: tutor
+```
+
+The orchestrator emits `dissection_handoff.md` recording which stages ran, which were skipped, why, and the planned tutor walk order. After handoff, the tutor runs in your main conversation: it posts an orientation, agrees a walk order with you, and begins probing.
+
+### When to use this track
+
+- You're tasked with reviewing a paper whose proof techniques are partly outside your subfield.
+- You want a hyper-personalized lecture note for a paper rather than a generic survey of its area.
+- You'd rather invest time once in learning the prerequisite concepts (and have that investment compound across future papers) than re-derive them every time.
+
+When the paper's math is fully within your comfort zone, skip this track and use the standard peer-review pipeline.
 
 ## Math Brainstorming Agents
 
