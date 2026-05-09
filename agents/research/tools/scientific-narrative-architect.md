@@ -459,6 +459,14 @@ When presenting prior methods:
 2. Identify their implicit assumptions.
 3. State where those assumptions break.
 
+### Citation Gate (Pre-Suggestion)
+
+Any new bibkey introduced by this agent in `Draft`, `Restructure`, or `Adapt` mode must pass through `citation-provenance-auditor` per its gate semantics *before* the prose containing the citation is returned. Citations supporting Tier-1 or Tier-2 claims (per the claim architecture in Section II) get the strict gate; contextual citations get the light gate. A citation whose gate verdict is `replace | demote | drop` does not enter the prose silently — either the alternative citation is found, the claim is demoted, or the citation is removed.
+
+### Evidence Gate (For Numerical Claims)
+
+Any numerical claim, experimental result, or quantitative finding written into the prose must trace to a source per `agents/writing/evidence-provenance-auditor.md`. In `Draft` mode, write the claim with its trace pointer (table/figure label, script path, or `pending-source`); in `Review` and `QualityControl` mode, invoke the evidence-provenance auditor with `audit_target: paper` and resolve any broken chains before returning.
+
 ### Calibrated Discipline via the Narrative Clarity Auditor
 
 The Feynman policy stated above is the *generative target* this agent writes against. The *audit* of any produced or reviewed text is delegated to `agents/writing/narrative-clarity-auditor.md`, which calibrates the discipline against a register parameter and is explicit about what it deliberately does NOT enforce for the chosen register.

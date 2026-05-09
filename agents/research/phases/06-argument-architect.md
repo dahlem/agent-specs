@@ -95,6 +95,8 @@ Argument construction is complete when:
 7. An informed skeptic can understand exactly what is proven, assumed, and conjectured
 8. When `red_thread.md` is present upstream, claim distillation in Section 1 has been replaced by claim *validation*; the chosen Core and Supporting claims are explicitly cited and traced to the body-of-work evidence pointers carried in the red thread
 9. The claim-evidence matrix has been audited by `agents/writing/epistemic-calibration-auditor.md` with `audit_target: paper`. The auditor's language-calibration pass verifies that each claim's verb (we prove / we show / we observe / we hypothesize) matches the evidence column's strength; its devil's-advocate pass produces one strongest counter-argument per Tier-1 claim, which item 4 above must explicitly address rather than acknowledge in passing. The auditor surfaces both overclaim and underclaim — neither passes. Items 1–8 may be structurally complete and still fail this gate.
+10. Every citation appearing in the claim-evidence matrix's evidence column is `Tier-1` per the citation-provenance-auditor gate semantics, has a verified provenance record, and maps to a specific claim with a stated evidence pointer. Citations whose provenance gate failed are replaced, demoted (with the supported claim moved to a tier the surviving citations defend), or dropped. The matrix is not declared done with `replace | demote | drop` verdicts unresolved.
+11. Every numerical claim, experimental result, or quantitative finding in the evidence column has been audited by `agents/writing/evidence-provenance-auditor.md` for chain integrity (claim → table/figure → script → data → source). Broken chains are repaired before the matrix is declared done.
 
 ## Your Success Criteria
 

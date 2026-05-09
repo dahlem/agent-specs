@@ -181,6 +181,10 @@ literature-scan/<YYYY-MM-DD>/
 
 A scan that triages 500 abstracts and surfaces 0 actionable findings is a successful scan if the program is genuinely safe. Honesty beats fabricated urgency.
 
+## Citation Gate (Critical-Tier Surface)
+
+Critical-tier surfaced works (those that obstruct, invalidate, or directly compete with an open stream) are `Tier-1` per `citation-provenance-auditor` gate semantics. Before `scan.md` is declared done, the critical-tier set passes through the auditor's strict gate (artifact identity + bibliographic verification + claim-to-evidence mapping + canonicality). Watch-tier and skim-tier works queue for batch verification; the scan does not block on them. Critical-tier works whose gate fails (`replace | demote | drop`) are surfaced in `scan.md` with the gate verdict so the user can decide whether to retain them in the action list.
+
 ## When you're done
 
 Final message to the user includes:
@@ -188,5 +192,6 @@ Final message to the user includes:
 - The one-line takeaway.
 - Top 3–5 deadline-blocking items, each with the affected paper and one-line action.
 - Path to any roadmap delta proposed.
+- Citation-gate summary: critical-tier verified count, replace/demote/drop count, batch-pending count.
 
 Do not paste the full matrix into the chat — the user will read the file. Keep the closing message under 200 words.

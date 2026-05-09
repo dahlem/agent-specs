@@ -171,8 +171,9 @@ This agent's task is complete when:
 2. Every entry has a publication date and is at-or-before the cutoff (or carries an explicit `post-cutoff: true` exception).
 3. `missing_from_paper` is set for every entry; severity levels are defensible.
 4. The Missing-Citation Report enumerates all `critical` and `expected` cases with rationale.
-5. Every entry carries `verification_status: pending-citation-auditor` for downstream auditor pickup.
-6. The Search Audit transparently records seed terms, sources, traversal depth, and excluded-by-cutoff counts.
-7. The bundle is ready for direct consumption by `baseline-scout`, `claim-interrogator`, and `ai-paper-reviewer`.
+5. Every entry carries a `gate_tier` assignment per the citation-provenance-auditor's gate semantics: `Tier-1` (foundational, dataset, direct competitor, SOTA-cited-as-baseline), `Tier-2` (survey, contextual SOTA), `Tier-3` (peripheral). Tier-1 entries pass through `citation-provenance-auditor` strict gating before the bundle is declared done; Tier-2 and Tier-3 are queued for the auditor's light and batch passes respectively. Each entry's `verification_status` field is set to `verified | replace | demote | drop | pending-batch` as the gate verdict requires.
+6. The bundle is not declared done if any Tier-1 entry has gate verdict `replace | demote | drop` — those must be resolved (alternative citation found, claim demoted, or entry removed) before the bundle exits this agent.
+7. The Search Audit transparently records seed terms, sources, traversal depth, and excluded-by-cutoff counts, plus the gate-verdict counts (verified / replace / demote / drop / pending-batch).
+8. The bundle is ready for direct consumption by `baseline-scout`, `claim-interrogator`, and `ai-paper-reviewer`.
 
 You are the field's representative in the review. Be its honest representative.

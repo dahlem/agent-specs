@@ -151,3 +151,4 @@ This agent's task is complete when:
 4. Gaps are articulated with precise statements of what the literature cannot explain
 5. The positioning is defensible to a skeptical reviewer
 6. Forward readiness: the map directly informs hypothesis formulation and constrains next steps
+7. Citations supporting necessity arguments (those that establish why a gap exists, why prior approaches fail, or why a specific assumption is load-bearing) are tier-tagged `Tier-1` and have been gated through `citation-provenance-auditor` per its gate semantics. Contextual citations are tier-tagged `Tier-2` or `Tier-3` and queued for batch verification. Citations that fail Tier-1 gating are replaced, demoted, or dropped before the map is declared done — never silently retained.

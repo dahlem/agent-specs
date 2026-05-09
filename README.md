@@ -66,7 +66,8 @@ agent-specs/
 │   │   └── research-director.md
 │   ├── writing/                                 # Cross-cutting writing tools (any document type)
 │   │   ├── narrative-clarity-auditor.md
-│   │   └── epistemic-calibration-auditor.md
+│   │   ├── epistemic-calibration-auditor.md
+│   │   └── evidence-provenance-auditor.md
 │   └── formal-verification/
 │       └── lean/                                # Lean 4 proof tools
 │           ├── lean-proof-chain-validator.md
@@ -449,6 +450,59 @@ Use the epistemic-calibration-auditor agent on prior_audit.md with audit_target:
 The auditor emits `calibration_audit.md` with the strictness profile, per-rule verdicts (overclaim/underclaim direction named), anti-pattern findings, the devil's-advocate alternatives with plausibility ratings, and minimal recommended rewrites.
 
 The two writing auditors compose: `narrative-clarity-auditor` checks *how* the prose reads at the venue's register; `epistemic-calibration-auditor` checks *what the prose claims relative to evidence*. Both can run on the same draft, in either order.
+
+### Evidence Provenance Auditor
+
+Audits any document or repository for end-to-end provenance: every data file, script, figure, table, numerical claim in prose, and experimental result must trace back to a documented origin. The discipline is *evidence-driven* — no number, plot, or quoted result enters a document without a chain back to its raw input. Six universal rules: data files have provenance metadata (source, date, version, license, schema); scripts declare inputs and outputs; figures and tables have a producer trail (which script, which data, which version); numerical claims in prose are sourced (table / figure / citation / script output / stated experimental setup); experimental results have replication metadata (setup, hyperparameters, seeds, hardware, variability); transformations are documented step-by-step.
+
+Companion to `citation-provenance-auditor`: that agent audits *bibliographic* provenance per citation; this one audits *data and computational* provenance. Together they cover the full evidence chain a reader needs to verify a claim.
+
+Anti-pattern catalog covers: magic constants in scripts (`threshold = 0.05` with no comment), headerless data files, figures without producer scripts, "data from [partner]" without specifics, hard-coded local paths signalling un-portable provenance, silent re-runs without seeds documented, and unsourced statistics in prose.
+
+The auditor is consumed by:
+
+- **`04-research-data-architect`** — primary upstream user; data-design output gets audited before downstream phases.
+- **`05-research-analysis-interpreter`** — invoked after results to verify replication metadata and chain integrity.
+- **`06-argument-architect`** — every numerical claim in the claim-evidence matrix must have an intact chain (claim → table/figure → script → data → source) before phase 06 declares done.
+- **`08-research-revision-validator`** — invoked alongside epistemic-calibration before sign-off.
+- **`09-research-validation-qa`** — chain-integrity directly answers the reproducibility question.
+- **`scientific-narrative-architect`** — invoked when prose contains numerical claims, in `Review` and `QualityControl` modes.
+
+Direct invocation:
+
+```
+# Audit a paper repo end-to-end
+Use the evidence-provenance-auditor agent on /path/to/paper-repo with audit_target: paper_repo
+
+# Audit only the data directory
+Use the evidence-provenance-auditor agent on /path/to/repo/data with audit_target: data_artifacts
+
+# Audit a blog post that quotes statistics
+Use the evidence-provenance-auditor agent on draft.md with audit_target: blog_with_data
+```
+
+The auditor emits `provenance_audit.md` with an inventory of artifacts in scope, per-artifact provenance verdicts, chain-integrity walks, anti-pattern findings, and minimal recommended patches (a header to add, a preamble to write, a footnote to insert). It does not produce data, scripts, or prose; it traces and recommends.
+
+### Citation provenance as a gate
+
+The existing `citation-provenance-auditor` (under `agents/research/tools/`) has been extended with explicit **gate semantics**: no citation enters a document without a provenance record from this agent first. Severity-tiered to keep the gate from becoming a bottleneck:
+
+- **Tier-1 (load-bearing)** — citations supporting Tier-1/Tier-2 claims, baselines, or canonical references. **Strict gate** before acceptance.
+- **Tier-2 (supporting)** — contextual citations. **Light gate** (persistent identifier + metadata only); claim-mapping deferred to a batch pre-submission pass.
+- **Tier-3 (peripheral)** — tangential references. **Batch gate** before submission only.
+
+Suggesting agents (`literature-expansion`, `02-literature-discovery-mapper`, `06-argument-architect`, `scientific-narrative-architect`, `arxiv-gap-scanner`) treat the auditor as a gate, not a downstream check. Failed Tier-1 citations are *replaced, demoted, or dropped* — never silently retained. Each suggesting agent's Definition of Done now reflects this contract.
+
+The four writing auditors compose. They cover orthogonal concerns:
+
+| Auditor | Audits |
+|---|---|
+| `narrative-clarity-auditor` | *How the prose reads* at the venue's register |
+| `epistemic-calibration-auditor` | *What the prose claims* relative to evidence (overclaim + devil's advocate) |
+| `evidence-provenance-auditor` | *That the evidence chain exists* (data → script → figure → claim) |
+| `citation-provenance-auditor` | *That cited works are real, canonical, and support the cited claim* |
+
+A paper that passes all four is reproducible, defensible, and honest about what it claims.
 
 ## Formal Verification Agents
 
