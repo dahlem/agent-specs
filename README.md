@@ -272,7 +272,7 @@ Preserves delegate outputs in their native formats; the synthesis section consol
 
 ## Proof Dissection Track
 
-A parallel track to the peer-review pipeline, intended for *reading* a theoretical paper rather than reviewing it. When the math is outside your comfort zone — unfamiliar techniques, citations to results you don't know, hand-waved compressed steps — this track produces a static map of the paper's proof architecture and then walks you through it interactively, teaching only the background you actually lack and remembering what you already know across papers.
+A parallel track to the peer-review pipeline, intended for *reading* a theoretical paper rather than reviewing it. When the math is outside your comfort zone — unfamiliar techniques, citations to results you don't know, hand-waved compressed steps — this track produces a static map of the paper's proof architecture and then converts it into a personalized lecture note (LaTeX, `memoir` class, Feynman style), or walks you through it interactively. Either way, only background you actually lack gets taught, and what you confirm carries forward across papers.
 
 ```
 paper (PDF / arxiv id)
@@ -288,16 +288,16 @@ proof-chain-cartographer      ──► proof_chain.md                  (DAG ove
        ├──► math-review-router (optional, auto-conditional) ──► math_review_bundle.md
        │
        ▼
-proof-tutor (interactive, in main conversation)
-       — probes background concept-by-concept ("yes / refresh / no")
-       — delivers ≤400-word mini-lectures only on confirmed gaps
-       — walks proofs in dependency order, with a confidence check per Tier-1 theorem
+proof-tutor — three modes:
+       document    (default) ──► lecture_notes.tex                (LaTeX memoir, Feynman style; one batched probing round)
+       interactive           ──► live whiteboard session in main conversation
+       hybrid                ──► interactive walk + lecture_notes.tex accumulated in parallel
        — reads/writes a persistent knowledge profile so the next paper skips what you already know
 ```
 
 ### Proof Dissection Orchestrator
 
-User-callable entry point. Sequences the four stages, enforces preconditions at every handoff, and supports stop-early flags. Reuses `compressed_paper.md` if already produced; auto-invokes `math-review-router` only when the cartographer raises ≥ 5 plausibility flags or any Tier-1 theorem has compressed steps with `uncertain` certainty (or when the user opts in explicitly). Hands off to `proof-tutor` in the main conversation rather than spawning it as a subagent — the tutor needs to ask you questions and receive answers.
+User-callable entry point. Sequences the four stages, enforces preconditions at every handoff, and supports stop-early flags (`compress | cartography | adversarial | tutor`) and a `tutor_mode` flag (`document | interactive | hybrid`, default `document`). Reuses `compressed_paper.md` if already produced; auto-invokes `math-review-router` only when the cartographer raises ≥ 5 plausibility flags or any Tier-1 theorem has compressed steps with `uncertain` certainty (or when the user opts in explicitly). Hands off to `proof-tutor` in the main conversation rather than spawning it as a subagent — even in document mode the tutor needs the main conversation for a single batched probing round before generating LaTeX.
 
 ### Proof Chain Cartographer
 
@@ -305,7 +305,7 @@ One-shot map builder. Walks the paper front-to-back, creates one node per number
 
 ### Proof Tutor
 
-Interactive whiteboard tutor. Probes one concept at a time, delivers mini-lectures (definition, origin, why-it-applies-here, minimal example, what-can-go-wrong) only on confirmed gaps, walks each Tier-1 theorem in dependency order with cartographer-tagged certainty levels (`directly_stated | inferred | standard_background | uncertain`), and ends each theorem with a confidence check that asks the reader to restate the proof strategy. Reads and writes a persistent knowledge profile at `~/.claude/projects/<project>/memory/theoretical-paper-knowledge-profile.md` so subfield fluency, per-concept ledger entries, and open loops carry forward across papers.
+Personalized walkthrough generator. Default mode (`document`) produces `lecture_notes.tex` — a LaTeX memoir-class lecture note written in Feynman style: motivation precedes technique, concrete precedes abstract, every proof is told first as a story (the trail of thought) and then formally (the rigorous version). Concepts marked `known` in the profile appear only in a compact "Concepts assumed familiar" list; concepts marked `teach` get full Feynman-style tutorials; uncertain compressed steps surface in each theorem's "Loose ends" section and in a "Questions for the authors" appendix. Probing happens once, batched, before generation. `interactive` mode runs a live whiteboard session in the main conversation; `hybrid` does both. Reads and writes a persistent knowledge profile at `~/.claude/projects/<project>/memory/theoretical-paper-knowledge-profile.md` so subfield fluency, per-concept ledger entries, and open loops carry forward across papers.
 
 ### How to call it
 
@@ -315,10 +315,16 @@ The orchestrator is the entry point. Invoke it via the Agent tool with the paper
 Use the proof-dissection-orchestrator agent on /path/to/paper.pdf
 ```
 
-By default it runs the full pipeline through tutor handoff. Common variants:
+By default it runs the full pipeline and produces `lecture_notes.tex`. Common variants:
 
 ```
-# Stop after the static map; no tutoring
+# Live whiteboard session instead of LaTeX output
+Use the proof-dissection-orchestrator agent on /path/to/paper.pdf with tutor_mode: interactive
+
+# Both — interactive walk plus LaTeX accumulated in parallel
+Use the proof-dissection-orchestrator agent on /path/to/paper.pdf with tutor_mode: hybrid
+
+# Stop after the static map; no tutoring, no LaTeX
 Use the proof-dissection-orchestrator agent on /path/to/paper.pdf with stage: cartography
 
 # Force adversarial soundness review
@@ -327,12 +333,12 @@ Use the proof-dissection-orchestrator agent on /path/to/paper.pdf with adversari
 # Skip adversarial review entirely
 Use the proof-dissection-orchestrator agent on /path/to/paper.pdf with adversarial: off
 
-# Resume in a later session — re-invoke with stage: tutor; the cartography artifacts and knowledge profile
-# from the prior session are reused, the tutor resumes at the next undelivered node
+# Resume in a later session — re-invoke with stage: tutor; cartography artifacts and knowledge profile
+# from the prior session are reused; the tutor resumes at the next undelivered node
 Use the proof-dissection-orchestrator agent on /path/to/paper.pdf with stage: tutor
 ```
 
-The orchestrator emits `dissection_handoff.md` recording which stages ran, which were skipped, why, and the planned tutor walk order. After handoff, the tutor runs in your main conversation: it posts an orientation, agrees a walk order with you, and begins probing.
+The orchestrator emits `dissection_handoff.md` recording which stages ran, which were skipped, why, the chosen `tutor_mode`, and the expected deliverable. After handoff, the tutor either generates `lecture_notes.tex` (document mode) or walks you through the proofs in your main conversation (interactive/hybrid).
 
 ### When to use this track
 
