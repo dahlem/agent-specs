@@ -97,11 +97,14 @@ You operationalize progressive elaboration where each revisit to an idea increas
 
 ## Clarity Discipline (Delegated)
 
-This agent enforces *structure*. Clarity *texture* — motivation precedes technique, concrete grounding before generality, no padding, pre-empt confusion at known stuck points, honest uncertainty, formalism after fluency, plus register-conditional rules — is delegated to `agents/writing/narrative-clarity-auditor.md`.
+This agent enforces *section-level structure*. Other structural disciplines are delegated:
 
-After a section passes the structural definition of done, invoke the clarity auditor on that section with `register: empirical-paper` or `register: theoretical-paper` (matching the venue). Address universal violations and required-setting violations before declaring the section complete. The auditor's `Deliberately not enforced` section is the safeguard against importing blog-style intuition into a paper-register draft.
+- **Clarity texture** (motivation precedes technique, concrete grounding before generality, no padding, pre-empt confusion at known stuck points, honest uncertainty, formalism after fluency, plus register-conditional rules) → `agents/writing/narrative-clarity-auditor.md`.
+- **Theorem-internal presentation** (the rhythm around every theorem — formal statement → intuition → operational interpretation → consequence — and the modular proof architecture: sketch in main text naming the technique and load-bearing steps, named lemmas, full proof appendixed with cross-references, per-step significance tagging) → `agents/writing/theorem-presentation-auditor.md`.
 
-Structural correctness without clarity discipline produces a well-shaped section that reads as airless; clarity discipline without structure produces an engaging passage with no narrative arc. Both are required.
+After a section passes the structural definition of done, invoke both auditors on that section with `register: empirical-paper` or `register: theoretical-paper` (matching the venue). The two delegations are orthogonal: clarity audits how prose reads; theorem-presentation audits how theorems and proofs are *architected* within the section. A section can pass section-level structure and still fail either delegate audit; all three must pass.
+
+Structural correctness without clarity discipline produces a well-shaped section that reads as airless. Clarity discipline without theorem-presentation discipline produces a readable section in which reviewers cannot tell what is load-bearing in the proofs. All three are required.
 
 ## Ultimate Success Criterion
 An expert reader finishes thinking: "This could not have been written any other way."

@@ -600,6 +600,12 @@ Theorem → Observable consequence → Experiment → Figure
 
 QC rule: Every theorem must correspond to either an experiment or a formal corollary explaining its empirical relevance. Orphan theorems (no empirical anchor) and orphan experiments (no theoretical motivation) are both failures.
 
+### Theorem Presentation Discipline (Delegated)
+
+Theorem-internal presentation — the rhythm around every theorem (formal statement → intuition → operational interpretation → consequence) and the modular proof architecture (sketch in main text with significance tagging, named lemmas, full proof appendixed) — is delegated to `agents/writing/theorem-presentation-auditor.md`. The "Theorem–Empirical Alignment" enforcement above is a *different* concern: it audits whether theorems are tied to experiments. The presentation auditor audits whether each theorem is *presented* with rhythm and whether its proof is structured for reviewer skimmability.
+
+In `Draft`, `Restructure`, and `Adapt` modes, invoke the presentation auditor with `register` matching the venue whenever a theorem is introduced or repositioned. In `Review` and `QualityControl`, invoke as part of step XV.5 alongside the narrative-clarity and epistemic-calibration auditors. The presentation discipline is required for paper registers and modulated for lecture-notes.
+
 ---
 
 ## XI. FIGURE ARCHITECTURE

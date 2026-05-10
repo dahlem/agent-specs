@@ -489,6 +489,21 @@ The agent uses these named macros for tutorial figures. It does NOT invent ad-ho
 - Layered derivations where the four panels are visually identical except for color. The frames must show *structural* progression, not just emphasis changes.
 - Using `\handdrawnstyle` for a paper-style review or theorem-heavy chapter. The aesthetic is for warmer, tutorial-style presentations.
 
+## Theorem Presentation Discipline (Lecture-Note Register)
+
+Beyond clarity, the lecture note must present every theorem with the rhythm canonicalized in `agents/writing/theorem-presentation-auditor.md` for `register: lecture-note`:
+
+1. **Theorem statement** — formal, with all assumptions named.
+2. **Intuition** — plain-language meaning. In the lecture-note register this can extend to a paragraph; brevity is not required.
+3. **Operational interpretation** — what the theorem *does* in the paper being read. How does the original paper use this theorem? What does it enable in the broader argument? This is non-trivial: the lecture note exists to teach the reader the original paper's proof chain, so every theorem's operational role is explicit.
+4. **Consequence** — what changes downstream because this theorem holds.
+
+The rhythm precedes "The proof, as a story" in each chapter's structure. In other words, a Tier-1 theorem's chapter begins with the rhythm, then proceeds to the proof walk.
+
+In lecture-note register, the *modular proof architecture* (Part B of the canonical discipline — sketch in main text, lemmas extracted, full proof in appendix, significance tagging) is **delegated to the lecture-note's own pattern**: "The proof, as a story" is the sketch (with significance implicit in narrative pacing); "The proof, formally" is the verification (replacing appendix-extraction); "Loose ends" is where uncertain or load-bearing steps the cartographer flagged are surfaced explicitly. Significance tagging carries forward as the cartographer's certainty levels (`directly_stated | inferred | standard_background | uncertain`), which the tutor renders inline in "The proof, formally" via `\marginpar` or inline labels.
+
+The auditor confirms this delegation rather than re-judging architecture in lecture-note register. The rhythm (Part A), however, is enforced strictly.
+
 ## Narrative Clarity Discipline (Lecture-Note Register)
 
 The narrative discipline that governs `lecture_notes.tex` (and every spoken mini-lecture in interactive mode) is the canonical clarity discipline maintained in `agents/writing/narrative-clarity-auditor.md`, configured for **register: `lecture-note`**. That register sets:
@@ -589,6 +604,9 @@ In `document` mode, additionally:
 10. Compressed steps with `Certainty: uncertain` appear in the relevant theorem's "Loose ends" section AND in the "Questions for the authors" appendix.
 11. The dependency DAG is rendered in TikZ in the appendix.
 12. Each chapter has been self-checked against the ten Feynman-discipline rules before the file was written.
+
+In `document` mode (any style), additionally:
+12a. Each Tier-1 theorem chapter has been audited by `theorem-presentation-auditor` with `register: lecture-note`. The rhythm pass (statement / intuition / operational interpretation / consequence) is required; the architecture pass is delegated to the lecture-note's own pattern (story → formal → loose-ends) and the auditor surfaces the delegation rather than re-judging.
 
 In `document` mode with `style: explainer`, additionally:
 13. The explainer preamble is in place: wide right margin via `\setlrmarginsandblock` and `\setmarginnotes`, the `tutor-style` TikZ preset defined, the seven template-library macros (`\conceptMap`, `\layeredDerivation`, `\anatomyDiagram`, `\counterexampleSketch`, `\comparativeDiagram`, `\proofWalkPanel`, `\stepEqn`) defined.

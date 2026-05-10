@@ -67,7 +67,8 @@ agent-specs/
 │   ├── writing/                                 # Cross-cutting writing tools (any document type)
 │   │   ├── narrative-clarity-auditor.md
 │   │   ├── epistemic-calibration-auditor.md
-│   │   └── evidence-provenance-auditor.md
+│   │   ├── evidence-provenance-auditor.md
+│   │   └── theorem-presentation-auditor.md
 │   └── formal-verification/
 │       └── lean/                                # Lean 4 proof tools
 │           ├── lean-proof-chain-validator.md
@@ -506,7 +507,51 @@ The existing `citation-provenance-auditor` (under `agents/research/tools/`) has 
 
 Suggesting agents (`literature-expansion`, `02-literature-discovery-mapper`, `06-argument-architect`, `scientific-narrative-architect`, `arxiv-gap-scanner`) treat the auditor as a gate, not a downstream check. Failed Tier-1 citations are *replaced, demoted, or dropped* — never silently retained. Each suggesting agent's Definition of Done now reflects this contract.
 
-The four writing auditors compose. They cover orthogonal concerns:
+### Theorem Presentation Auditor
+
+Audits how theorems and proofs are presented in a paper, lecture note, or technical document. The dominant failure mode of theoretical papers is "wall of theorems with proofs": pages of formal statements with no signposting, no separation of load-bearing from bookkeeping moves, no clear answer to *what does this theorem do for the paper's argument*. Reviewers cannot tell on a first pass what to scrutinize. The auditor inverts that failure mode by enforcing two reviewer-centric disciplines:
+
+**Part A — Theorem rhythm.** Every theorem the paper invokes for its argument is surrounded by four elements in fixed order:
+1. **Theorem statement** — formal, with all assumptions named in the statement.
+2. **Intuition** — plain-language meaning, marked explicitly ("Informally,…").
+3. **Operational interpretation** — what the theorem *does*: how it gets used, what computational/algorithmic/argumentative consequence it produces.
+4. **Consequence** — what changes downstream in the paper's argument because this theorem holds.
+
+The rhythm can take three compliant forms (inline / sectioned / pre-stated) but the four elements must all be present.
+
+**Part B — Modular proof architecture.** Every non-trivial proof is structured for reviewer skimmability:
+1. **Proof sketch in main text** — names the proof technique, identifies the one or two **load-bearing steps**, references key lemmas by name, readable in 30 seconds.
+2. **Key lemmas extracted and named** — non-trivial intermediate results are named lemmas with their own rhythm (Part A).
+3. **Full formal proof in appendix** — with `\label`s matching the sketch's named load-bearing steps for bidirectional cross-reference.
+4. **Significance tagging** — each step in the sketch tagged `[load-bearing] | [technical] | [bookkeeping]` (via inline tags, macros, or consistent typographic convention) so reviewers see at a glance what to scrutinize vs. take on faith.
+
+Anti-pattern catalog covers: theorems with no intuition, operational interpretation absent (the theorem floats free of the paper's argument), proofs running uninterrupted for two pages without named lemmas, "by a tedious but standard calculation" without elaboration, all steps presented as equally important, lemmas cited from prior work without their own intuition, inline anonymous claims doing real work, appendix proofs without labels matching the sketch, and significance tagging applied as decoration (every step labeled load-bearing, defeating the purpose).
+
+Register calibration: required for `theoretical-paper` and `empirical-paper`; rhythm-only with delegated architecture for `lecture-note` (proof-tutor's `story → formal` pattern carries the architecture role); compact rhythm for `nature-letter`; encouraged for `tech-report`; refused for non-theorem-bearing registers.
+
+The auditor is consumed by:
+
+- **`07-paper-structure-architect`** — invoked after section-level structural validation. Section structure and theorem-internal architecture are orthogonal and both required.
+- **`scientific-narrative-architect`** — invoked when introducing or repositioning theorems; complements its existing Theorem-Empirical Alignment (Section X) which audits a different concern.
+- **`06-argument-architect`** — every theorem in the claim-evidence matrix's evidence column must pass the rhythm audit, because the operational interpretation *is* the bridge between the theorem and the claim it supports.
+- **`proof-tutor`** (lecture-note register) — Part A applies (rhythm required for every chapter); Part B is delegated to the tutor's `story → formal → loose-ends` pattern.
+
+Direct invocation:
+
+```
+# Audit a theoretical paper
+Use the theorem-presentation-auditor agent on draft.tex with register: theoretical-paper
+
+# Audit only the architecture of one chapter (lecture note delegates Part B)
+Use the theorem-presentation-auditor agent on chapter3.tex with register: lecture-note, scope: T1
+
+# Audit a Nature letter — compact rhythm, no architecture
+Use the theorem-presentation-auditor agent on letter.tex with register: nature-letter
+```
+
+The auditor emits `theorem_presentation_audit.md` with theorem inventory, per-theorem rhythm verdicts (statement/intuition/operational/consequence/order/exemption), per-proof architecture verdicts (sketch/technique/load-bearing/lemmas/location/tagging), anti-pattern findings, and minimal recommended patches.
+
+The five writing auditors compose. They cover orthogonal concerns:
 
 | Auditor | Audits |
 |---|---|
@@ -514,8 +559,9 @@ The four writing auditors compose. They cover orthogonal concerns:
 | `epistemic-calibration-auditor` | *What the prose claims* relative to evidence (overclaim + devil's advocate) |
 | `evidence-provenance-auditor` | *That the evidence chain exists* (data → script → figure → claim) |
 | `citation-provenance-auditor` | *That cited works are real, canonical, and support the cited claim* |
+| `theorem-presentation-auditor` | *That every theorem has rhythm and every proof has reviewer-skimmable architecture* |
 
-A paper that passes all four is reproducible, defensible, and honest about what it claims.
+A paper that passes all five is reproducible, defensible, honest about what it claims, and structured for the reviewer to triangulate at a glance.
 
 ## Formal Verification Agents
 
