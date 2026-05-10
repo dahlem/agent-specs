@@ -8,9 +8,9 @@ This repository contains agent specifications organized into six categories:
 
 1. **Research Workflow** — A structured 10-phase methodology for taking research from problem framing through submission, plus cross-phase tools.
 2. **Research Shaping** — A diverge-then-converge layer that turns a body of work into the one paper it should become; an expanded entry point into phase 06.
-3. **Peer Review** — A coordinated, cutoff-bounded review pipeline that produces structured artifacts for the AI paper reviewer to ground its verdicts in.
+3. **Peer Review** — A coordinated, cutoff-bounded review pipeline that produces structured artifacts for the AI paper reviewer to ground its verdicts in. The **Proof Dissection Track** is a parallel sub-track for *reading* a theoretical paper rather than reviewing it (cartography → personalized LaTeX/memoir lecture note).
 4. **Math Brainstorming** — An iterative ecosystem of agents for mathematical problem exploration, construction, and synthesis.
-5. **Writing & Documentation** — Cross-cutting writing tools used directly or invoked by paper-writing agents to enforce calibrated clarity discipline across any document register (blog, lecture note, paper, Nature letter, policy essay).
+5. **Writing & Documentation** — Cross-cutting writing auditors used directly or invoked by paper-writing agents to enforce five orthogonal disciplines across any document register: narrative clarity, epistemic calibration, evidence provenance, citation provenance, and theorem presentation.
 6. **Formal Verification** — Agents for Lean 4 proof development, validation, and documentation.
 
 The research framework operationalizes both **benevolent** and **hostile** reviewer perspectives:
@@ -19,6 +19,158 @@ The research framework operationalizes both **benevolent** and **hostile** revie
 - **Hostile Reviewer**: Assumes overclaiming, searches for gaps and shortcuts, asks "What justifies rejection?"
 
 A phase succeeds when a hostile reviewer cannot identify a fatal flaw and a benevolent reviewer can articulate why the phase adds value.
+
+## Agent Index
+
+All 38 agents at a glance. Click an agent name to jump to its detailed description.
+
+### Research Workflow — Phases (10)
+
+| Agent | Purpose |
+|---|---|
+| [`01-research-framing-validator`](#phase-01--research-framing-validator) | Rigorous problem framing across six dimensions before any implementation |
+| [`02-literature-discovery-mapper`](#phase-02--literature-discovery-mapper) | Theory-anchored literature analysis; positioning as *necessary* not just novel |
+| [`03-research-design-auditor`](#phase-03--research-design-auditor) | Convert a framed problem into an auditable plan of inquiry |
+| [`04-research-data-architect`](#phase-04--research-data-architect) | Design, construct, validate, and document data with construct mappings |
+| [`05-research-analysis-interpreter`](#phase-05--research-analysis-interpreter) | Convert artifacts into validated findings with robustness testing |
+| [`06-argument-architect`](#phase-06--argument-architect) | Claim-evidence alignment; 1–3 irreducible claims with articulated limits |
+| [`07-paper-structure-architect`](#phase-07--paper-structure-architect) | Section-level narrative architecture; concentric arc; progressive elaboration |
+| [`08-research-revision-validator`](#phase-08--research-revision-validator) | Close epistemic loopholes; linguistic precision; claim-evidence matrix |
+| [`09-research-validation-qa`](#phase-09--research-validation-qa) | Hostile-third-party reproducibility, methodology, and ethics audit |
+| [`10-scholarly-submission-strategist`](#phase-10--scholarly-submission-strategist) | Venue selection, formatting, archival release, reviewer-response matrix |
+
+### Research Workflow — Cross-Phase Tools (4)
+
+| Agent | Purpose |
+|---|---|
+| [`ai-paper-reviewer`](#ai-paper-reviewer) | Dual benevolent/hostile pre-submission review across all ten phases |
+| [`arxiv-gap-scanner`](#arxiv-gap-scanner) | Full-pipeline literature-gap scan against a body of work over an arxiv window |
+| [`citation-provenance-auditor`](#citation-provenance-auditor) | Citation gate: PID + BibTeX + claim-mapping + canonicality, severity-tiered |
+| [`scientific-narrative-architect`](#scientific-narrative-architect) | Multi-scale narrative architecture across audiences (Nature/Physics/AI conf/Blog) |
+
+### Research Shaping (3)
+
+| Agent | Purpose |
+|---|---|
+| [`research-shaping-orchestrator`](#research-shaping-orchestrator) | User-callable entry point; sequences divergence → selection → sculpt → phase 06 |
+| [`research-divergence-cartographer`](#research-divergence-cartographer) | Over-generate 5–12 candidate red threads from a body of work |
+| [`red-thread-selector`](#red-thread-selector) | Converge on one thread via six-dimension scoring + mandatory mechanism checks |
+
+### Peer Review Pipeline (6)
+
+| Agent | Purpose |
+|---|---|
+| [`paper-compressor`](#paper-compressor) | Lossless-on-claims compression: tier inventory, methods, datasets, theorem index, cutoff |
+| [`literature-expansion`](#literature-expansion) | Cutoff-bounded prior-art bundle (30–50 works, five role buckets, missing-citation flags) |
+| [`baseline-scout`](#baseline-scout) | Independently re-derive expected baselines/datasets, reconcile with reported set |
+| [`domain-historian`](#domain-historian) | Subfield-specific significance rubric; four-stage at-time vs counterfactual verdict |
+| [`claim-interrogator`](#claim-interrogator) | Per-Tier-1/2-claim verdicts with 3–7 questions and severity tags |
+| [`math-review-router`](#math-review-router) | Routes theorem questions to math-brainstorming agents when `theory_heavy: true` |
+
+### Proof Dissection Track (3)
+
+| Agent | Purpose |
+|---|---|
+| [`proof-dissection-orchestrator`](#proof-dissection-orchestrator) | User-callable entry point; sequences compress → cartography → adversarial → tutor |
+| [`proof-chain-cartographer`](#proof-chain-cartographer) | Static map: proof DAG, prerequisite-concept inventory, compressed-step inventory |
+| [`proof-tutor`](#proof-tutor) | Personalized walkthrough: LaTeX memoir lecture note (default) or live whiteboard |
+
+### Math Brainstorming Ecosystem (6)
+
+| Agent | Purpose |
+|---|---|
+| [`reframer`](#reframer) | 8–12 alternative problem encodings via seven transformation types |
+| [`perturber`](#perturber) | 10–15 nearby variants by modifying assumptions, parameters, constraints |
+| [`math-constructor`](#math-constructor) | 5–10 explicit objects/examples via seven construction strategies |
+| [`math-strategist`](#math-strategist) | 5–8 proof-search roadmaps without attempting full proofs |
+| [`obstructor`](#obstructor) | Adversarial stress-test: counterexamples, hidden assumptions, structural impossibilities |
+| [`research-director`](#research-director) | Synthesize and prioritize brainstorming outputs into a research portfolio |
+
+### Writing & Documentation (5 auditors)
+
+| Agent | Audits |
+|---|---|
+| [`narrative-clarity-auditor`](#narrative-clarity-auditor) | *How the prose reads* at the venue's register (eight registers calibrated) |
+| [`epistemic-calibration-auditor`](#epistemic-calibration-auditor) | *What the prose claims* relative to evidence (overclaim + devil's advocate) |
+| [`evidence-provenance-auditor`](#evidence-provenance-auditor) | *That the evidence chain exists* (data → script → figure → claim) |
+| [`citation-provenance-auditor`](#citation-provenance-auditor) | *That cited works are real, canonical, and support the cited claim* (gate-enforced) |
+| [`theorem-presentation-auditor`](#theorem-presentation-auditor) | *That every theorem has rhythm and every proof has reviewer-skimmable architecture* |
+
+### Formal Verification (2)
+
+| Agent | Purpose |
+|---|---|
+| [`lean-proof-chain-validator`](#lean-proof-chain-validator) | Six-phase research-grade Lean proof validation; PASS/CONDITIONAL/FAIL verdict |
+| [`lean-proof-frontier-analyzer`](#lean-proof-frontier-analyzer) | Breadth-first dependency DAG; novelty classification; axiom-boundary documentation |
+
+## Common Workflows
+
+End-to-end usage patterns. Each workflow names the agents in invocation order; click any agent name above to jump to its detailed spec.
+
+### Workflow A — Write a paper from idea to submission
+
+For a fresh research project where the framing is not yet locked.
+
+1. `01-research-framing-validator` — define the problem rigorously
+2. `02-literature-discovery-mapper` — position the work; gate cited literature through `citation-provenance-auditor`
+3. `03-research-design-auditor` — convert framing to a testable plan
+4. `04-research-data-architect` — build data with provenance documented end-to-end
+5. `05-research-analysis-interpreter` — analyze with robustness/ablation
+6. `06-argument-architect` — distill 1–3 irreducible claims; the agent's DoD now invokes the writing auditors
+7. `07-paper-structure-architect` — section-level architecture; delegates clarity and theorem-presentation to the auditors
+8. `08-research-revision-validator` — close loopholes; pairs with `epistemic-calibration-auditor`
+9. `09-research-validation-qa` — adversarial reproducibility audit
+10. `10-scholarly-submission-strategist` — venue alignment, formatting, archival
+11. `ai-paper-reviewer` — pre-submission internal review
+
+`scientific-narrative-architect` is invoked throughout phases 6–10 for drafting, restructuring, audience adaptation, and quality control.
+
+### Workflow B — Convert a body of work into the paper hiding inside it
+
+For accumulated work that needs to converge on a single contribution.
+
+1. Author a `body_of_work.md` manifest (results, theorems, experiments, drafts, abandoned threads, anomalies)
+2. `research-shaping-orchestrator` — sequences divergence → selection → sculpt → phase-06 handoff. Treats `selection_outcome: deferred` as a first-class stop, not a failure.
+3. Continue with phases 06–10 as in Workflow A; phase 06 switches from open-ended distillation to *validation* of the converged claims when `red_thread.md` is present.
+
+### Workflow C — Read a theoretical paper outside your subfield
+
+For papers whose math is partly outside your comfort zone — produces a personalized lecture note.
+
+1. `proof-dissection-orchestrator` — single entry point. Sequences:
+   - `paper-compressor` (precondition; reused if present)
+   - `proof-chain-cartographer` (always; emits proof DAG, concept inventory, compressed-step inventory)
+   - `math-review-router` (auto-conditional; soundness audit when plausibility flags fire)
+   - `proof-tutor` in document mode (default) — generates `lecture_notes.tex` (memoir, Feynman style, distill-inspired explainer layout) tailored to your knowledge profile
+2. Knowledge profile at `~/.claude/projects/<project>/memory/theoretical-paper-knowledge-profile.md` carries forward across papers — concepts you confirmed once are skipped on the next paper.
+
+Variants: `tutor_mode: interactive` for a live whiteboard session; `tutor_style: classic` for dense memoir without distill extensions; `stage: cartography` to stop after the static map.
+
+### Workflow D — Review someone else's paper
+
+For pre-submission internal review or external peer review.
+
+1. `paper-compressor` — extract claims, evidence, baselines, theorem index, cutoff date
+2. `literature-expansion` — cutoff-bounded prior-art bundle; gates citations through `citation-provenance-auditor`
+3. `baseline-scout` — independently re-derive expected baselines, flag gaps
+4. `domain-historian` — subfield-specific significance rubric and at-time verdict
+5. `claim-interrogator` — per-claim verdicts grounded in upstream artifacts
+6. `math-review-router` (if `theory_heavy: true`) — routes theorem audits to math-brainstorming agents
+7. `ai-paper-reviewer` — dual benevolent/hostile lens grounded in the upstream artifacts
+
+If the reviewer also wants to *understand* the paper's proofs deeply, run Workflow C in parallel for the lecture-note artifact.
+
+### Workflow E — Audit any draft for quality
+
+For any draft (paper, lecture note, blog post, tech report, status report). Run the writing auditors that apply at the chosen register; they cover orthogonal concerns and can run in any order:
+
+- `narrative-clarity-auditor` — register-calibrated clarity discipline
+- `epistemic-calibration-auditor` — overclaim/underclaim + devil's advocate
+- `evidence-provenance-auditor` — chain integrity for data and numerical claims
+- `citation-provenance-auditor` — citation gate, severity-tiered
+- `theorem-presentation-auditor` — theorem rhythm + modular proof architecture (paper/lecture-note registers)
+
+A paper that passes all five is reproducible, defensible, honest about what it claims, and structured for the reviewer to triangulate at a glance.
 
 ## Repository Structure
 
@@ -497,9 +649,9 @@ Use the evidence-provenance-auditor agent on draft.md with audit_target: blog_wi
 
 The auditor emits `provenance_audit.md` with an inventory of artifacts in scope, per-artifact provenance verdicts, chain-integrity walks, anti-pattern findings, and minimal recommended patches (a header to add, a preamble to write, a footnote to insert). It does not produce data, scripts, or prose; it traces and recommends.
 
-### Citation provenance as a gate
+### Citation Provenance as a Gate (workflow extension)
 
-The existing `citation-provenance-auditor` (under `agents/research/tools/`) has been extended with explicit **gate semantics**: no citation enters a document without a provenance record from this agent first. Severity-tiered to keep the gate from becoming a bottleneck:
+This is not a new agent — it documents how the existing `citation-provenance-auditor` (detailed under [Cross-Phase Tools](#citation-provenance-auditor)) participates in the writing-auditor family. The auditor has **gate semantics**: no citation enters a document without a provenance record from it first. Severity-tiered to keep the gate from becoming a bottleneck:
 
 - **Tier-1 (load-bearing)** — citations supporting Tier-1/Tier-2 claims, baselines, or canonical references. **Strict gate** before acceptance.
 - **Tier-2 (supporting)** — contextual citations. **Light gate** (persistent identifier + metadata only); claim-mapping deferred to a batch pre-submission pass.
@@ -562,6 +714,27 @@ The five writing auditors compose. They cover orthogonal concerns:
 | `theorem-presentation-auditor` | *That every theorem has rhythm and every proof has reviewer-skimmable architecture* |
 
 A paper that passes all five is reproducible, defensible, honest about what it claims, and structured for the reviewer to triangulate at a glance.
+
+### Auditor Consumption Matrix
+
+Which agents invoke which writing auditors, and at what gate. Cell content names the trigger.
+
+| Caller | narrative-clarity | epistemic-calibration | evidence-provenance | citation-provenance | theorem-presentation |
+|---|---|---|---|---|---|
+| `06-argument-architect` | — | DoD: claim-evidence matrix | DoD: numerical claims | DoD: matrix evidence column (Tier-1 strict gate) | DoD: theorems in evidence column |
+| `07-paper-structure-architect` | per-section clarity audit | — | — | — | per-section theorem audit |
+| `08-research-revision-validator` | — | paired with linguistic-precision pass | — | (via citation gate, upstream) | — |
+| `09-research-validation-qa` | — | reproducibility-grade audit | reproducibility-grade audit | — | — |
+| `scientific-narrative-architect` | end of Draft/Restructure/Adapt; XV.5 in Review/QC | (via narrative-clarity) | numerical claims in prose | new-bibkey gate at suggestion | introduce/reposition theorems |
+| `proof-tutor` (lecture-note) | self-check before emitting `.tex` | — | — | — | rhythm required (Part A); architecture delegated |
+| `proof-dissection-orchestrator` | — | handoff record audit | — | — | — |
+| `research-shaping-orchestrator` | — | handoff record audit | — | — | — |
+| `literature-expansion` | — | — | — | bundle entries (Tier-1 strict gate) | — |
+| `02-literature-discovery-mapper` | — | — | — | necessity-supporting citations (Tier-1) | — |
+| `arxiv-gap-scanner` | — | — | — | critical-tier surfaced works (Tier-1) | — |
+| `ai-paper-reviewer` | (optional, ground individual critiques) | (optional, ground individual critiques) | — | — | — |
+
+The matrix encodes the design principle: auditors are canonical, callers reference, and gates fire at the moment overclaim or missing provenance does the most damage. New agents that suggest citations or claim coverage should add themselves to this matrix.
 
 ## Formal Verification Agents
 
