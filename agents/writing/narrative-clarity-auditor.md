@@ -102,6 +102,13 @@ Scan for register-agnostic anti-patterns. Flag any:
 - Hidden quantifier flips between informal exposition and formal statement.
 - Metaphor inflation (one passage uses three different metaphors for the same concept).
 
+For `empirical-paper`, `theoretical-paper`, and `nature-letter` registers, additionally scan for violations of the epistemic choreography principles defined in `scientific-narrative-architect` Section XIV-B:
+- Rhetorical vs conceptual intensity separation (principle 3): emphatic language ("remarkable", "groundbreaking", "dramatic") substituting for explanatory density. Flag and recommend a rewrite that derives force from specificity.
+- Sentence-level epistemic hygiene (principle 4): observation / interpretation / speculation layers blurred within the same sentence or paragraph. Flag and recommend layer separation.
+- Semantic inflation (principle 9): high adjective density with low informational density ("novel robust scalable efficient adaptive framework"). Flag modifiers that neither constrain, quantify, nor disambiguate.
+- Passive section endings (principle 15): sections ending with backward-pointing summaries ("These results are shown in Table 2") rather than forward-pointing implications. Flag and recommend a forward-tension rewrite.
+- Transitions as connectors rather than transforms (principle 10): "Next, we evaluate our method" rather than a transition that transforms conceptual state. Flag and recommend a directional-logic rewrite.
+
 ### Step 5 — Recommended rewrites
 
 For each violation in Steps 2–4, provide a *minimal* recommended rewrite — one example, not a full rewrite of the document. The author writes; you audit.

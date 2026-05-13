@@ -705,6 +705,134 @@ Before completion, simulate three reviewer archetypes and ensure the paper answe
 
 ---
 
+## XIV-B. EPISTEMIC CHOREOGRAPHY
+
+For venues like Nature, Science, or NeurIPS, the highest level of writing is not beautiful prose. It is *controlled epistemic choreography*: the reader experiences discovery rather than persuasion. The paper creates the feeling that the problem matters, the uncertainty is real, the method is inevitable, the evidence accumulates coherently, and the conclusion becomes difficult *not* to believe.
+
+The following 16 principles operate at sentence and paragraph level — finer grain than the claim architecture (II), narrative arc (I), or figure architecture (XI) above. Apply them during STEP 6–10 of the Execution Plan and during any `Review`, `Restructure`, or `QualityControl` pass.
+
+### 1. Cognitive state transitions
+
+Treat every section as a state transition on the reader's mental model, not a container of information:
+- What does the reader currently believe?
+- What tension or insufficiency exists?
+- What new evidence changes the state?
+- What is now newly possible to infer?
+
+### 2. Inevitability over surprise
+
+The strongest results feel retrospectively inevitable. Write so the reader could have derived the conclusion themselves from the evidence presented.
+
+| Weak | Strong |
+|---|---|
+| "Surprise! We discovered X." | "Given observations A, B, and C, X becomes the only coherent explanation." |
+
+### 3. Separate rhetorical from conceptual intensity
+
+Emphatic language ("remarkable", "groundbreaking", "dramatic", "massive", "critical", "revolutionary") simulates importance. Scientific prose derives force from specificity, precision, constrained claims, and accumulation. Explanatory density creates its own rhetorical force:
+
+| Weak | Strong |
+|---|---|
+| "Our method substantially outperforms prior approaches." | "Across six benchmarks, performance gains increase monotonically with context length, suggesting the improvement is mechanistically linked to retrieval depth rather than dataset specialization." |
+
+### 4. Sentence-level epistemic hygiene
+
+Every sentence encodes: certainty, evidence type, scope, and inferential distance. Distinguish at every occurrence:
+
+- **Observation**: "Error rates decrease as token diversity increases."
+- **Interpretation**: "This suggests the model benefits from representational heterogeneity."
+- **Speculation**: "One possible explanation is improved manifold coverage."
+
+Most mediocre papers blur these layers. Elite papers maintain the distinction. Readers feel this subconsciously.
+
+### 5. Engineer curiosity through asymmetry
+
+Curiosity emerges from controlled incompleteness. Pattern: present an anomaly → delay explanation slightly → increase constraint → resolve with compression.
+
+> Existing scaling laws predict saturation at regime X.
+> However, beyond 10^11 parameters, we observe a second improvement phase.
+> This effect persists across architectures and datasets.
+> Analysis reveals that the transition coincides with the emergence of sparse specialization.
+
+Narrative tension without emotional language.
+
+### 6. Paragraphs as directional inferential units
+
+A paragraph is not a topic container. It is a directional inferential unit:
+1. Local claim
+2. Evidence or mechanism
+3. Constraint or qualification
+4. Consequence
+
+The reader should never ask "Why am I being told this?" Each paragraph reduces uncertainty.
+
+### 7. Abstraction gradients
+
+Oscillate deliberately between levels of abstraction. Staying too abstract or too implementation-specific is a failure mode:
+
+| Layer | Purpose |
+|---|---|
+| Concrete observation | anchor trust |
+| Mechanistic interpretation | create explanatory structure |
+| General principle | increase transferability |
+| Return to measurable evidence | prevent drift |
+
+### 8. Restraint as force multiplier
+
+Understatement is more persuasive than emphasis. The reader infers significance themselves; that inference is more durable.
+
+| Weak | Strong |
+|---|---|
+| "This striking result fundamentally changes our understanding of…" | "These findings suggest that previous assumptions about X may not hold in high-dimensional regimes." |
+
+### 9. Semantic inflation avoidance
+
+High adjective density with low informational density creates semantic blur. "Novel robust scalable efficient adaptive framework" is noise. Heuristic: every modifier should either constrain meaning, quantify meaning, or remove ambiguity. Otherwise remove it.
+
+### 10. Transitions as state transforms
+
+Transitions should transform conceptual state, not merely connect sections.
+
+| Weak | Strong |
+|---|---|
+| "Next, we evaluate our method." | "If the observed gains arise from memorization, performance should collapse under distribution shift." |
+
+The second creates directional logic. The reader feels guided, not transported.
+
+### 11. Local micro-rewards
+
+Readers continue reading when they experience repeated cognitive payoff: resolving ambiguity, compressing complexity, exposing hidden structure, connecting previously separate ideas. This is the scientific equivalent of narrative pacing.
+
+### 12. Figures as narrative pivots
+
+Figures are not illustrations. They are inferential events. The text prepares the reader, frames the question, then lets the figure resolve tension. Bad papers dump plots. Good papers orchestrate evidence revelation.
+
+### 13. Latent objection absorption
+
+The reader should repeatedly think: "They already considered my objection." Achieve through scoped claims, counterexamples, ablations, limitations, alternative hypotheses. The effect is subtle but enormous for epistemic trust.
+
+### 14. Compression ratio
+
+Each sentence should do multiple jobs: advance the argument, constrain interpretation, connect ideas, and prepare downstream inference. Target: maximal density under minimal rereading burden. Compression must not become opacity.
+
+### 15. Forward tension at section ends
+
+End sections with forward-pointing implications, not backward-pointing summaries.
+
+| Weak | Strong |
+|---|---|
+| "These results are shown in Table 2." | "The persistence of the effect under synthetic perturbations suggests the mechanism may be structural rather than data-dependent." |
+
+### 16. The meta-principle: respect the reader's intelligence
+
+The strongest scientific prose does not emotionally coerce, oversell, over-explain, or announce significance prematurely. It constructs conditions under which insight emerges naturally. The reader should feel oriented, respected, progressively enlightened, and ultimately capable of independently reconstructing the argument. That is narrative mastery: disciplined control over uncertainty, revelation, pacing, and inferential structure.
+
+### Interaction with other auditors
+
+The epistemic choreography principles stated above are the *generative target*. The *audit* of sentence-level epistemic hygiene (principle 4), semantic inflation (principle 9), rhetorical vs conceptual intensity (principle 3), and restraint (principle 8) is shared with `agents/writing/narrative-clarity-auditor.md` and `agents/writing/epistemic-calibration-auditor.md`. Those auditors should reference these principles when auditing paper-register drafts. Principles 1, 5, 6, 10, 11, and 15 are structural-pacing concerns that are harder to audit mechanically; they are checked during the STEP 5 quality-control pass below.
+
+---
+
 ## XV. EXECUTION PLAN (apply in order for any draft or review)
 
 **STEP 1 — Field Framing**: Identify core scientific domain, open tension, and why it matters now.
