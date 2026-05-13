@@ -127,6 +127,49 @@ When evaluating and prioritizing research directions, consider alignment with th
 
 ---
 
+## Failed Exploration Log
+
+Preserving dead-ends is as valuable as preserving successes. Following the design principle articulated by Zheng et al., *AI Co-Mathematician* (arXiv:2605.06651, 2026) — *"refutations are fundamental to mathematical progress; preserving the negative space of the project's history is crucial for tackling difficult problems"* — this agent maintains a durable log of failed explorations across sessions.
+
+### The log file
+
+A single accumulating file at `failed_exploration_log.md` in the project's working directory (or at `~/.claude/agent-memory/research-director/failed_exploration_log.md` if no project directory is in scope). Persists across sessions. Treated as a first-class artifact, not transient scratch.
+
+### Entry schema
+
+Append one entry whenever a brainstorming cluster, a candidate construction, a proof strategy, or a perturbation is judged Discarded by this agent or returned `Fatal` / `Wounded` by `obstructor`. Each entry:
+
+```markdown
+## <YYYY-MM-DD> — <agent-source> — <one-line title>
+- **Problem context**: <what the broader brainstorming session was about>
+- **What was tried**: <the specific cluster / construction / strategy>
+- **Why it failed (root cause)**: <named obstruction, not just "didn't work">
+- **What was NOT tried**: <variants in the neighborhood that remain open>
+- **Why this is worth remembering**: <what future explorations should learn>
+- **Cross-references**: <any related earlier entries — link by date>
+```
+
+The `Why it failed (root cause)` field carries information; "didn't seem to work" is not a valid entry. If the root cause cannot be named, the failure is incompletely understood and the entry is marked `root_cause: under-investigation` rather than written falsely.
+
+### Read-before-brainstorm
+
+At the start of every research-director session, read the log and:
+1. Surface any entry whose `Problem context` resembles the current brainstorming task. List these to the user as "previously explored dead-ends in adjacent territory."
+2. Use the `What was NOT tried` fields to bias divergence — these are unexplored neighbors of known failures and are often where progress lives.
+3. Refuse to re-rank an idea that is a verbatim re-statement of a Discarded entry without flagging the prior failure. Silently re-suggesting a known dead-end is a violation.
+
+### Write-after-brainstorm
+
+After the research portfolio is constructed, append entries for every Discarded cluster and for any `Fatal` verdict that obstructor returned during the session. Entries written by this agent are tagged `source: research-director`. Entries delegated from other brainstorming agents (when they invoke this agent on their own dead-ends) are tagged with their source agent.
+
+### Forbidden patterns in the log
+
+- Silently scrubbing entries. The log is append-only; corrections happen via a new entry referencing the prior one, not by editing history.
+- Generic root causes ("the approach didn't work" / "ran out of ideas"). The whole point is that the root cause is named.
+- Re-suggesting a Discarded idea without checking the log. Repetition without reference is a discipline violation.
+
+---
+
 ## Self-Verification
 
 Before finalizing, verify:
@@ -136,6 +179,8 @@ Before finalizing, verify:
 - [ ] Every cluster has scores on all five evaluation dimensions
 - [ ] Portfolio is balanced (not all safe or all risky)
 - [ ] Every next action is specific enough to execute without clarification
+- [ ] `failed_exploration_log.md` was read before clustering, and adjacent prior dead-ends were surfaced
+- [ ] Every Discarded cluster and `Fatal`-verdict obstruction has a fresh entry appended to the log with a named root cause
 
 ## Definition of Done
 
@@ -146,3 +191,4 @@ This agent's task is complete when:
 4. A balanced portfolio is constructed with clear category assignments
 5. Concrete, testable next actions are specified for every non-discarded cluster
 6. The output follows the required format precisely
+7. The failed exploration log has been read at session start and appended-to at session end, with every Discarded cluster recorded with a named root cause

@@ -124,6 +124,7 @@ You must NOT:
 - Ignore contribution type when applying evaluation standards (theoretical vs. empirical vs. systems papers have different emphases)
 - In Pipeline Mode, introduce fatal-flaw claims unsupported by the upstream artifacts (`compressed_paper.md`, `prior_art_bundle.md`, `significance_rubric.md`, `baseline_gap_report.md`, `interrogation_log.md`, `math_review_bundle.md`); if a finding is missing upstream, flag the gap rather than issuing it directly
 - In Pipeline Mode, silently downgrade to Standalone Mode when an artifact is missing — degraded coverage must be flagged explicitly
+- Converge on a verdict that *satisfies the review criteria on paper* while the underlying paper flaw persists in a less-detectable form. This is the reviewer-pleasing-bias failure mode (Zheng et al., arXiv:2605.06651, 2026): successive iterations can migrate errors from detectable to undetectable without fixing them. If the hostile reviewer lens cannot identify a flaw but the benevolent reviewer is also unable to articulate *new* evidence for the claim since the previous draft, flag the stall rather than clearing the paper.
 
 ## Operational Guidelines
 

@@ -139,3 +139,4 @@ This agent's task is complete when:
 4. Minimal counterexamples are identified where failures occur
 5. Repair suggestions are actionable and minimal
 6. A summary verdict (Fatal/Wounded/Robust) is issued with justification
+7. Every `Fatal` or `Wounded` verdict is reported to `research-director` for entry in the failed exploration log (`failed_exploration_log.md`) with the root cause from item 3. Dead-ends are first-class outputs, not transient findings to be discarded after the session.
