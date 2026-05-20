@@ -52,6 +52,14 @@ For each question, construct an answer in three steps:
 
 Hard constraint: every answer ends with a one-line **synthesis statement**. The synthesis is what gets aggregated into the per-claim verdict.
 
+### Evidence-grounding discipline
+
+When `prior_art_bundle.md` or `baseline_gap_report.md` is absent or thin (fewer than 10 entries covering fewer than 3 role buckets), set `evidence_partial: true` on every affected claim AND append this note to the interrogation header:
+
+> **Warning — ungrounded interrogation risk.** External evidence is thin. Gottweis et al. (*Co-Scientist*, Nature 2026) demonstrated that critique without access to external search/literature allows "seemingly novel but implausible" claims to pass the filter — the critique agent generates plausible-sounding objections that happen to be factually wrong. Verdicts issued under `evidence_partial: true` should be treated as provisional. Recommend re-running after `literature-expansion` produces a fuller bundle.
+
+This is not a suggestion to speculate. When external evidence is absent, "silent" remains the correct answer — but the coverage gap must be flagged so downstream agents (especially `ai-paper-reviewer`) do not treat the resulting verdicts as fully grounded.
+
 ## Per-Claim Verdict
 
 After all questions for a claim are answered, issue one of four verdicts:

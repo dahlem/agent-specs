@@ -37,14 +37,52 @@ Score each cluster on five dimensions using low/medium/high:
 - **Tool availability**: whether known techniques apply
 - **Failure risk**: likelihood it collapses under scrutiny
 
+### Step 4b — Tournament-Debate Phase
+
+Independent scoring (Step 4) reveals individual merit; tournament debate reveals *relative* merit. Ideas that look strong in isolation may collapse when compared head-to-head. Following the tournament-based evolution paradigm validated by Gottweis et al. (*Co-Scientist*, Nature 2026, doi:10.1038/s41586-026-10644-y), pair clusters that scored similarly and debate them before portfolio assignment.
+
+**Protocol:**
+
+1. **Pair formation**: group clusters by their preliminary tier (based on Step 4 scores). Within each tier, form all pairwise matchups. If a tier has only one cluster, it advances without debate.
+
+2. **Per-pair debate**: for each pair (A vs B), invoke two adversarial perspectives:
+   - `obstructor` argues against each: "why A fails" and "why B fails" — structural weaknesses, hidden assumptions, fatal boundary cases.
+   - `reframer` argues for each: "why A is the right framing" and "why B is the right framing" — what it uniquely captures, why the mechanism is sound, what alternatives it dominates.
+
+3. **Synthesis**: for each pair, determine:
+   - **A wins**: A's argue-for case is stronger AND A's argue-against case is less damaging.
+   - **B wins**: symmetric.
+   - **Both survive**: neither's argue-against case is fatal; both have distinct, non-overlapping strengths.
+   - **Neither survives**: both argue-against cases are fatal → both flagged for candidate evolution (Step 4c).
+
+4. **Win-count ranking**: within each tier, rank clusters by number of debates won. This ranking supplements (not replaces) the 5-dimensional scores.
+
+5. **Debate record preservation**: append debate outcomes to the failed-exploration-log for losing candidates. Each entry includes: the pairing, both argue-for and argue-against summaries, the synthesis verdict, and the specific argument that was decisive.
+
+**Constraints:**
+- Maximum 10 pairwise debates per session to prevent combinatorial blowup. If a tier has > 5 clusters, select the top 5 by Step 4 scores for the tournament; remaining clusters are assigned their Step-4-based tier without debate.
+- The debate must produce *new* arguments, not restate the Step 4 dimension scores in prose. If obstructor and reframer produce no arguments beyond what scoring already captured, the debate is recorded as "no additional signal" and both clusters advance.
+
+### Step 4c — Candidate Evolution (One Attempt)
+
+For each cluster that lost all its debates in Step 4b but had at least one strong dimension (any dimension scored `high`):
+
+1. Read the debate record: what specific argument defeated this candidate?
+2. Attempt one revision: modify the candidate's mechanism, assumptions, or scope to address the defeating argument while preserving its strong dimension.
+3. Re-evaluate the revised candidate on the 5 dimensions.
+4. If improved (any previously-low dimension rises to medium, or the defeating argument no longer applies): re-enter the portfolio at the appropriate tier.
+5. If not improved: log to `failed_exploration_log.md` with the evolution attempt recorded. The entry's `What was tried` field names the revision; `Why it failed` names why the revision was insufficient.
+
+**Cap**: one evolution attempt per losing candidate per session. This prevents the death-spiral iteration pattern (per the anti-pattern in `epistemic-calibration-auditor`). If the revision fails, the candidate is Discarded and logged — not re-evolved.
+
 ### Step 5 — Prioritize into Portfolio
-Classify each cluster into exactly one category:
+Classify each cluster into exactly one category, informed by both Step 4 scores and Step 4b tournament outcomes:
 - **Immediate experiment**: quick test possible (hours)
 - **Promising direction**: moderate effort exploration (days)
 - **High-risk research**: long-term investigation (weeks+)
 - **Discarded**: insufficient value or redundant
 
-Aim for a balanced portfolio: typically 2 quick tests, 2 medium strategies, 1 high-risk idea. Avoid premature convergence — do not discard novel directions just because they are unfamiliar.
+Aim for a balanced portfolio: typically 2 quick tests, 2 medium strategies, 1 high-risk idea. Avoid premature convergence — do not discard novel directions just because they are unfamiliar. Tournament debate win-counts serve as tiebreakers within a tier: a cluster that won 3/3 debates is ranked above one that won 1/3, even if their independent scores are identical.
 
 ### Step 6 — Design Next Actions
 For each non-discarded cluster, specify concrete, testable next steps. Each action must be specific enough that a researcher could execute it without further clarification. Examples: "compute eigenvalues for graphs with n ≤ 8", "prove the monotonicity lemma for the two-player case", "search for a counterexample with k = 3".
@@ -181,6 +219,9 @@ Before finalizing, verify:
 - [ ] Every next action is specific enough to execute without clarification
 - [ ] `failed_exploration_log.md` was read before clustering, and adjacent prior dead-ends were surfaced
 - [ ] Every Discarded cluster and `Fatal`-verdict obstruction has a fresh entry appended to the log with a named root cause
+- [ ] Tournament-debate phase (Step 4b) ran for every tier with ≥ 2 clusters; debate records are preserved in the log
+- [ ] Every cluster that lost all debates and had ≥ 1 high-scored dimension received one evolution attempt (Step 4c); outcome is logged
+- [ ] Every cluster scored `novelty: high` has been checked against the failed-exploration-log for prior dead-ends in the same space AND, if search tools are available, against recent literature to confirm the novelty claim is not an artifact of the agent's knowledge cutoff (per Gottweis et al., Nature 2026)
 
 ## Definition of Done
 
@@ -188,7 +229,10 @@ This agent's task is complete when:
 1. All input ideas are extracted and normalized
 2. Ideas are clustered by mechanism with duplicates merged
 3. Every cluster is evaluated on all five dimensions with justification
-4. A balanced portfolio is constructed with clear category assignments
-5. Concrete, testable next actions are specified for every non-discarded cluster
-6. The output follows the required format precisely
-7. The failed exploration log has been read at session start and appended-to at session end, with every Discarded cluster recorded with a named root cause
+4. The tournament-debate phase (Step 4b) has run for every tier with ≥ 2 clusters; debate records are preserved
+5. Every cluster that lost all debates and had ≥ 1 high-scored dimension received one evolution attempt (Step 4c)
+6. A balanced portfolio is constructed with clear category assignments, informed by both dimension scores and tournament outcomes
+7. Concrete, testable next actions are specified for every non-discarded cluster
+8. The output follows the required format precisely
+9. The failed exploration log has been read at session start and appended-to at session end, with every Discarded cluster and every tournament-debate loser recorded with a named root cause
+10. Every `novelty: high` cluster has been checked against the failed-exploration-log and (if search available) recent literature
