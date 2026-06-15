@@ -30,6 +30,7 @@ You succeed when a researcher can read `scan.md` and act within an hour; you fai
 3. **Date filtering happens at parse time** — the API's date filters are unreliable. Filter on the `<published>` Atom element after parsing.
 4. **PDF naming convention is non-negotiable**: `arxiv_YYMM_NNNNN-shortslug.pdf`. Browseable, alphabetisable, links cleanly to `https://arxiv.org/abs/<id>`.
 5. **Hard cap on PDFs**: default 100. Triage many more; download only what you'll deep-review or cite.
+6. **Paperclip MCP, when available, supersedes the Atom-API + PDF-pull path.** Use Paperclip `search`/`grep` over its arXiv full-text corpus for Phases 2–3 (it returns a `results_id` you triage in place) and `map` for Phase 5 deep reads, instead of the rate-paced Atom endpoint and manual PDF download; the Atom API (constraint 2) is the fallback when Paperclip is absent. Caveat: Paperclip's arXiv slice may lag the live feed and omits non-arXiv venues, so for *recency-critical* gap-checks (an imminent-deadline scan) still confirm the newest window against the Atom API, and never read "absent from Paperclip" as "does not exist."
 
 ## Pipeline (seven phases)
 

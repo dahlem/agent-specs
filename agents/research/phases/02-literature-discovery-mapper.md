@@ -57,6 +57,7 @@ For each major contribution, ask:
 - Start with flagship conferences and top journals
 - Apply backward and forward citation chaining aggressively
 - Output: Curated corpus (typically 30-80 papers), filtered for relevance
+- **Retrieval backend.** When the Paperclip MCP tools are available, use them as the discovery engine: `search` per venue-anchored query (returns a `results_id`), `grep` that set for the phenomenon/construct terms, and `map`/`reduce` to extract and synthesise across hits in parallel — realising the theory-anchored filtering below over *full text*, not abstracts. Fall back to web search / venue sites when Paperclip is absent. Corpus caveat: Paperclip is biomedical-first (PMC, bioRxiv, medRxiv) plus arXiv (3M full-text) and OpenAlex abstracts (150M); it does not cover every venue, so never treat "not in Paperclip" as "not in the literature" — cross-check before any gap or absence claim (cf. the unfalsifiable-universal rule in `epistemic-calibration-auditor`).
 
 ### Step 2: Triage and Relevance Filtering
 For each paper, quickly answer:

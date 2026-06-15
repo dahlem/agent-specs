@@ -88,6 +88,8 @@ For each citation occurrence, you must document:
 - `tool`: Software or system
 - `ethical-legal`: Policy, ethics, or legal reference
 
+**Full-text verification backend.** When the Paperclip MCP tools are available and the cited work is in its corpus (arXiv / PMC / bioRxiv / medRxiv), verify the claim directly: `grep` the cited paper's full text for the asserted result, or `cat` the relevant section, and record the matched span as the evidence pointer. This upgrades the default "full text verification pending access" (see Edge Cases) into an actual claim-present / claim-absent verdict, and is the strongest signal for catching a misattributed or hallucinated citation. If the cited work is outside Paperclip's corpus (most journals, pure-math venues), fall back to the existing access methods and mark the pointer accordingly — absence from Paperclip is a coverage limit, never evidence the citation is wrong.
+
 **Evidence Pointer** (into the cited source):
 - Page number(s)
 - Section heading/number

@@ -42,6 +42,8 @@ Anchor only on the *task* and *metric* the paper targets. Pretend you have not s
    - A simple/uncontroversial baseline (linear, nearest-neighbor, random, uniform — whichever is conventional for the task).
    - At least one ablation-style internal baseline (the paper's method minus its key contribution) — this lives in the same logical slot as a comparison baseline.
 
+When the Paperclip MCP tools are available, ground this enumeration in real usage rather than memory: `search`/`sql` the task's literature for the datasets and baselines papers actually report, and `map` a few SOTA hits for their comparison tables. Paperclip is biomedical-first plus arXiv, so for tasks outside that corpus lean on the prior-art bundle; either way, a baseline you cannot surface in Paperclip is not thereby non-canonical.
+
 Output Pass 1 as a clean list with one-sentence justifications. Do not look at the paper's reported baselines yet.
 
 ### Pass 2: Reported Inventory
