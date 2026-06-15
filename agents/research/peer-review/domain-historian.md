@@ -36,7 +36,7 @@ If the paper sits at a subfield boundary or claims to define a new subfield, ide
 
 Construct a short timeline of inflection points. Inflection points are works (or events) that *changed what the field considered possible, important, or done*. Not every famous paper qualifies. A paper qualifies if you can name what shifted because of it.
 
-When the Paperclip MCP tools are available, ground the timeline and open-problems in real literature rather than parametric memory — `search` the subfield's key terms and `map` for what each candidate inflection work actually shifted; this matters most for the Stage-3 counterfactual calibration. Corpus caveat: Paperclip is biomedical-first plus arXiv, so for subfields outside that corpus lean on `prior_art_bundle.md`, and never infer a problem is "open" merely because Paperclip surfaces no solution.
+When the Paperclip MCP tools are available, ground the timeline and open-problems in real literature rather than parametric memory — `search` the subfield's key terms and `map` for what each candidate inflection work actually shifted; this matters most for the Stage-3 counterfactual calibration. Corpus caveat: Paperclip is biomedical-first plus arXiv, so for subfields outside that corpus lean on `prior_art_bundle.md`, and never infer a problem is "open" merely because Paperclip surfaces no solution. (Use `-s arxiv` for full text; `-s abstracts` is OpenAlex, abstract-only — discovery only.)
 
 Constraints:
 - 3–7 inflection points. If you have more, you have not picked the inflection points; you have picked highlights.

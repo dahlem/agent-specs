@@ -75,7 +75,7 @@ When `missing_from_paper: true`, you must record a `missing_severity`:
 
 For each role bucket, follow this protocol:
 
-**Backend.** When the Paperclip MCP tools are available, prefer them for retrieval — `search` per bucket (each returns a `results_id`), `grep` for missed terms inside a result set, and `map`/`reduce` to pull role-relevant facts across *full text*; fall back to the web sources below when absent. Paperclip is biomedical-first (PMC, bioRxiv, medRxiv) plus arXiv (3M full-text) and OpenAlex abstracts (150M) and does not cover every venue — so a bucket that comes up empty in Paperclip is *not* evidence the work does not exist. Confirm against the web sources before setting a `missing_from_paper` flag or declaring a bucket exhausted.
+**Backend.** When the Paperclip MCP tools are available, prefer them for retrieval — `search` per bucket (each returns a `results_id`), `grep` for missed terms inside a result set, and `map`/`reduce` to pull role-relevant facts across *full text*; fall back to the web sources below when absent. Paperclip is biomedical-first (PMC, bioRxiv, medRxiv) plus arXiv (3M full-text) and OpenAlex abstracts (150M) and does not cover every venue — so a bucket that comes up empty in Paperclip is *not* evidence the work does not exist. Confirm against the web sources before setting a `missing_from_paper` flag or declaring a bucket exhausted. For any hit you will `map` or read, retrieve it via `-s arxiv` (full text); `-s abstracts` (OpenAlex) is discovery-only and abstract-only.
 
 1. **Seed terms**: extract from `compressed_paper.md` — task name, method-family terms, dataset names, baseline names, theorem keywords if theory-heavy.
 2. **Priority sources**:
