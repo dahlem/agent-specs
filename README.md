@@ -6,7 +6,7 @@ Specialized Claude Code agents for rigorous AI research workflows, designed to s
 
 This repository contains agent specifications organized into six categories:
 
-1. **Research Workflow** — A structured 10-phase methodology for taking research from problem framing through submission, plus cross-phase tools.
+1. **Research Workflow** — A structured 10-phase methodology for taking research from problem framing through submission, plus cross-phase tools including session memory and literature synthesis.
 2. **Research Shaping** — A diverge-then-converge layer that turns a body of work into the one paper it should become; an expanded entry point into phase 06.
 3. **Peer Review** — A coordinated, cutoff-bounded review pipeline that produces structured artifacts for the AI paper reviewer to ground its verdicts in. The **Proof Dissection Track** is a parallel sub-track for *reading* a theoretical paper rather than reviewing it (cartography → personalized LaTeX/memoir lecture note).
 4. **Math Brainstorming** — An iterative ecosystem of agents for mathematical problem exploration, construction, and synthesis.
@@ -22,7 +22,7 @@ A phase succeeds when a hostile reviewer cannot identify a fatal flaw and a bene
 
 ## Agent Index
 
-All 38 agents at a glance. Click an agent name to jump to its detailed description.
+All 40 agents at a glance. Click an agent name to jump to its detailed description.
 
 ### Research Workflow — Phases (10)
 
@@ -39,13 +39,15 @@ All 38 agents at a glance. Click an agent name to jump to its detailed descripti
 | [`09-research-validation-qa`](#phase-09--research-validation-qa) | Hostile-third-party reproducibility, methodology, and ethics audit |
 | [`10-scholarly-submission-strategist`](#phase-10--scholarly-submission-strategist) | Venue selection, formatting, archival release, reviewer-response matrix |
 
-### Research Workflow — Cross-Phase Tools (4)
+### Research Workflow — Cross-Phase Tools (6)
 
 | Agent | Purpose |
 |---|---|
 | [`ai-paper-reviewer`](#ai-paper-reviewer) | Dual benevolent/hostile pre-submission review across all ten phases |
 | [`arxiv-gap-scanner`](#arxiv-gap-scanner) | Full-pipeline literature-gap scan against a body of work over an arxiv window |
 | [`citation-provenance-auditor`](#citation-provenance-auditor) | Citation gate: PID + BibTeX + claim-mapping + canonicality, severity-tiered |
+| [`literature-synthesis-auditor`](#literature-synthesis-auditor) | Agreement/conflict matrices across sources; consensus extraction; methodological divergence |
+| [`research-session-memory`](#research-session-memory) | Indexed cross-session memory: concepts, approaches, negative results, open questions |
 | [`scientific-narrative-architect`](#scientific-narrative-architect) | Multi-scale narrative architecture across audiences (Nature/Physics/AI conf/Blog) |
 
 ### Research Shaping (3)
@@ -194,6 +196,8 @@ agent-specs/
 │   │   │   ├── ai-paper-reviewer.md
 │   │   │   ├── arxiv-gap-scanner.md
 │   │   │   ├── citation-provenance-auditor.md
+│   │   │   ├── literature-synthesis-auditor.md
+│   │   │   ├── research-session-memory.md
 │   │   │   └── scientific-narrative-architect.md
 │   │   ├── peer-review/                         # Coordinated review pipeline (artifacts → ai-paper-reviewer)
 │   │   │   ├── paper-compressor.md
@@ -288,6 +292,14 @@ Orchestrates a seven-phase literature-gap scan against a body of work — paper 
 ### Citation Provenance Auditor
 
 Performs comprehensive citation audits: establishes persistent identifiers (DOI, arXiv, ISBN), verifies BibTeX entries against authoritative sources (Crossref, arXiv, PubMed, DBLP) with field-by-field diffs, maps every citation occurrence to specific claims with evidence pointers and support strength, and assesses canonicality (peer-reviewed over preprint, primary over secondary). Generates provenance files per citation key and TeX annotation comments.
+
+### Literature Synthesis Auditor
+
+Analyzes collections of papers to identify consensus, conflicts, and gaps. Builds agreement/conflict matrices showing where sources align vs. diverge on specific claims, performs methodological divergence analysis to diagnose why different papers report different results (datasets, metrics, assumptions), flags conflicting claims with severity levels (critical/high/medium/low), and produces synthesis recommendations for related work sections and baseline comparisons. Companion to `literature-expansion` (which finds sources) and `citation-provenance-auditor` (which verifies citations) — this agent synthesizes what the sources collectively say. Detects anti-patterns including circular citation chains, citation drift, scope elision, and definitional inconsistencies. Outputs include claim inventory, agreement matrices, conflict analyses with probable causes, consensus positions with citation recommendations, and gap maps.
+
+### Research Session Memory
+
+Builds, queries, and maintains indexed knowledge structures across research sessions. Organizes memory into five indexes: conceptual understanding (evolving definitions and cross-references), approaches and strategies (both successful and failed, with failure modes), negative results (failed experiments and disproven conjectures as first-class outputs), open questions (unresolved threads with blockers and priorities), and cross-session synthesis (milestone integrations). Each memory includes session provenance, cross-links to related memories, and lifecycle management (active/superseded/archived). Enables future sessions to build on prior understanding rather than rediscovering findings, prevents re-attempting failed approaches, and maintains investigative trail continuity. Distinct from code-level memory, citation provenance, and evidence provenance — this captures the conceptual understanding and research trajectory across the long arc of a project.
 
 ### Scientific Narrative Architect
 
