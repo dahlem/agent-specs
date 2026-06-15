@@ -105,6 +105,181 @@ All 40 agents at a glance. Click an agent name to jump to its detailed descripti
 | [`lean-proof-chain-validator`](#lean-proof-chain-validator) | Six-phase research-grade Lean proof validation; PASS/CONDITIONAL/FAIL verdict |
 | [`lean-proof-frontier-analyzer`](#lean-proof-frontier-analyzer) | Breadth-first dependency DAG; novelty classification; axiom-boundary documentation |
 
+## How to Use These Agents
+
+### Natural Language vs. Explicit Invocation
+
+**Design intent**: Describe your goal naturally, and Claude should invoke the right agent proactively.
+
+**Examples that trigger automatic invocation:**
+
+```
+You: "Review this paper for NeurIPS submission"
+→ Claude invokes: ai-paper-reviewer
+
+You: "Check if they compared against the right baselines"
+→ Claude invokes: paper-compressor → baseline-scout
+
+You: "These three papers claim different convergence rates - what's going on?"
+→ Claude invokes: literature-synthesis-auditor
+
+You: "Help me understand the proofs in this theoretical paper"
+→ Claude invokes: proof-dissection-orchestrator
+```
+
+**When to be explicit:**
+
+- **Complex workflows**: "Run the full peer-review pipeline on this paper"
+- **Ambiguous requests**: "Build an agreement/conflict matrix for these five papers" (clearer than "analyze the literature")
+- **Specific features**: "Use proof-dissection-orchestrator with tutor_mode: interactive"
+- **When you know the agent**: "Use epistemic-calibration-auditor on this draft"
+
+**Best practice**: Start natural, get specific if needed.
+
+### Issue → Agent Quick Reference
+
+Map your specific issue to the right agent:
+
+| When You Notice... | Agent to Use | What It Does |
+|-------------------|--------------|--------------|
+| **Missing or wrong baselines** | `baseline-scout` | Independently re-derives expected baselines; flags gaps with severity |
+| **Conflicting claims across papers** | `literature-synthesis-auditor` | Builds agreement/conflict matrices; diagnoses methodological divergences |
+| **Claims stronger than evidence** | `epistemic-calibration-auditor` | Matches language to evidence strength; devil's advocate on claims |
+| **Can't trace where numbers came from** | `evidence-provenance-auditor` | Traces figures/tables/numbers → scripts → data; checks chain integrity |
+| **Citation seems wrong or unsupported** | `citation-provenance-auditor` | Verifies DOIs; maps claims to evidence in cited works; checks canonicality |
+| **Theorem proof feels hand-wavy** | `math-review-router` → math agents | Routes to reframer/perturber/constructor/strategist/obstructor |
+| **Unclear if contribution is significant** | `domain-historian` | Subfield-specific significance rubric; at-time vs. counterfactual verdict |
+| **Prose is confusing or unclear** | `narrative-clarity-auditor` | Register-calibrated clarity discipline; flags padding and confusion points |
+| **Missing key related work** | `literature-expansion` | Cutoff-bounded prior-art bundle; flags missing citations with severity |
+| **Theorem presentation is opaque** | `theorem-presentation-auditor` | Checks rhythm (statement→intuition→operational→consequence); proof architecture |
+| **Want comprehensive review** | `ai-paper-reviewer` (pipeline mode) | Dual benevolent/hostile lens across all ten research phases |
+| **Want to learn the math deeply** | `proof-dissection-orchestrator` | Produces personalized lecture notes or interactive walkthrough |
+
+### Review Workflow: From Issues to Agents
+
+**Scenario**: You're reviewing a paper and notice multiple issues.
+
+**Natural language approach** (recommended first):
+
+```
+You: "I'm reviewing this paper. Here are my concerns:
+1. Missing baseline comparisons to Method X
+2. Conflicting claims about convergence rates in the related work  
+3. Figure 2 shows 15% improvement but I can't find the data trail
+4. The main theorem's proof sketch is too compressed"
+```
+
+Claude should recognize and invoke:
+- Issue 1 → `baseline-scout`
+- Issue 2 → `literature-synthesis-auditor`
+- Issue 3 → `evidence-provenance-auditor`
+- Issue 4 → `math-review-router` or `theorem-presentation-auditor`
+
+**Explicit workflow** (when you know what you want):
+
+```bash
+# Step 1: Get structured claims
+Use the paper-compressor agent on paper.pdf
+
+# Step 2: Check baselines
+Use the baseline-scout agent on compressed_paper.md
+
+# Step 3: Synthesize literature conflicts
+Use the literature-expansion agent on compressed_paper.md
+Use the literature-synthesis-auditor agent on prior_art_bundle.md with synthesis_scope: claim-level
+
+# Step 4: Check evidence provenance
+Use the evidence-provenance-auditor agent on /path/to/paper-repo with audit_target: paper
+
+# Step 5: Check theorem presentation
+Use the theorem-presentation-auditor agent on paper.pdf with register: theoretical-paper
+
+# Step 6: Get comprehensive verdict
+Use the ai-paper-reviewer agent on paper.pdf with mode: pipeline
+```
+
+### Common Task Patterns
+
+| I Want To... | Start With... | Notes |
+|--------------|---------------|-------|
+| **Review paper before submission** | `ai-paper-reviewer` (pipeline or standalone) | Pipeline mode runs upstream agents first for grounded verdicts |
+| **Understand a theoretical paper** | `proof-dissection-orchestrator` | Produces personalized lecture notes tailored to your background |
+| **Check specific claim is supported** | `claim-interrogator` or `epistemic-calibration-auditor` | Claim-interrogator for systematic per-claim audit; epistemic for devil's advocate |
+| **Verify baseline comparisons** | `baseline-scout` | Independently derives what should be there; no anchoring bias |
+| **Resolve conflicting sources** | `literature-synthesis-auditor` | Agreement/conflict matrices with methodological divergence analysis |
+| **Check reproducibility** | `evidence-provenance-auditor` | Traces every number/figure/table to origin |
+| **Assess significance** | `domain-historian` | Field-calibrated rubric; prevents anachronistic judgments |
+| **Audit theorem proofs** | `theorem-presentation-auditor` + `math-review-router` | Presentation auditor for structure; router for soundness |
+| **Write a paper from scratch** | Follow Workflow A (10-phase pipeline) | Or start with specific phase if framing is clear |
+| **Turn body of work into paper** | `research-shaping-orchestrator` | Diverges over candidates, then converges on one red thread |
+| **Remember findings across sessions** | `research-session-memory` | Index concepts, approaches, negative results, open questions |
+| **Fix draft clarity issues** | `narrative-clarity-auditor` | Register-calibrated (blog/paper/lecture-note/etc.) |
+| **Catch overclaiming** | `epistemic-calibration-auditor` | Language-to-evidence matching + devil's advocate |
+
+### Multi-Agent Orchestration
+
+Some agents **orchestrate** others automatically:
+
+- **`ai-paper-reviewer`** (pipeline mode) → consumes artifacts from `paper-compressor`, `literature-expansion`, `baseline-scout`, `domain-historian`, `claim-interrogator`, `math-review-router`
+- **`research-shaping-orchestrator`** → sequences `research-divergence-cartographer` → `red-thread-selector` → `scientific-narrative-architect` (sculpt) → `06-argument-architect`
+- **`proof-dissection-orchestrator`** → sequences `paper-compressor` → `proof-chain-cartographer` → `math-review-router` (optional) → `proof-tutor`
+- **`math-review-router`** → delegates to `reframer`, `perturber`, `math-constructor`, `math-strategist`, `obstructor`
+
+When you invoke an orchestrator, the sub-agents run automatically — you don't need to call them individually.
+
+### Cross-Session Continuity
+
+Use **`research-session-memory`** for long-running projects:
+
+```
+# After completing a research phase:
+Use research-session-memory to index: [findings/approaches/negative results]
+
+# Before starting new work:
+Query research-session-memory for: "What have we learned about [topic]?"
+
+# At milestones:
+Use research-session-memory to synthesize across sessions: [date range or topic]
+```
+
+This prevents:
+- Re-attempting failed approaches
+- Rediscovering prior findings  
+- Losing conceptual continuity across sessions
+
+### Decision Tree: Which Agent?
+
+```
+What are you doing?
+│
+├─ Writing a new paper
+│  ├─ From idea → Follow Workflow A (10-phase pipeline)
+│  └─ From body of work → research-shaping-orchestrator
+│
+├─ Reviewing someone's paper
+│  ├─ Comprehensive review → ai-paper-reviewer (pipeline mode)
+│  ├─ Specific issues → See "Issue → Agent Quick Reference" above
+│  └─ Understanding the math → proof-dissection-orchestrator
+│
+├─ Auditing your own draft
+│  ├─ Overall quality → Run all 5 writing auditors
+│  ├─ Clarity issues → narrative-clarity-auditor
+│  ├─ Overclaiming → epistemic-calibration-auditor
+│  ├─ Missing provenance → evidence-provenance-auditor + citation-provenance-auditor
+│  └─ Theorem presentation → theorem-presentation-auditor
+│
+├─ Exploring a math problem
+│  └─ Invoke math-brainstorming agents (or research-director to orchestrate)
+│
+├─ Managing long-running research
+│  └─ research-session-memory (index, query, synthesize)
+│
+└─ Synthesizing literature
+   ├─ Finding sources → literature-expansion or arxiv-gap-scanner
+   ├─ Understanding conflicts → literature-synthesis-auditor
+   └─ Verifying citations → citation-provenance-auditor
+```
+
 ## Common Workflows
 
 End-to-end usage patterns. Each workflow names the agents in invocation order; click any agent name above to jump to its detailed spec.
