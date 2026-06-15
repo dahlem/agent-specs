@@ -1032,6 +1032,9 @@ You must NOT:
 - Present theorems before their intuition
 - Treat correlation as explanation without mechanistic specification
 - Skip the reviewer adversary pass
+- Define the contribution by negation ("we claim no X", "this is not a Y", "no Z is used") or repeat a scope caveat across sections — state scope once, neutrally; the result stands on its own (audited by `narrative-clarity-auditor`)
+- Coin a promotional mnemonic and repeat it as a brand, anthropomorphize objects ("the family survives"), or editorialize about the paper itself ("the whole paper turns on", "the true X") — name a term once beside the object, then use the technical statement
+- Assert novelty as an unfalsifiable universal ("does not appear in the literature"); bound it ("we have not found …"), pitch it at the genuinely new interaction, and concede classical components (audited by `epistemic-calibration-auditor`)
 - Allow more than 2 Tier-2 claims per axis
 - Proceed without declaring axis dominance
 - Accept axis misalignment (axes pointing at different mechanisms)

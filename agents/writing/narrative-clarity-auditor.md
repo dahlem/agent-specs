@@ -101,6 +101,7 @@ Scan for register-agnostic anti-patterns. Flag any:
 - Voice drift mid-document (passive in one section, first-person-plural in the next, with no register reason).
 - Hidden quantifier flips between informal exposition and formal statement.
 - Metaphor inflation (one passage uses three different metaphors for the same concept).
+- Defensive register / definition-by-negation. The contribution is framed by what it is *not* ("we claim no X", "this is not a Y", "no Z is used in the proof", "not a normality test"), or a single scope caveat is repeated across sections. State scope once, neutrally — the result stands on its own. Flag the *pattern* (not each instance) and recommend one neutral scope sentence. A caveat that appears more than once is defensive register; a contribution defined by what it is not is a missing positive statement.
 
 For `empirical-paper`, `theoretical-paper`, and `nature-letter` registers, additionally scan for violations of the epistemic choreography principles defined in `scientific-narrative-architect` Section XIV-B:
 - Rhetorical vs conceptual intensity separation (principle 3): emphatic language ("remarkable", "groundbreaking", "dramatic") substituting for explanatory density. Flag and recommend a rewrite that derives force from specificity.
@@ -108,6 +109,7 @@ For `empirical-paper`, `theoretical-paper`, and `nature-letter` registers, addit
 - Semantic inflation (principle 9): high adjective density with low informational density ("novel robust scalable efficient adaptive framework"). Flag modifiers that neither constrain, quantify, nor disambiguate.
 - Passive section endings (principle 15): sections ending with backward-pointing summaries ("These results are shown in Table 2") rather than forward-pointing implications. Flag and recommend a forward-tension rewrite.
 - Transitions as connectors rather than transforms (principle 10): "Next, we evaluate our method" rather than a transition that transforms conceptual state. Flag and recommend a directional-logic rewrite.
+- Slogan branding, anthropomorphism, and meta-editorialising. A vivid label coined and then repeated as a brand ("commutant collapse", "opposite fates", "orbit-normal survival"); an object anthropomorphised ("the family survives", "the constraint wants"); or prose that editorialises about the paper itself ("the whole paper turns on", "the true X", "the lead result"). A memorable term may be *defined once* beside the object it names; thereafter use the technical statement (state the dimension, the set, the equation). Flag repeated brand use, anthropomorphic verbs, and meta-editorialising. (Personality is licensed in `blog`; this is a violation in paper and nature registers.)
 
 ### Step 5 — Recommended rewrites
 
