@@ -22,7 +22,7 @@ A phase succeeds when a hostile reviewer cannot identify a fatal flaw and a bene
 
 ## Agent Index
 
-All 40 agents at a glance. Click an agent name to jump to its detailed description.
+All 41 agents at a glance. Click an agent name to jump to its detailed description.
 
 ### Research Workflow — Phases (10)
 
@@ -98,12 +98,13 @@ All 40 agents at a glance. Click an agent name to jump to its detailed descripti
 | [`citation-provenance-auditor`](#citation-provenance-auditor) | *That cited works are real, canonical, and support the cited claim* (gate-enforced) |
 | [`theorem-presentation-auditor`](#theorem-presentation-auditor) | *That every theorem has rhythm and every proof has reviewer-skimmable architecture* |
 
-### Formal Verification (2)
+### Formal Verification (3)
 
 | Agent | Purpose |
 |---|---|
 | [`lean-proof-chain-validator`](#lean-proof-chain-validator) | Six-phase research-grade Lean proof validation; PASS/CONDITIONAL/FAIL verdict |
 | [`lean-proof-frontier-analyzer`](#lean-proof-frontier-analyzer) | Breadth-first dependency DAG; novelty classification; axiom-boundary documentation |
+| [`lean-library-design-auditor`](#lean-library-design-auditor) | Post-compile reusability audit — definitions, theorem generality, API, organization; DESIGN-READY / NEEDS-REWORK / NEEDS-DESIGN-DECISION |
 
 ## How to Use These Agents
 
@@ -403,7 +404,8 @@ agent-specs/
 │   └── formal-verification/
 │       └── lean/                                # Lean 4 proof tools
 │           ├── lean-proof-chain-validator.md
-│           └── lean-proof-frontier-analyzer.md
+│           ├── lean-proof-frontier-analyzer.md
+│           └── lean-library-design-auditor.md
 └── scripts/
     └── sync-agents.sh                           # Symlink agents into ~/.claude/agents/
 ```
@@ -931,7 +933,11 @@ Validates Lean proof chains for research-grade correctness across six phases: sc
 
 ### Lean Proof Frontier Analyzer
 
-Performs breadth-first proof dependency analysis on Lean 4 formalizations. Constructs complete dependency DAGs by recursively expanding until every leaf is classified as `mathlib`, `assumed`, `novel`, or `infrastructure`. Assigns novelty levels (0-5) along five axes (conceptual, theorem, formalization, structural, methodological). Documents axiom boundaries with precise Lean statements and source citations. Generates frontier YAML files and provenance markdown with dependency summaries.
+Performs breadth-first proof dependency analysis on Lean 4 formalizations. Constructs complete dependency DAGs by recursively expanding until every leaf is classified as `mathlib`, `assumed`, `novel`, or `infrastructure`. Assigns novelty levels (0-5) along five axes (conceptual, theorem, formalization, structural, methodological). Documents axiom boundaries with precise Lean statements and source citations. Generates frontier YAML files and provenance markdown with dependency summaries. Emits `design_flags` (redundant renames, `def`-not-`abbrev`, trivial aliases, duplicate objects) that feed the library-design auditor.
+
+### Lean Library-Design Auditor
+
+Audits a *compiled, sorry-free* Lean development for reusability rather than correctness — the orthogonal question of whether the result is a library contribution a future formalizer can build on without transport pain. Reviews the four surfaces where autoformalization reliably fails: **definitions** (redundant renames, `def`-where-`abbrev`-transports, hyper-specific `Equiv`s that should be inlined `ofBijective`, use-case naming, duplicates), **theorem-statement generality** (hypotheses stronger than the proof uses, conclusions special-cased for convenience), **API surface** (downstream code unfolding definitions instead of routing through lemmas; ad-hoc lemma piles with no principled interface), and **file/namespace organization** (bottom-up import graph, descriptive names). Enforces the proof-cost rule (`maxHeartbeats` ≤ 200000 — decompose into named sublemmas rather than inflating the budget) and flags escape-hatch language. Separates findings into an agent-actionable completion-predicate worklist and design decisions requiring human judgment, then issues a DESIGN-READY / NEEDS-REWORK / NEEDS-DESIGN-DECISION verdict. Premise: kernel acceptance is an incomplete evaluation target — closing sorries is not the hard part; choosing what objects should exist is.
 
 ## Installation
 

@@ -71,6 +71,17 @@ Assume/Import when:
 - High engineering cost, low insight
 - Not core to the contribution
 
+### Definition-Quality Flags (feeds `lean-library-design-auditor`)
+
+The DAG and `#print` output expose definition-quality problems that are invisible to a pure novelty/infrastructure classification. Classifying a node as `infrastructure` says it is *not novel*; it does not say it is *well-designed*. While expanding the frontier, additionally flag any `novel`/`infrastructure` definition exhibiting these smells, and record them for the design auditor:
+
+- **`redundant-rename`** — the node is definitionally equal to an existing `mathlib` (or in-project) node under a use-case-specific name.
+- **`def-not-abbrev`** — a `def` set equal to a library object where `abbrev`/`@[reducible]` is needed for that object's API to transport.
+- **`trivial-alias`** / **`superfluous-wrapper`** — the node adds a name over an expression already directly usable, with no conceptual content.
+- **`duplicate-object`** — two nodes in the DAG are the same object under different names.
+
+These are *not* correctness or novelty findings — do not let a smell change a node's `status`. Emit them as `design_flags` so the `lean-library-design-auditor` can turn each into a completion predicate. When unsure whether a node is defeq to an existing object, flag it as `design_flag: suspected-redundant-rename (requires investigation)` rather than guessing.
+
 ## Output Artifacts
 
 ### Frontier YAML File
@@ -89,6 +100,7 @@ frontier:
     location: file:line
     justification: "explanation if assumed"
     depends_on: [...]
+    design_flags: [redundant-rename | def-not-abbrev | trivial-alias | superfluous-wrapper | duplicate-object]  # optional; feeds lean-library-design-auditor
 ```
 
 ### Provenance Markdown
