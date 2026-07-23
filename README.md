@@ -22,7 +22,7 @@ A phase succeeds when a hostile reviewer cannot identify a fatal flaw and a bene
 
 ## Agent Index
 
-All 41 agents at a glance. Click an agent name to jump to its detailed description.
+All 42 agents at a glance. Click an agent name to jump to its detailed description.
 
 ### Research Workflow — Phases (10)
 
@@ -39,7 +39,7 @@ All 41 agents at a glance. Click an agent name to jump to its detailed descripti
 | [`09-research-validation-qa`](#phase-09--research-validation-qa) | Hostile-third-party reproducibility, methodology, and ethics audit |
 | [`10-scholarly-submission-strategist`](#phase-10--scholarly-submission-strategist) | Venue selection, formatting, archival release, reviewer-response matrix |
 
-### Research Workflow — Cross-Phase Tools (6)
+### Research Workflow — Cross-Phase Tools (7)
 
 | Agent | Purpose |
 |---|---|
@@ -49,6 +49,7 @@ All 41 agents at a glance. Click an agent name to jump to its detailed descripti
 | [`literature-synthesis-auditor`](#literature-synthesis-auditor) | Agreement/conflict matrices across sources; consensus extraction; methodological divergence |
 | [`research-session-memory`](#research-session-memory) | Indexed cross-session memory: concepts, approaches, negative results, open questions |
 | [`scientific-narrative-architect`](#scientific-narrative-architect) | Multi-scale narrative architecture across audiences (Nature/Physics/AI conf/Blog) |
+| [`venue-archetype-distiller`](#venue-archetype-distiller) | Reverse-engineer a venue's success recipe over a window into an archetype + scorecard |
 
 ### Research Shaping (3)
 
@@ -275,6 +276,10 @@ What are you doing?
 ├─ Managing long-running research
 │  └─ research-session-memory (index, query, synthesize)
 │
+├─ Targeting a venue
+│  ├─ What does a winning paper here look like? → venue-archetype-distiller
+│  └─ Where should I submit / formatting / rebuttal → 10-scholarly-submission-strategist
+│
 └─ Synthesizing literature
    ├─ Finding sources → literature-expansion or arxiv-gap-scanner
    ├─ Understanding conflicts → literature-synthesis-auditor
@@ -350,6 +355,17 @@ For any draft (paper, lecture note, blog post, tech report, status report). Run 
 
 A paper that passes all five is reproducible, defensible, honest about what it claims, and structured for the reviewer to triangulate at a glance.
 
+### Workflow F — Shape a paper to a target venue's success recipe
+
+For deciding *how* to shape (or where to send) a paper, using what actually succeeds at the venue.
+
+1. `venue-archetype-distiller` — profile the venue's high-performers in your subfield over a window (default 5y); emits `archetype.md` (the recipe) + `scorecard.md` (the rubric), and optionally `our_score.md` + `recipe_handoff.md`
+2. `scientific-narrative-architect` — load the archetype as its optional **ARCHETYPE** input and Draft/Restructure/Adapt/Sculpt the paper toward the recipe, surfacing any conflict with its own clarity/claim discipline
+3. `10-scholarly-submission-strategist` — if the distiller reveals the subfield is a poor fit for the venue, use its finding to reconsider the target
+4. `ai-paper-reviewer` — use `scorecard.md`'s must-pass gates as an additional pre-submission checklist
+
+Run step 1 once per candidate venue and diff the archetypes when choosing between venues.
+
 ## Repository Structure
 
 ```
@@ -374,7 +390,8 @@ agent-specs/
 │   │   │   ├── citation-provenance-auditor.md
 │   │   │   ├── literature-synthesis-auditor.md
 │   │   │   ├── research-session-memory.md
-│   │   │   └── scientific-narrative-architect.md
+│   │   │   ├── scientific-narrative-architect.md
+│   │   │   └── venue-archetype-distiller.md
 │   │   ├── peer-review/                         # Coordinated review pipeline (artifacts → ai-paper-reviewer)
 │   │   │   ├── paper-compressor.md
 │   │   │   ├── literature-expansion.md
@@ -480,7 +497,11 @@ Builds, queries, and maintains indexed knowledge structures across research sess
 
 ### Scientific Narrative Architect
 
-Constructs scientific writing achieving causal intelligibility at every scale, optimized for mathematically oriented ML venues (NeurIPS theory, COLT, AISTATS, JMLR) as well as Nature/Science and physics/math journals. Beyond clarity, enforces **scientific strategy** through three interlocking frameworks: a **three-tier claim architecture** (core/supporting/peripheral) with explicit scope containment; the **Three Axes of Contribution** model (Theory/Method/Evaluation) requiring axis dominance declaration, alignment verification, and venue-specific coverage; and **Single Mechanism Architecture** ensuring all results derive from one central mechanism (structural principle + mathematical representation + observable consequences). Also enforces narrative tension, theorem–empirical alignment, contribution compression (≤ 5 named objects), figure architecture (four roles), a three-layer reading model, reviewer adversary simulation, and Feynman-style clarity at every scale.
+Constructs scientific writing achieving causal intelligibility at every scale, optimized for mathematically oriented ML venues (NeurIPS theory, COLT, AISTATS, JMLR) as well as Nature/Science and physics/math journals. Beyond clarity, enforces **scientific strategy** through three interlocking frameworks: a **three-tier claim architecture** (core/supporting/peripheral) with explicit scope containment; the **Three Axes of Contribution** model (Theory/Method/Evaluation) requiring axis dominance declaration, alignment verification, and venue-specific coverage; and **Single Mechanism Architecture** ensuring all results derive from one central mechanism (structural principle + mathematical representation + observable consequences). Also enforces narrative tension, theorem–empirical alignment, contribution compression (≤ 5 named objects), figure architecture (four roles), a three-layer reading model, reviewer adversary simulation, and Feynman-style clarity at every scale. Accepts an optional **ARCHETYPE** input (`archetype.md` / `recipe_handoff.md` from `venue-archetype-distiller`) as venue-calibrated guidance layered on top of its rules, surfacing conflicts to the user rather than silently overriding its own clarity and claim discipline.
+
+### Venue Archetype Distiller
+
+Reverse-engineers what a *successful* paper looks like at a specific venue over a time window (default 5 years) and packages it as a reusable recipe. Enumerates the venue's papers in the window filtered to the user's subfield, enriches them with age- and field-normalized impact metrics (OpenAlex `citation_normalized_percentile` / `fwci`, Semantic Scholar `influentialCitationCount`, optional altmetrics) blended with venue accolades (oral/spotlight/best-paper/test-of-time), and selects top exemplars alongside a same-venue **baseline-contrast sample**. Downloads and structurally dissects each exemplar (via `paper-compressor` / `07-paper-structure-architect` subagents) into a per-paper fingerprint — title pattern, abstract shape, opening move, claim architecture, section rhythm, evidence portfolio, figure strategy, positioning, register. Distills two artifacts: `archetype.md` (invariants separated from variance bands and anti-patterns, each invariant carrying its exemplar-vs-baseline lift, with mandatory survivorship/causation caveats) and `scorecard.md` (a weighted, self-assessable rubric with must-pass gates). Optionally scores the user's draft and emits a `recipe_handoff.md` for `scientific-narrative-architect`. Works for AI conferences and journals. All metric fetching and PDF pulling is main-thread (subagents are sandboxed from network); metric honesty is absolute (`unknown` over fabrication) and cross-cohort raw-count comparison is forbidden. Distinct from `arxiv-gap-scanner` (scans what *threatens* a program), `02-literature-discovery-mapper` (positions *your* work), and `domain-historian` (calibrates significance of *one* paper under review) — this agent profiles the venue's *winners* to produce a construction template.
 
 ## Research Shaping
 

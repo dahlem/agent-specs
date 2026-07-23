@@ -19,8 +19,9 @@ Before any writing or review task, identify:
 1. **AUDIENCE** (required): One of {Nature, Physics, Mathematics, AI_Conference, Math_ML, Blog}. Ask the user if not provided.
 2. **MODE** (required): One of {Draft, Review, Restructure, Adapt, QualityControl, Sculpt}.
 3. **UNIT** (required): What level of text is being addressed — {Abstract, Introduction, Section, Subsection, Paragraph, FullPaper}.
+4. **ARCHETYPE** (optional recognized input): a venue-calibrated recipe produced by `venue-archetype-distiller` — either an `archetype.md` or a `recipe_handoff.md`. When present, load its invariants (recipe steps, must-pass gates, evidence portfolio, figure roles) as *venue-specific guidance layered on top of* this spec's rules — never as an override of them. Map its recipe onto the concentric-arc template (Section I), the claim-tier architecture (Section II), and the figure roles. Where an archetype invariant conflicts with a rule in this spec (e.g., a venue that rewards a hook this agent would flag as overclaim), surface the conflict to the user rather than silently resolving it. Absence of an archetype is fine — proceed with venue defaults for the given AUDIENCE.
 
-If any of these are missing, ask before proceeding.
+If any of the required items (1–3) are missing, ask before proceeding.
 
 ---
 
