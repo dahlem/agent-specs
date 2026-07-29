@@ -45,7 +45,7 @@ The order requirement is on the *content* (theorem first if formal-first form; i
 
 ## Part B — Modular Proof Architecture
 
-Every theorem with a non-trivial proof must have a modular architecture composed of four layers:
+Every theorem with a non-trivial proof must have a modular architecture composed of four layers, plus a consistency check between the last layer and the prose:
 
 1. **Proof sketch in main text.** Immediately after the theorem rhythm (or at the start of a "Proof Strategy" subsection), a sketch that:
    - Names the proof technique explicitly (`induction on n`, `contradiction`, `probabilistic method`, `spectral`, `compactness`, `extremal`, `algebraic`, `topological`, `reduction to [known result]`, etc.)
@@ -65,6 +65,10 @@ Every theorem with a non-trivial proof must have a modular architecture composed
    - `[bookkeeping]` — algebraic manipulation, change of variables, simplification
 
    The discipline is satisfied by either (a) explicit inline tags `[L]`, `[T]`, `[B]`; (b) macros (`\loadbearing{…}`, `\technical{…}`, `\bookkeeping{…}`) with documented rendering; or (c) consistent typographic convention (e.g., bold for load-bearing, italic for technical, regular for bookkeeping) declared in the paper's conventions section. The auditor accepts any consistent system; absence of a system is the violation.
+
+5. **Expository weight tracks the tags.** The tags are a claim about where the difficulty lives; the prose must corroborate it. Measure the space each tagged step receives and check the ordering: `load-bearing` steps get more exposition than `technical`, which get more than `bookkeeping`. A `[load-bearing]` step dispatched in one clause while a `[bookkeeping]` change of variables runs half a page is a violation — either the tags are wrong or the writing is inverted, and the audit must say which it thinks.
+
+   This is the mechanical form of the friction principle: readers use expository weight to decide where to slow down, so uniform polish across all steps removes the signal. A proof in which every step reads as equally easy denies the reviewer the triangulation the whole discipline exists to provide. Where a step is hard, the prose should *feel* harder — that is not a defect to be edited out. Cross-reference: `narrative-clarity-auditor` Rule 7 enforces the same principle over prose generally; here it is checked against the author's own tags, which makes it decidable rather than a matter of taste.
 
 ### Why the discipline is reviewer-centric
 
@@ -101,6 +105,9 @@ The compact rhythm form is required: theorem block + one combined paragraph for 
 - **Appendix proof with no labels matching the sketch.** The reviewer cannot jump from the sketch's named load-bearing step to the appendix's elaboration. Cross-references must be bidirectional.
 - **Significance tagging applied inconsistently.** Some proofs use `[L]/[T]/[B]`, others use bold/italic, others use nothing. Pick one system and apply it everywhere.
 - **Significance tagging applied as decoration.** Every step labeled `[load-bearing]` defeats the purpose. The labels carry information only when they discriminate.
+- **Tags contradicted by the prose.** A step tagged `[load-bearing]` gets one clause; a `[bookkeeping]` step gets three paragraphs. The tagging and the writing disagree about where the difficulty is. Flag with both locations and state which you believe.
+- **Uniformly polished proof.** No expository gradient at all — every step written to the same finish and length, so the tags are the only differentiator and the prose carries no independent signal. Characteristic of machine-generated or heavily machine-edited proofs. The fix is to expand the load-bearing steps, not to trim the rest.
+- **"By a similar argument" over a load-bearing step.** Compression by analogy is fine over `[technical]` and `[bookkeeping]` steps; over a step the author has tagged `[load-bearing]` it is a contradiction in terms.
 
 ## Audit Protocol
 
@@ -129,6 +136,7 @@ For each theorem with a non-trivial proof:
 - **Key lemmas extracted**: non-trivial intermediate results named as lemmas with their own rhythm? (PASS or VIOLATION)
 - **Full proof location**: is the formal proof appendixed or clearly late-sectioned, with cross-references back to the sketch? (PASS or VIOLATION)
 - **Significance tagging system**: present and consistent? (PASS or VIOLATION)
+- **Expository weight vs. tags**: does space per step order as `load-bearing` ≥ `technical` ≥ `bookkeeping`? Record the hardest-tagged step, the space it receives, and a routine step for contrast. (PASS or VIOLATION — name whether the tags or the prose is wrong)
 
 ### Step 4 — Anti-pattern sweep
 
@@ -174,6 +182,7 @@ Emit `theorem_presentation_audit.md`:
 - Key lemmas extracted: ...
 - Full proof location: <appendix §X / inline / missing>
 - Significance tagging: <system used and consistency>
+- Expository weight vs. tags: <hardest-tagged step and its space | contrast step | which of tags/prose is wrong>
 
 ## Anti-pattern sweep
 - <pattern>: <occurrences quoted>

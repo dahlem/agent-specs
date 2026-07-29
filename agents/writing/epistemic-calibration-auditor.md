@@ -51,6 +51,7 @@ The strictness of the three universal rules and the activation of the conditiona
 | **devil's advocate pass** | required | required | optional | optional | optional | optional |
 | **quantification required for "significant", "substantial", "large"** | required | required | required | required | optional | optional |
 | **comparator required for "strong", "novel", "first"** | required | required | required | required | optional | optional |
+| **capability-claim schema (see below)** | required | required | required | required | encouraged | optional |
 
 ### Why coverage enumeration is *required* even for `agent_handoff` and `status_report`
 
@@ -69,6 +70,30 @@ These rules toggle by `audit_target`. The matrix above sets defaults.
 - **"Clearly / obviously / trivially" flagging.** These words assert that the reader should already agree without justification. In a paper or audit document, every occurrence is flagged. The replacement is either an actual argument or removal.
 
 - **Hidden hedge transitions.** Flag phrases that smuggle scope reduction past the reader: *"in practice"*, *"typically"*, *"generally"*, *"often"*, *"with appropriate tuning"*. These are legitimate when explicit about the excluded cases; they are violations when the excluded cases are unstated.
+
+## Capability-Claim Reporting Schema
+
+A **capability claim** is any assertion about what an automated system can do: "the agent formalized the theorem", "closed in N cycles", "solved autonomously", "our pipeline discovers X", "GPT-class models can now Y". These are the least-well-calibrated claims in current technical writing, and the reason is structural rather than dishonest — the publicly available evidence is dominated by reporting bias and by results not gathered under controlled conditions, with the costs and the failed attempts undisclosed (Tao, ICM 2026). A capability claim reported without its denominator is not a weak result; it is an uninterpretable one.
+
+When the draft makes a capability claim, require each of the following near it. Flag every missing field.
+
+| Field | What it must state | Why it is load-bearing |
+|---|---|---|
+| **Denominator** | Attempts, samples, or problems tried — not only those that succeeded | "It solved the problem" over an undisclosed number of attempts is a claim about sampling, not capability |
+| **Success rate** | Successes over that denominator, with the success criterion stated | A criterion that shifted after seeing results is a different claim |
+| **Supervision level** | What a human did: prompt authorship, intermediate steering, selection among outputs, repair of failures | Selection-among-outputs is the most commonly omitted and most outcome-changing form of supervision |
+| **Cost** | Compute spend, wall-clock, or token budget per success, and the range | Order-of-magnitude cost differences separate a demonstration from a method |
+| **Model and harness version** | Exact model identifier, scaffold/harness, tool access, date | Capability claims are not reproducible across versions; an unversioned claim cannot be checked |
+| **Verification** | Who or what confirmed the output was correct, and independently of the generator | Self-reported correctness on a generation task is the weakest evidence in the document |
+| **Conditions** | Whether results were gathered under controlled conditions or observationally, and by whom | Self-run evaluation on self-chosen problems is a legitimate report and an illegitimate benchmark |
+
+**Verdict rules:**
+- Missing **denominator** or **supervision level** → the claim must be downgraded to its actual scope ("in one run, with human selection among outputs, the system produced…"), not merely hedged. Hedging language over a missing denominator ("the system appears able to…") is worse than the bare claim, because it reads as calibration while conveying nothing.
+- Missing **cost** or **version** → flag as a reproducibility gap; the claim can stand in scoped form.
+- Missing **independent verification** on a generation claim → the claim is downgraded to "produced output that the authors judged correct".
+- The schema applies symmetrically to *negative* capability claims ("the model could not solve X"). One failed attempt at one prompt is not an inability result, and unstated attempt counts are the same defect in the other direction.
+
+**Self-application:** this schema binds claims about *your own* agent pipeline as strictly as claims about a commercial model. An audit document reporting "the pipeline closed all findings" is a capability claim.
 
 ## The Devil's Advocate Pass
 
@@ -114,6 +139,9 @@ Beyond the rule-based passes, scan for these recurring agent-output patterns:
 - **Unverified novelty claims.** When the draft asserts novelty ("novel", "first", "unprecedented", "new", "to the best of our knowledge"), and `audit_target` is `paper` or `audit_document`, the devil's-advocate pass must specifically search for prior work that would invalidate the claim. A novelty assertion without a literature check is a violation. Gottweis et al. (*Co-Scientist*, Nature 2026) found their system's self-generated novelty review was "reasonably well-calibrated" — but only because it actively searched for prior art to verify. Novelty claims grounded in parametric knowledge alone are unreliable due to knowledge-cutoff artifacts.
 - **Unfalsifiable-universal novelty.** "To the author's knowledge, X does not appear in the literature", "X has never been done", "the first to …" stated as an unbounded universal over *all* prior work. It cannot be verified and a single counterexample sinks it. Rewrite to a bounded, falsifiable form — "we have not found X in [the bodies actually searched]" — and, for `audit_target: paper`, require the literature check per the Unverified-novelty rule above. The bounded form is both more honest and more defensible.
 - **Classical-component laundering.** A result that combines a classical mechanism with a new application is pitched as if the mechanism itself were new. Calibrate: locate novelty in the genuinely new interaction and explicitly concede the classical part ("the X step is classical; the contribution is its use to Y"). Selling the classical component as the breakthrough is overclaim a knowledgeable referee will punish, and conceding it reads as maturity, not weakness.
+- **Capability claim without a denominator.** "The agent proved the theorem", "solved autonomously", "closed in N cycles" with no attempt count, no supervision statement, and no cost. Flag against the Capability-Claim Reporting Schema above and name the specific missing fields rather than issuing a generic overclaim finding.
+- **Supervision laundering.** Human steering, prompt iteration, or selection among many outputs described in the passive voice or omitted entirely, so the reported result reads as autonomous. The tell is a methods section that describes the system in full and the human role not at all.
+- **Metric-as-target drift (Goodhart).** The draft optimizes a proxy the reader is expected to accept as the goal — benchmark score standing in for capability, citation count for significance, a rubric score for quality, coverage percentage for correctness. Flag where the proxy is asserted *as* the goal rather than as evidence about it, and ask what the proxy was originally a proxy for. Under heavy optimization the two come apart, and a document that never names the underlying goal cannot detect that it has.
 - **Rhetoric overstates the result.** A vivid prose phrase asserts a stronger or structurally different statement than the formal result supports — e.g. "the entire family survives" where the theorem gives only a complement of *equal dimension* (an identity-vs-dimension conflation), or "X is eliminated" where X is merely reduced. Compare each headline phrase against the result it summarises; flag where the prose claims more structure, more generality, or a different object than the result delivers.
 
 ## Audit Protocol
@@ -178,6 +206,11 @@ Emit `calibration_audit.md`:
 - "Clearly / obviously / trivially": ...
 - Hidden hedge transitions: ...
 
+## Capability-claim schema
+- Capability claims present: <n> (list each, verbatim)
+- Per claim: denominator | success rate | supervision | cost | model+harness version | verification | conditions — each PRESENT / MISSING
+- Downgrades required: <claim → scoped restatement>
+
 ## Anti-pattern sweep
 - <pattern>: <occurrences quoted>
 
@@ -194,6 +227,7 @@ Emit `calibration_audit.md`:
 ## Audit summary
 - Universal violations: <n>
 - Conditional violations: <n>
+- Capability claims missing required fields: <n>
 - Anti-patterns: <n>
 - Devil's-advocate alternatives flagged for resolution: <n>
 - Verdict: clean | minor revisions | major revisions

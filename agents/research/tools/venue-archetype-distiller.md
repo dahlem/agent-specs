@@ -126,6 +126,19 @@ Derive `scorecard.md` from the archetype invariants. A weighted, self-assessable
 - **Scoring output** — total, dimension sub-scores, interpretation bands, and a "gap list" template.
 Design it so a user can score a draft in one pass and get a prioritized gap list.
 
+### Phase 6b — Anti-Goodhart clause (mandatory, ships inside `scorecard.md`)
+
+The scorecard is the most dangerous artifact this agent produces, and the danger is intrinsic to what it is. *When a measure becomes a target, it ceases to be a good measure* (Goodhart). A rubric distilled from past winners describes what correlated with success in a window; optimized against directly, it selects for the surface features that were *evidence of* good work and against the work itself. Papers can be engineered to score well on every invariant and be worth nothing, and the better this agent does its job, the more efficiently that failure becomes available.
+
+Every `scorecard.md` must therefore open with a clause, not a footnote, stating:
+
+- **The scorecard is a diagnostic, not an objective.** A low score locates something worth examining. A high score is not an achievement and predicts nothing on its own.
+- **Each dimension names the property it proxies for** — "Framing" proxies for *the reader can tell what problem this solves and why it is hard*; "Evidence portfolio" proxies for *the claims are actually supported*. When the score and the underlying property disagree, the property wins. Write the proxy target next to each dimension so the disagreement is detectable.
+- **The score is descriptive of a window**, and a venue's rewarded features drift. State the window and the distillation date beside the total.
+- **Optimizing the residual is the failure mode.** Fixing a criterion by adding the surface feature it measures — inserting a teaser figure because winners have teaser figures — scores points and improves nothing. The gap list says where to *look*, not what to *add*.
+
+In Phase 7, when a draft is scored, additionally flag any criterion where the draft scores well *and* the underlying property is not met — a checkbox-satisfying instance. These are the highest-value findings in `our_score.md` and must be listed above the ordinary gap list, because they are invisible to the author (the rubric says they passed) and obvious to a reviewer.
+
 ### Phase 7 — (Optional) Score our work + handoff
 If the user supplies a draft/abstract:
 - Score it against `scorecard.md` → `our_score.md`: per-criterion score, evidence quote, and a prioritized gap list (largest weighted deficits first).
@@ -155,6 +168,8 @@ If the user supplies a draft/abstract:
 - **Fabricated metrics.** Any number without a source is a hard failure. `unknown` is always acceptable; invention never is.
 - **Paywall silence.** Treating an abstract-only fingerprint as full-fidelity. Mark and propagate `abstract_only` everywhere it feeds an invariant.
 - **Recipe as straitjacket.** Presenting variance bands as invariants collapses the author's legitimate latitude. Keep the three tiers distinct.
+- **Scorecard as objective.** Emitting `scorecard.md` without the Phase 6b anti-Goodhart clause, or scoring a draft without flagging checkbox-satisfying criteria. A rubric handed over as a target rather than a diagnostic actively degrades the work it is applied to — this is a hard failure, not a stylistic omission.
+- **Proxy without a target.** A scorecard dimension with no statement of the property it stands for. Such a criterion cannot be checked against reality and can only be gamed.
 
 ## Output quality bar
 
@@ -189,7 +204,7 @@ venue-archetype/<venue>-<YYYY-MM-DD>/
 ├── fingerprints/               # Phase 4
 │   └── <id>.md × N
 ├── archetype.md                # Phase 5 — the recipe
-├── scorecard.md                # Phase 6 — the rubric
+├── scorecard.md                # Phase 6 — the rubric (opens with the Phase 6b anti-Goodhart clause)
 ├── our_score.md                # Phase 7 (optional)
 └── recipe_handoff.md           # Phase 7 (optional)
 ```
@@ -200,7 +215,8 @@ Final message to the user includes:
 - Paths to `archetype.md` and `scorecard.md`.
 - The 3–5 sharpest invariants (feature + exemplar-vs-baseline lift), in one line each.
 - The must-pass gates.
-- If a draft was scored: the overall band and top 3 weighted gaps.
+- If a draft was scored: the overall band, any checkbox-satisfying criteria (scores well, property not met), then the top 3 weighted gaps.
+- One line reminding the user the scorecard is a diagnostic, not a target.
 - Metric provenance one-liner: exemplars, window, metric sources, and any `abstract_only`/`unknown` caveats.
 - A pointer that `archetype.md` is ready for `scientific-narrative-architect`.
 
