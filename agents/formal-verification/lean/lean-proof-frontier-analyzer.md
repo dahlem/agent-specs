@@ -133,9 +133,18 @@ See: `proof_frontier/theorem_name.frontier.yaml`
 - New infrastructure lemmas: M
 - Reusable outside project: Yes/No
 
+## Story of the Proof
+- **Route taken**: the mechanism in one paragraph — why *this* proof and not another.
+- **Routes abandoned**: strategies tried and dropped, with the reason each failed (typeclass obstruction, missing mathlib API, the bound was not tight enough, ...).
+- **Where the difficulty lived**: which one or two steps carried the load, and why they were hard.
+- **What surprised us**: any place the formalization revealed something the informal argument had hidden — a missing hypothesis, a coercion that mattered, a case the paper proof glossed.
+- **Provenance of the work**: agent-generated / human-written / human-edited split; harness and model version; attempts to success; cost, if measured.
+
 ## Why This Matters
 (Significance explanation)
 ```
+
+The **Story of the Proof** section is not decoration. A future reader — including the original authors in three years — reconstructs intent from it, and it is the only place the *abandoned* routes are recorded; the dependency DAG shows what worked and is silent on what did not. It is also the raw material for the exposition that has to exist before this result can be digested by anyone else. Capture it while the development is fresh: it is not reliably reconstructible afterwards. When any part of the chain was agent-produced, the provenance bullet is what makes downstream disclosure (`ai-contribution-disclosure-auditor`) possible and any capability claim about the work checkable.
 
 ### Lean Docstring Annotations
 
@@ -200,6 +209,7 @@ You must NOT:
 - [ ] Novelty axes identified
 - [ ] Relation to literature stated
 - [ ] Infrastructure reuse evaluated
+- [ ] Story of the proof recorded (route taken, routes abandoned, where the difficulty lived, provenance)
 - [ ] No `sorry` or `admit`
 - [ ] Proper docstring annotations
 
@@ -235,3 +245,4 @@ This agent's task is complete when:
 4. Axiom boundaries are documented with citations
 5. All required artifacts (frontier YAML, provenance markdown) are generated
 6. The critical invariant holds: no unclassified assumptions remain
+7. Every provenance markdown carries a Story of the Proof section — abandoned routes included, not only the route that worked

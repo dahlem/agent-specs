@@ -99,13 +99,15 @@ For each review, structure your feedback as follows:
    - Whether the phase passes the Meta-Criterion Test
    - Specific recommendations for improvement
 
-3. **Fatal Flaw Assessment**: Any phase-specific issues that could trigger immediate rejection
+3. **Talk Test**: `TALK-READY` / `TALK-INCOMPLETE`, with your reconstruction of the one idea, where the difficulty lives, the attribution boundary, and the unanswered audience question
 
-4. **Strength Inventory**: What clearly works and should be preserved
+4. **Fatal Flaw Assessment**: Any phase-specific issues that could trigger immediate rejection
 
-5. **Prioritized Revision Roadmap**: Ordered list of changes from critical to nice-to-have
+5. **Strength Inventory**: What clearly works and should be preserved
 
-6. **Conference-Readiness Score**: Your assessment of submission readiness with justification
+6. **Prioritized Revision Roadmap**: Ordered list of changes from critical to nice-to-have
+
+7. **Conference-Readiness Score**: Your assessment of submission readiness with justification
 
 ## Meta-Criterion Test
 
@@ -113,6 +115,25 @@ A phase is **successful** if and only if:
 > A hostile reviewer cannot point to a phase-specific fatal flaw, AND a benevolent reviewer can articulate why the phase adds value.
 
 If any phase fails this test, clearly flag it as a rejection risk.
+
+## The Talk Test (paper-level gate)
+
+The phase-by-phase framework can be satisfied piecewise by a paper that no one can explain. Apply this gate once, over the whole manuscript, after the phase reviews:
+
+> Could the authors give a clear, expert-level talk on this result — correct, and properly attributed?
+
+You cannot watch the talk, so reconstruct it from the manuscript. Attempt, in your own words and using only what the paper provides:
+
+1. **The one idea**, in a paragraph. Not the pipeline, not the results table — the mechanism that makes the thing work. If the paper does not let you write this paragraph, it fails.
+2. **Where the difficulty lives.** Name the one or two steps carrying the load, and what would break without them. A paper in which everything appears equally easy has either an unstated difficulty or no contribution; determine which.
+3. **What is borrowed and from whom.** Which components are standard, which are taken from named prior work, which are the authors'. Vagueness here is not a citation-formatting problem — it means the contribution boundary is undefined.
+4. **The audience question you cannot answer.** The first question a knowledgeable listener would ask that the paper leaves open. Every paper has one; a review that finds none has not read closely enough.
+
+**Verdict:** `TALK-READY` — all four reconstruct cleanly. `TALK-INCOMPLETE` — one or more fail; name which and quote the passage where the reconstruction broke down.
+
+`TALK-INCOMPLETE` is a first-class finding reported beside the phase verdicts, not folded into them. It is possible — and increasingly common — for a paper to be correct, well-formatted, adequately evidenced, and still unabsorbable, and the phase framework will pass it. The specific pathology this catches: a result whose apparatus is impeccable and whose *idea* was never surfaced, because the writing optimized for defensibility rather than for transmission. Machine-assisted drafting makes such papers cheaper to produce and no easier to read.
+
+The gate is diagnostic of the *manuscript*, not of the authors — you are assessing whether the paper enables the talk, and cannot observe whether its authors could give it anyway. Say so when reporting.
 
 ## Forbidden Behaviors
 
@@ -145,17 +166,19 @@ A paper is ready for submission when it demonstrates:
 - Evident rigor
 - Honest limitations
 - Plausible long-term impact
+- Transmissibility — a reader can reconstruct the idea, the difficulty, and the attribution boundary well enough to talk about the work to someone else
 
 ## Definition of Done
 
 This agent's task is complete when:
 1. All relevant phases have been evaluated through both reviewer lenses
 2. The meta-criterion test has been applied to each phase
-3. Fatal flaws (if any) are clearly identified with specific references
-4. A prioritized revision roadmap is provided
-5. A conference-readiness score is issued with justification
-6. The author has enough specific, actionable feedback to improve the paper
-7. The operating mode (Standalone or Pipeline) is declared at the top of the review
-8. In Pipeline Mode: every fatal-flaw claim cites the upstream artifact (file + entry id) that grounds it, and any missing/partial upstream artifacts are flagged as degraded coverage rather than silently elided
+3. The talk test has been applied to the manuscript as a whole, with a `TALK-READY` / `TALK-INCOMPLETE` verdict and the four reconstructions attempted
+4. Fatal flaws (if any) are clearly identified with specific references
+5. A prioritized revision roadmap is provided
+6. A conference-readiness score is issued with justification
+7. The author has enough specific, actionable feedback to improve the paper
+8. The operating mode (Standalone or Pipeline) is declared at the top of the review
+9. In Pipeline Mode: every fatal-flaw claim cites the upstream artifact (file + entry id) that grounds it, and any missing/partial upstream artifacts are flagged as degraded coverage rather than silently elided
 
 Your goal is to help authors achieve this standard through constructive, thorough, and honest feedback.

@@ -10,7 +10,7 @@ This repository contains agent specifications organized into six categories:
 2. **Research Shaping** — A diverge-then-converge layer that turns a body of work into the one paper it should become; an expanded entry point into phase 06.
 3. **Peer Review** — A coordinated, cutoff-bounded review pipeline that produces structured artifacts for the AI paper reviewer to ground its verdicts in. The **Proof Dissection Track** is a parallel sub-track for *reading* a theoretical paper rather than reviewing it (cartography → personalized LaTeX/memoir lecture note).
 4. **Math Brainstorming** — An iterative ecosystem of agents for mathematical problem exploration, construction, and synthesis.
-5. **Writing & Documentation** — Cross-cutting writing auditors used directly or invoked by paper-writing agents to enforce five orthogonal disciplines across any document register: narrative clarity, epistemic calibration, evidence provenance, citation provenance, and theorem presentation.
+5. **Writing & Documentation** — Cross-cutting writing auditors used directly or invoked by paper-writing agents to enforce six orthogonal disciplines across any document register: narrative clarity, epistemic calibration, evidence provenance, citation provenance, theorem presentation, and AI-contribution disclosure.
 6. **Formal Verification** — Agents for Lean 4 proof development, validation, and documentation.
 
 The research framework operationalizes both **benevolent** and **hostile** reviewer perspectives:
@@ -22,7 +22,7 @@ A phase succeeds when a hostile reviewer cannot identify a fatal flaw and a bene
 
 ## Agent Index
 
-All 42 agents at a glance. Click an agent name to jump to its detailed description.
+All 43 agents at a glance. Click an agent name to jump to its detailed description.
 
 ### Research Workflow — Phases (10)
 
@@ -89,21 +89,22 @@ All 42 agents at a glance. Click an agent name to jump to its detailed descripti
 | [`obstructor`](#obstructor) | Adversarial stress-test: counterexamples, hidden assumptions, structural impossibilities |
 | [`research-director`](#research-director) | Synthesize and prioritize brainstorming outputs into a research portfolio |
 
-### Writing & Documentation (5 auditors)
+### Writing & Documentation (6 auditors)
 
 | Agent | Audits |
 |---|---|
 | [`narrative-clarity-auditor`](#narrative-clarity-auditor) | *How the prose reads* at the venue's register (eight registers calibrated) |
-| [`epistemic-calibration-auditor`](#epistemic-calibration-auditor) | *What the prose claims* relative to evidence (overclaim + devil's advocate) |
+| [`epistemic-calibration-auditor`](#epistemic-calibration-auditor) | *What the prose claims* relative to evidence (overclaim + devil's advocate + capability-claim schema) |
 | [`evidence-provenance-auditor`](#evidence-provenance-auditor) | *That the evidence chain exists* (data → script → figure → claim) |
 | [`citation-provenance-auditor`](#citation-provenance-auditor) | *That cited works are real, canonical, and support the cited claim* (gate-enforced) |
 | [`theorem-presentation-auditor`](#theorem-presentation-auditor) | *That every theorem has rhythm and every proof has reviewer-skimmable architecture* |
+| [`ai-contribution-disclosure-auditor`](#ai-contribution-disclosure-auditor) | *How the work was produced* — assistance ledger, disclosure accuracy, unattributed reuse |
 
 ### Formal Verification (3)
 
 | Agent | Purpose |
 |---|---|
-| [`lean-proof-chain-validator`](#lean-proof-chain-validator) | Six-phase research-grade Lean proof validation; PASS/CONDITIONAL/FAIL verdict |
+| [`lean-proof-chain-validator`](#lean-proof-chain-validator) | Seven-phase research-grade Lean proof validation, incl. the explicability gate; PASS/CONDITIONAL/FAIL verdict |
 | [`lean-proof-frontier-analyzer`](#lean-proof-frontier-analyzer) | Breadth-first dependency DAG; novelty classification; axiom-boundary documentation |
 | [`lean-library-design-auditor`](#lean-library-design-auditor) | Post-compile reusability audit — definitions, theorem generality, API, organization; DESIGN-READY / NEEDS-REWORK / NEEDS-DESIGN-DECISION |
 
@@ -156,6 +157,8 @@ Map your specific issue to the right agent:
 | **Theorem presentation is opaque** | `theorem-presentation-auditor` | Checks rhythm (statement→intuition→operational→consequence); proof architecture |
 | **Want comprehensive review** | `ai-paper-reviewer` (pipeline mode) | Dual benevolent/hostile lens across all ten research phases |
 | **Want to learn the math deeply** | `proof-dissection-orchestrator` | Produces personalized lecture notes or interactive walkthrough |
+| **Unsure what to disclose about AI use** | `ai-contribution-disclosure-auditor` | Builds the assistance ledger; drafts the disclosure statement; flags understatement |
+| **Result is correct but nobody can explain it** | `lean-proof-chain-validator` (Phase 7) or `ai-paper-reviewer` (talk test) | Explicability gate for formal work; talk test for manuscripts |
 
 ### Review Workflow: From Issues to Agents
 
@@ -264,11 +267,12 @@ What are you doing?
 │  └─ Understanding the math → proof-dissection-orchestrator
 │
 ├─ Auditing your own draft
-│  ├─ Overall quality → Run all 5 writing auditors
+│  ├─ Overall quality → Run all 6 writing auditors
 │  ├─ Clarity issues → narrative-clarity-auditor
 │  ├─ Overclaiming → epistemic-calibration-auditor
 │  ├─ Missing provenance → evidence-provenance-auditor + citation-provenance-auditor
-│  └─ Theorem presentation → theorem-presentation-auditor
+│  ├─ Theorem presentation → theorem-presentation-auditor
+│  └─ What to disclose about AI use → ai-contribution-disclosure-auditor
 │
 ├─ Exploring a math problem
 │  └─ Invoke math-brainstorming agents (or research-director to orchestrate)
@@ -352,8 +356,9 @@ For any draft (paper, lecture note, blog post, tech report, status report). Run 
 - `evidence-provenance-auditor` — chain integrity for data and numerical claims
 - `citation-provenance-auditor` — citation gate, severity-tiered
 - `theorem-presentation-auditor` — theorem rhythm + modular proof architecture (paper/lecture-note registers)
+- `ai-contribution-disclosure-auditor` — assistance ledger, disclosure accuracy, unattributed reuse
 
-A paper that passes all five is reproducible, defensible, honest about what it claims, and structured for the reviewer to triangulate at a glance.
+A paper that passes all six is reproducible, defensible, honest about what it claims, honest about how it was made, and structured for the reviewer to triangulate at a glance.
 
 ### Workflow F — Shape a paper to a target venue's success recipe
 
@@ -417,7 +422,8 @@ agent-specs/
 │   │   ├── narrative-clarity-auditor.md
 │   │   ├── epistemic-calibration-auditor.md
 │   │   ├── evidence-provenance-auditor.md
-│   │   └── theorem-presentation-auditor.md
+│   │   ├── theorem-presentation-auditor.md
+│   │   └── ai-contribution-disclosure-auditor.md
 │   └── formal-verification/
 │       └── lean/                                # Lean 4 proof tools
 │           ├── lean-proof-chain-validator.md
@@ -471,6 +477,8 @@ Validates work for reproducibility, methodological soundness, ethical compliance
 
 Transforms research artifacts into durable scholarly contributions through strategic venue selection, rigorous formatting, and controlled release. Classifies papers on three axes (contribution type, evaluation mode, temporal relevance) for venue alignment. Ensures archival integrity with versioned releases and immutable identifiers. Creates structured response matrices for reviewer feedback.
 
+**Domain 6 — post-acceptance digestion.** Publication sits in the middle of a longer chain (generation → verification → exposition → publication → digestion → canonicalization) in which value accrues to the right while effort concentrates to the left. A published result nobody incorporates has completed the cheap half of its journey. The phase therefore emits `digestion_plan.md` alongside the submission package: the expert talk outline, a short expository form carrying the idea without the apparatus, the **canonical statement** (the result as a later survey would state it, stripped of this paper's framing — a result that resists compact restatement usually has an unresolved conceptual boundary, and finding that out before publication is cheap), the artifact-upstreaming path (mathlib PR, library contribution, benchmark submission), the process record, the AI-assistance disclosure statement, and specific reciprocity commitments. It closes on a gate adopted from Tao: *if the authors cannot convincingly demonstrate that they can give a clear, expert-level talk on their results — correct, and properly attributed — the result should not be published.* Three disqualifying signatures: they can state the result but not explain why it is true; they can reproduce the argument but cannot say which step carries the difficulty; they cannot attribute the components. None is fixed by more polish.
+
 ## Cross-Phase Tools
 
 These agents can be invoked at any point during the research workflow.
@@ -478,6 +486,8 @@ These agents can be invoked at any point during the research workflow.
 ### AI Paper Reviewer
 
 Conducts rigorous pre-submission internal reviews using a dual-perspective framework. Evaluates papers across all ten research phases, applying both benevolent and hostile reviewer lenses simultaneously. Identifies fatal flaws that would trigger immediate rejection, provides a prioritized revision roadmap, and issues a conference-readiness score calibrated to top-tier venue acceptance rates (~20-25%).
+
+**The talk test.** The phase framework can be satisfied piecewise by a paper nobody can explain, so a paper-level gate runs after the phase reviews: could the authors give a clear, expert-level talk on this result — correct, and properly attributed? The reviewer reconstructs four things from the manuscript alone: the one idea in a paragraph (the mechanism, not the pipeline); where the difficulty lives and what breaks without it; what is borrowed and from whom; and the first question a knowledgeable listener would ask that the paper leaves open. Verdict `TALK-READY` or `TALK-INCOMPLETE`, reported beside the phase verdicts rather than folded into them — it is possible, and increasingly common, for a paper to be correct, well-formatted, adequately evidenced and still unabsorbable, and the phase framework will pass it.
 
 ### Arxiv Gap Scanner
 
@@ -502,6 +512,8 @@ Constructs scientific writing achieving causal intelligibility at every scale, o
 ### Venue Archetype Distiller
 
 Reverse-engineers what a *successful* paper looks like at a specific venue over a time window (default 5 years) and packages it as a reusable recipe. Enumerates the venue's papers in the window filtered to the user's subfield, enriches them with age- and field-normalized impact metrics (OpenAlex `citation_normalized_percentile` / `fwci`, Semantic Scholar `influentialCitationCount`, optional altmetrics) blended with venue accolades (oral/spotlight/best-paper/test-of-time), and selects top exemplars alongside a same-venue **baseline-contrast sample**. Downloads and structurally dissects each exemplar (via `paper-compressor` / `07-paper-structure-architect` subagents) into a per-paper fingerprint — title pattern, abstract shape, opening move, claim architecture, section rhythm, evidence portfolio, figure strategy, positioning, register. Distills two artifacts: `archetype.md` (invariants separated from variance bands and anti-patterns, each invariant carrying its exemplar-vs-baseline lift, with mandatory survivorship/causation caveats) and `scorecard.md` (a weighted, self-assessable rubric with must-pass gates). Optionally scores the user's draft and emits a `recipe_handoff.md` for `scientific-narrative-architect`. Works for AI conferences and journals. All metric fetching and PDF pulling is main-thread (subagents are sandboxed from network); metric honesty is absolute (`unknown` over fabrication) and cross-cohort raw-count comparison is forbidden. Distinct from `arxiv-gap-scanner` (scans what *threatens* a program), `02-literature-discovery-mapper` (positions *your* work), and `domain-historian` (calibrates significance of *one* paper under review) — this agent profiles the venue's *winners* to produce a construction template.
+
+**The anti-Goodhart clause (Phase 6b, mandatory).** The scorecard is the most dangerous artifact this agent produces, and the danger is intrinsic: *when a measure becomes a target, it ceases to be a good measure*. A rubric distilled from past winners describes what correlated with success in a window; optimized against directly, it selects for the surface features that were *evidence of* good work and against the work itself — and the better the distillation, the more efficiently that failure becomes available. Every `scorecard.md` therefore opens with a clause stating that the scorecard is a diagnostic and not an objective (a low score locates something worth examining; a high score is not an achievement), that each dimension names the property it proxies for so score-versus-property disagreement is detectable, that the score describes a window and venues drift, and that fixing a criterion by adding the surface feature it measures scores points and improves nothing. When scoring a draft, criteria that score well *while the underlying property is unmet* are listed above the ordinary gap list — they are invisible to the author and obvious to a reviewer.
 
 ## Research Shaping
 
@@ -765,7 +777,9 @@ Cross-cutting writing tools that operate on *any* document register — blog pos
 
 ### Narrative Clarity Auditor
 
-Audits a draft against a calibrated narrative-clarity discipline. The discipline factors into **universal rules** (motivation precedes technique, concrete grounding before generality, no padding, pre-empt confusion at known stuck points, honest uncertainty, formalism after fluency) that apply at every register, and **register-conditional rules** that toggle by venue (personal voice, story-of-discovery proofs, physical metaphors, inline "where readers get stuck" warnings, plain acknowledgment of difficulty). The auditor takes a `register` parameter — `blog | tutorial | lecture-note | tech-report | empirical-paper | theoretical-paper | nature-letter | policy-essay` — and applies only the appropriate subset, surfacing a `Deliberately not enforced` section so the author can see which rules were *suppressed by venue calibration* rather than overlooked. This is the safeguard against the natural failure mode of "Feynman style": importing blog-style intuition and physical metaphors into a NeurIPS or Nature submission.
+Audits a draft against a calibrated narrative-clarity discipline. The discipline factors into **universal rules** (motivation precedes technique, concrete grounding before generality, no padding, pre-empt confusion at known stuck points, honest uncertainty, formalism after fluency, and expository weight proportional to difficulty) that apply at every register, and **register-conditional rules** that toggle by venue (personal voice, story-of-discovery proofs, physical metaphors, inline "where readers get stuck" warnings, plain acknowledgment of difficulty). The auditor takes a `register` parameter — `blog | tutorial | lecture-note | tech-report | empirical-paper | theoretical-paper | nature-letter | policy-essay` — and applies only the appropriate subset, surfacing a `Deliberately not enforced` section so the author can see which rules were *suppressed by venue calibration* rather than overlooked. This is the safeguard against the natural failure mode of "Feynman style": importing blog-style intuition and physical metaphors into a NeurIPS or Nature submission.
+
+Rule 7 (**expository weight proportional to difficulty**) is the counterweight to over-polishing. Readers use expository weight to decide where to slow down: in human-written work the parts the author found hard retain a natural friction, and that friction is information. Uniformly smooth prose destroys it — a proof in which the load-bearing step and the change of variables read as equally easy leaves the reader nowhere to look. This is the characteristic signature of machine-polished exposition, which dwells on trivialities and passes briefly over the novel part, and the auditor flags it alongside two related patterns (missing high-level overview; the novel idea presented with no anchor to prior work at the point where it lands). Rule 7 is in deliberate tension with Rule 3 (no padding): cut padding everywhere, then verify that what survives is *thickest at the hard parts*. Minimizing length uniformly satisfies Rule 3 while violating Rule 7 — and is the more damaging error, because the result looks clean. The auditor is correspondingly forbidden to recommend rewrites that flatten a difficulty gradient.
 
 The auditor is consumed by:
 
@@ -823,7 +837,9 @@ Use the epistemic-calibration-auditor agent on summary.md with audit_target: sta
 Use the epistemic-calibration-auditor agent on prior_audit.md with audit_target: audit_document, evidence_sources: [experiment_logs.md, theorems.tex]
 ```
 
-The auditor emits `calibration_audit.md` with the strictness profile, per-rule verdicts (overclaim/underclaim direction named), anti-pattern findings, the devil's-advocate alternatives with plausibility ratings, and minimal recommended rewrites.
+**The capability-claim reporting schema.** Any assertion about what an automated system can do — "the agent formalized the theorem", "closed in N cycles", "solved autonomously", "our pipeline discovers X" — triggers a dedicated schema. These are the least-well-calibrated claims in current technical writing for a structural rather than dishonest reason: the publicly available evidence is dominated by reporting bias and by results not gathered under controlled conditions, with costs and failed attempts undisclosed. A capability claim reported without its denominator is not a weak result, it is an uninterpretable one. The schema requires seven fields near the claim — denominator (attempts, not only successes), success rate with criterion, supervision level (prompt authorship, steering, **selection among outputs**, repair), cost per success, exact model and harness version, who verified it and independently of what, and whether conditions were controlled or observational. Missing denominator or supervision downgrades the claim to its actual scope rather than merely hedging it (hedging over a missing denominator is *worse* than the bare claim, because it reads as calibration while conveying nothing). The schema applies symmetrically to negative capability claims, and binds claims about your own agent pipeline as strictly as claims about a commercial model. A companion anti-pattern, **metric-as-target drift**, flags proxies asserted *as* goals — benchmark score for capability, rubric score for quality, coverage for correctness — since under heavy optimization the two come apart and a document that never names the underlying goal cannot detect that it has.
+
+The auditor emits `calibration_audit.md` with the strictness profile, per-rule verdicts (overclaim/underclaim direction named), the capability-claim field audit, anti-pattern findings, the devil's-advocate alternatives with plausibility ratings, and minimal recommended rewrites.
 
 The two writing auditors compose: `narrative-clarity-auditor` checks *how* the prose reads at the venue's register; `epistemic-calibration-auditor` checks *what the prose claims relative to evidence*. Both can run on the same draft, in either order.
 
@@ -913,36 +929,63 @@ Use the theorem-presentation-auditor agent on letter.tex with register: nature-l
 
 The auditor emits `theorem_presentation_audit.md` with theorem inventory, per-theorem rhythm verdicts (statement/intuition/operational/consequence/order/exemption), per-proof architecture verdicts (sketch/technique/load-bearing/lemmas/location/tagging), anti-pattern findings, and minimal recommended patches.
 
-The five writing auditors compose. They cover orthogonal concerns:
+### AI Contribution Disclosure Auditor
+
+Audits how the work was *produced*, and drafts the disclosure statement it should carry. Third leg of the provenance triad: citation provenance audits where claims came from, evidence provenance audits where numbers came from, this audits where the work came from. Takes an `audit_target` — `paper | paper_repo | formal_development | technical_report | blog | agent_pipeline_report` — and optional `process_evidence` (session logs, commit history, `Story of the Proof` sections, `lean-proof-chain-validator` Phase 7.3 records); without evidence the run is marked `unverified-ledger` rather than silently asserting verification.
+
+The core artifact is an **assistance ledger**: every component of the work assigned a level on a seven-rung ladder from `A0` (none) through `A3` (drafting from an author-specified outline), `A4` (the tool originated content the author verified), `A5` (author selected among candidate outputs) to `A6` (author neither specified nor meaningfully checked it). The A3/A4 boundary is where understatement concentrates — "drafting assistance" over content the tool originated is the most common inaccurate disclosure — and `A6` is an escalation rather than a level, because it is exactly the state in which a correct result enters the record with nobody able to explain it. The audit then compares the ledger against any existing disclosure (`understated` / `overstated` / `unlocated`), sweeps A3+ components for unattributed reuse of prior work (routed to `citation-provenance-auditor`, never adjudicated here), records verification independence per A4+ component, and checks four responsibility invariants: correctness and citations remain the authors' alone, authorship is human, and the register is factual rather than apologetic.
+
+It has no view on how much assistance is appropriate — an A5-heavy ledger disclosed accurately is `ACCURATE`. It also refuses to infer levels from writing style: prose that "sounds AI-generated" is not evidence, and a wrong accusation is worse than a missing disclosure. Grounded in the Leiden Declaration (June 2026, IMU-endorsed) and Tao's ICM 2026 argument that covert use — not heavy use — is the outcome to avoid.
+
+Direct invocation:
+
+```
+# Audit a manuscript before submission
+Use the ai-contribution-disclosure-auditor agent on paper.tex with audit_target: paper, process_evidence: sessions/
+
+# Audit a Lean development that passed Phase 7
+Use the ai-contribution-disclosure-auditor agent on Formal/ with audit_target: formal_development
+
+# Check whether an existing disclosure statement is accurate
+Use the ai-contribution-disclosure-auditor agent on paper.tex with audit_target: paper — is "editing assistance" supportable?
+```
+
+The auditor emits `disclosure_audit.md` with the assistance ledger, disclosure mismatches, unattributed-reuse candidates, verification-independence records, responsibility-invariant checks, a ready-to-paste disclosure statement, and an ACCURATE / UNDERSTATED / UNLOCATED / ABSENT / UNVERIFIED-LEDGER verdict.
+
+The six writing auditors compose. They cover orthogonal concerns:
 
 | Auditor | Audits |
 |---|---|
 | `narrative-clarity-auditor` | *How the prose reads* at the venue's register |
-| `epistemic-calibration-auditor` | *What the prose claims* relative to evidence (overclaim + devil's advocate) |
+| `epistemic-calibration-auditor` | *What the prose claims* relative to evidence (overclaim + devil's advocate + capability claims) |
 | `evidence-provenance-auditor` | *That the evidence chain exists* (data → script → figure → claim) |
 | `citation-provenance-auditor` | *That cited works are real, canonical, and support the cited claim* |
 | `theorem-presentation-auditor` | *That every theorem has rhythm and every proof has reviewer-skimmable architecture* |
+| `ai-contribution-disclosure-auditor` | *How the work was produced* (assistance ledger → disclosure accuracy → unattributed reuse) |
 
-A paper that passes all five is reproducible, defensible, honest about what it claims, and structured for the reviewer to triangulate at a glance.
+A paper that passes all six is reproducible, defensible, honest about what it claims, honest about how it was made, and structured for the reviewer to triangulate at a glance.
 
 ### Auditor Consumption Matrix
 
 Which agents invoke which writing auditors, and at what gate. Cell content names the trigger.
 
-| Caller | narrative-clarity | epistemic-calibration | evidence-provenance | citation-provenance | theorem-presentation |
-|---|---|---|---|---|---|
-| `06-argument-architect` | — | DoD: claim-evidence matrix | DoD: numerical claims | DoD: matrix evidence column (Tier-1 strict gate) | DoD: theorems in evidence column |
-| `07-paper-structure-architect` | per-section clarity audit | — | — | — | per-section theorem audit |
-| `08-research-revision-validator` | — | paired with linguistic-precision pass | — | (via citation gate, upstream) | — |
-| `09-research-validation-qa` | — | reproducibility-grade audit | reproducibility-grade audit | — | — |
-| `scientific-narrative-architect` | end of Draft/Restructure/Adapt; XV.5 in Review/QC | (via narrative-clarity) | numerical claims in prose | new-bibkey gate at suggestion | introduce/reposition theorems |
-| `proof-tutor` (lecture-note) | self-check before emitting `.tex` | — | — | — | rhythm required (Part A); architecture delegated |
-| `proof-dissection-orchestrator` | — | handoff record audit | — | — | — |
-| `research-shaping-orchestrator` | — | handoff record audit | — | — | — |
-| `literature-expansion` | — | — | — | bundle entries (Tier-1 strict gate) | — |
-| `02-literature-discovery-mapper` | — | — | — | necessity-supporting citations (Tier-1) | — |
-| `arxiv-gap-scanner` | — | — | — | critical-tier surfaced works (Tier-1) | — |
-| `ai-paper-reviewer` | (optional, ground individual critiques) | (optional, ground individual critiques) | — | — | — |
+| Caller | narrative-clarity | epistemic-calibration | evidence-provenance | citation-provenance | theorem-presentation | ai-contribution-disclosure |
+|---|---|---|---|---|---|---|
+| `06-argument-architect` | — | DoD: claim-evidence matrix | DoD: numerical claims | DoD: matrix evidence column (Tier-1 strict gate) | DoD: theorems in evidence column | — |
+| `07-paper-structure-architect` | per-section clarity audit | — | — | — | per-section theorem audit | — |
+| `08-research-revision-validator` | — | paired with linguistic-precision pass | — | (via citation gate, upstream) | — | — |
+| `09-research-validation-qa` | — | reproducibility-grade audit | reproducibility-grade audit | — | — | ledger as reproducibility finding |
+| `10-scholarly-submission-strategist` | — | — | — | — | — | DoD: disclosure statement in `digestion_plan.md` |
+| `scientific-narrative-architect` | end of Draft/Restructure/Adapt; XV.5 in Review/QC | (via narrative-clarity) | numerical claims in prose | new-bibkey gate at suggestion | introduce/reposition theorems | — |
+| `proof-tutor` (lecture-note) | self-check before emitting `.tex` | — | — | — | rhythm required (Part A); architecture delegated | — |
+| `proof-dissection-orchestrator` | — | handoff record audit | — | — | — | — |
+| `research-shaping-orchestrator` | — | handoff record audit | — | — | — | — |
+| `literature-expansion` | — | — | — | bundle entries (Tier-1 strict gate) | — | — |
+| `02-literature-discovery-mapper` | — | — | — | necessity-supporting citations (Tier-1) | — | — |
+| `arxiv-gap-scanner` | — | — | — | critical-tier surfaced works (Tier-1) | — | — |
+| `ai-paper-reviewer` | (optional, ground individual critiques) | (optional, ground individual critiques) | — | — | — | — |
+| `lean-proof-chain-validator` | — | — | — | — | — | Phase 7.3 record feeds the ledger |
+| `venue-archetype-distiller` | — | scorecard Goodhart check (optional) | — | (citation gate on cited exemplars) | — | — |
 
 The matrix encodes the design principle: auditors are canonical, callers reference, and gates fire at the moment overclaim or missing provenance does the most damage. New agents that suggest citations or claim coverage should add themselves to this matrix.
 
@@ -950,15 +993,21 @@ The matrix encodes the design principle: auditors are canonical, callers referen
 
 ### Lean Proof Chain Validator
 
-Validates Lean proof chains for research-grade correctness across six phases: scope locking (freezing Lean/mathlib versions), logical soundness (zero `sorry`/`admit`/warnings), dependency closure (frontier YAML validation and axiom boundary checks), epistemic validation (novelty integrity, claim-proof alignment, quantifier discipline), infrastructure assessment (mathlib compatibility, conceptual compression), and robustness (proof stability, rebuild/replay, boundary cases). Issues PASS/CONDITIONAL/FAIL verdicts with specific file/line references.
+Validates Lean proof chains for research-grade correctness across seven phases: scope locking (freezing Lean/mathlib versions), logical soundness (zero `sorry`/`admit`/warnings), dependency closure (frontier YAML validation and axiom boundary checks), epistemic validation (novelty integrity, claim-proof alignment, quantifier discipline), infrastructure assessment (mathlib compatibility, conceptual compression), robustness (proof stability, rebuild/replay, boundary cases), and negative-result capture. Issues PASS/CONDITIONAL/FAIL verdicts with specific file/line references.
+
+**Phase 7 — the explicability gate.** A correct, closed, robust proof chain that nobody can explain is a liability, and machine-checked proof makes that state reachable in a way it previously was not. The final phase requires, for the root theorem and every `@novelty.level ≥ 3` theorem, a natural-language account that states the proof *idea* (mechanism, not tactic sequence), keys each step to named entities in the formal chain, names the one or two steps carrying the difficulty, and says why the obvious approach fails. A paraphrase of the tactic script does not satisfy it. Absent such an account the verdict is FAIL regardless of Phases 1–6 — a green build with zero sorries and no explanation invites downstream reliance nobody can audit. The phase also tags each step `load-bearing | technical | bookkeeping` (the same vocabulary as `theorem-presentation-auditor`, so tags transport into any paper written from the development) and checks that expository weight tracks the tags, and records process provenance — agent/human split, harness version, attempts to success, cost — which feeds `ai-contribution-disclosure-auditor` at writeup.
 
 ### Lean Proof Frontier Analyzer
 
 Performs breadth-first proof dependency analysis on Lean 4 formalizations. Constructs complete dependency DAGs by recursively expanding until every leaf is classified as `mathlib`, `assumed`, `novel`, or `infrastructure`. Assigns novelty levels (0-5) along five axes (conceptual, theorem, formalization, structural, methodological). Documents axiom boundaries with precise Lean statements and source citations. Generates frontier YAML files and provenance markdown with dependency summaries. Emits `design_flags` (redundant renames, `def`-not-`abbrev`, trivial aliases, duplicate objects) that feed the library-design auditor.
 
+Every provenance file also carries a **Story of the Proof** section: the route taken and why *this* proof, the routes abandoned with the reason each failed, where the difficulty lived, what the formalization revealed that the informal argument had hidden, and the agent/human provenance of the work. The DAG records what worked and is structurally silent on what did not; this section is the only place the abandoned routes survive, and it is the raw material for the exposition that has to exist before anyone else can digest the result. Capture it while the development is fresh — it is not reliably reconstructible afterwards.
+
 ### Lean Library-Design Auditor
 
 Audits a *compiled, sorry-free* Lean development for reusability rather than correctness — the orthogonal question of whether the result is a library contribution a future formalizer can build on without transport pain. Reviews the four surfaces where autoformalization reliably fails: **definitions** (redundant renames, `def`-where-`abbrev`-transports, hyper-specific `Equiv`s that should be inlined `ofBijective`, use-case naming, duplicates), **theorem-statement generality** (hypotheses stronger than the proof uses, conclusions special-cased for convenience), **API surface** (downstream code unfolding definitions instead of routing through lemmas; ad-hoc lemma piles with no principled interface), and **file/namespace organization** (bottom-up import graph, descriptive names). Enforces the proof-cost rule (`maxHeartbeats` ≤ 200000 — decompose into named sublemmas rather than inflating the budget) and flags escape-hatch language. Separates findings into an agent-actionable completion-predicate worklist and design decisions requiring human judgment, then issues a DESIGN-READY / NEEDS-REWORK / NEEDS-DESIGN-DECISION verdict. Premise: kernel acceptance is an incomplete evaluation target — closing sorries is not the hard part; choosing what objects should exist is.
+
+**Where it sits.** This is the canonicalization stage of the pipeline. mathlib is the canonicalization infrastructure of formalized mathematics, and asking whether a development is something a future formalizer would build on *is* the digestion question — the slowest stage, the least automatable, and the most valuable. A NEEDS-REWORK verdict is not pedantry about style; it is the difference between a result that enters the shared corpus and one that sits in a repository nobody extends. A third cross-cutting rule records **adoption evidence** — independent downstream imports, in-project reuse across proof boundaries, single-call-site objects, upstream mathlib PR status — because reusability is a claim about the future that the author is the party least able to certify. Where no adoption evidence exists, DESIGN-READY is labelled as a *prediction* rather than reported as an established property.
 
 ## Installation
 
