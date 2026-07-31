@@ -96,7 +96,7 @@ All 43 agents at a glance. Click an agent name to jump to its detailed descripti
 | [`narrative-clarity-auditor`](#narrative-clarity-auditor) | *How the prose reads* at the venue's register (eight registers calibrated) |
 | [`epistemic-calibration-auditor`](#epistemic-calibration-auditor) | *What the prose claims* relative to evidence (overclaim + devil's advocate + capability-claim schema) |
 | [`evidence-provenance-auditor`](#evidence-provenance-auditor) | *That the evidence chain exists* (data → script → figure → claim) |
-| [`citation-provenance-auditor`](#citation-provenance-auditor) | *That cited works are real, canonical, and support the cited claim* (gate-enforced) |
+| [`citation-provenance-auditor`](#citation-provenance-auditor) | *That cited works are real, canonical, and support the cited claim* (gate-enforced; lives in `research/tools/`) |
 | [`theorem-presentation-auditor`](#theorem-presentation-auditor) | *That every theorem has rhythm and every proof has reviewer-skimmable architecture* |
 | [`ai-contribution-disclosure-auditor`](#ai-contribution-disclosure-auditor) | *How the work was produced* — assistance ledger, disclosure accuracy, unattributed reuse |
 
@@ -429,9 +429,15 @@ agent-specs/
 │           ├── lean-proof-chain-validator.md
 │           ├── lean-proof-frontier-analyzer.md
 │           └── lean-library-design-auditor.md
-└── scripts/
-    └── sync-agents.sh                           # Symlink agents into ~/.claude/agents/
+├── scripts/
+│   ├── sync-agents.sh                           # Symlink agents into ~/.claude/agents/
+│   └── lint-descriptions.sh                     # Enforce DESCRIPTION-STYLE.md (--stats for token load)
+└── DESCRIPTION-STYLE.md                         # Frontmatter-description conventions (budgets, template, examples)
 ```
+
+Frontmatter `description:` fields are loaded into every Claude Code session and drive
+agent routing; they follow the template, budgets, and example policy in
+[DESCRIPTION-STYLE.md](DESCRIPTION-STYLE.md), enforced by `scripts/lint-descriptions.sh`.
 
 ## Research Phases
 
