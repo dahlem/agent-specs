@@ -53,6 +53,10 @@ The strictness of the three universal rules and the activation of the conditiona
 | **comparator required for "strong", "novel", "first"** | required | required | required | required | optional | optional |
 | **capability-claim schema (see below)** | required | required | required | required | encouraged | optional |
 
+### The standard follows the claim, not the venue
+
+A document that *announces research results* — press release, lab blog post, project thread — takes `paper` strictness for the novelty/positioning rules and the capability-claim schema regardless of its register; the lenient `blog` column governs opinion and exposition, not result announcements. Whoever announces research participates in research, and is bound by the same academic standards as the paper would be — a "no progress in a decade" framing must survive the same literature check either way. Quietly correcting the language after publicity does not discharge the violation — calibration is audited at announcement time, because the uncorrected version is the one that anchors.
+
 ### Why coverage enumeration is *required* even for `agent_handoff` and `status_report`
 
 The most common form of agent overclaim is the unscoped "Done." Orchestrators that say "all stages completed cleanly" without listing the stages mislead the user about what was actually verified. Status reports that say "fixed the bug" without specifying which behaviors were tested mislead the user about what works. These are not stylistic preferences; they are honesty requirements. The auditor enforces enumeration here as strictly as in a paper.
@@ -85,12 +89,14 @@ When the draft makes a capability claim, require each of the following near it. 
 | **Cost** | Compute spend, wall-clock, or token budget per success, and the range | Order-of-magnitude cost differences separate a demonstration from a method |
 | **Model and harness version** | Exact model identifier, scaffold/harness, tool access, date | Capability claims are not reproducible across versions; an unversioned claim cannot be checked |
 | **Verification** | Who or what confirmed the output was correct, and independently of the generator | Self-reported correctness on a generation task is the weakest evidence in the document |
+| **Attribution** | What prior work the generated output reuses or builds on, and how that was checked | A generated proof can be correct, independently verified, and still be someone else's decade-old argument reproduced uncited; responsibility for correctness does not discharge responsibility for citation |
 | **Conditions** | Whether results were gathered under controlled conditions or observationally, and by whom | Self-run evaluation on self-chosen problems is a legitimate report and an illegitimate benchmark |
 
 **Verdict rules:**
 - Missing **denominator** or **supervision level** → the claim must be downgraded to its actual scope ("in one run, with human selection among outputs, the system produced…"), not merely hedged. Hedging language over a missing denominator ("the system appears able to…") is worse than the bare claim, because it reads as calibration while conveying nothing.
 - Missing **cost** or **version** → flag as a reproducibility gap; the claim can stand in scoped form.
 - Missing **independent verification** on a generation claim → the claim is downgraded to "produced output that the authors judged correct".
+- Missing **attribution check** on a generation claim → any novelty language is downgraded to "produced a correct output whose relation to prior work was not assessed", and the output is routed to `ai-contribution-disclosure-auditor`'s unattributed-reuse sweep. Models reproduce training-data arguments without citation systematically, and the citation debt lands on the humans who publish.
 - The schema applies symmetrically to *negative* capability claims ("the model could not solve X"). One failed attempt at one prompt is not an inability result, and unstated attempt counts are the same defect in the other direction.
 
 **Self-application:** this schema binds claims about *your own* agent pipeline as strictly as claims about a commercial model. An audit document reporting "the pipeline closed all findings" is a capability claim.
@@ -208,7 +214,7 @@ Emit `calibration_audit.md`:
 
 ## Capability-claim schema
 - Capability claims present: <n> (list each, verbatim)
-- Per claim: denominator | success rate | supervision | cost | model+harness version | verification | conditions — each PRESENT / MISSING
+- Per claim: denominator | success rate | supervision | cost | model+harness version | verification | attribution | conditions — each PRESENT / MISSING
 - Downgrades required: <claim → scoped restatement>
 
 ## Anti-pattern sweep
@@ -240,6 +246,7 @@ Emit `calibration_audit.md`:
 - **`09-research-validation-qa`**: invoke before final validation verdict, with `audit_target: paper`. The devil's advocate pass is particularly aligned with phase 09's adversarial third-party stance.
 - **Orchestrators (`proof-dissection-orchestrator`, `research-shaping-orchestrator`)**: invoke on the handoff record before declaring done, with `audit_target: agent_handoff`. Coverage claims like "all stages completed cleanly" are the dominant violation here.
 - **`ai-paper-reviewer`**: the devil's advocate pass complements the hostile reviewer lens; ai-paper-reviewer can invoke this auditor to ground individual claim-level critiques.
+- **`claim-disposition-gate`**: invokes this auditor for every claim dispositioned HEDGED — the hedge must scope prose to exactly what is established, in both directions (an over-defended hedge is flagged, not accepted as caution). Your verdict becomes the ledger entry's calibration field (`exact | false | overclaimed | undersold | over-defended`); your devil's-advocate alternatives aim first at load-bearing claims the ledger shows as neither PROVED nor TESTED.
 - **`narrative-clarity-auditor`**: parallel agent, separate concern. Clarity audits *how* the prose reads; calibration audits *what the prose claims relative to evidence*. Both can run on the same draft.
 
 When the discipline changes, it changes here.

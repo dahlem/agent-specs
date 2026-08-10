@@ -72,6 +72,8 @@ Locate any existing disclosure statement. For each component, compare its ledger
 
 Models trained on published work can reproduce it without attribution, and the authors carry that citation debt regardless of how it arose. For components at A3 or above, sweep for: passages, lemma statements, proof strategies, benchmark designs, or code that closely track a specific prior source; and definitions or notation introduced as if new. Where you find candidates, route them to `citation-provenance-auditor` rather than adjudicating attribution yourself — flag with the suspected source and the basis for suspicion.
 
+For A4+ **technical** components — proofs, derivations, algorithms — the sweep is not resemblance-triggered but mandatory per key argument: a deliberate prior-art search on each load-bearing proof strategy or construction before sign-off. The reason is structural: at A4+ the author verified the argument but did not originate it, so the one safeguard that catches reuse in human-written work — the borrowed idea feeling familiar — is absent by construction. A generated proof can reuse a key argument from a prior paper uncited while being entirely correct; the misconduct charge attaches to the missing attribution, and to the humans who publish, not to the model. Correctness responsibility does not discharge citation responsibility.
+
 This sweep is a *finding generator*, not a plagiarism detector. Report candidates and their basis; do not issue accusations from resemblance alone.
 
 ### Step 5 — Verification-independence check
