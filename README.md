@@ -22,7 +22,7 @@ A phase succeeds when a hostile reviewer cannot identify a fatal flaw and a bene
 
 ## Agent Index
 
-All 43 agents at a glance. Click an agent name to jump to its detailed description.
+All 44 agents at a glance. Click an agent name to jump to its detailed description.
 
 ### Research Workflow — Phases (10)
 
@@ -39,13 +39,14 @@ All 43 agents at a glance. Click an agent name to jump to its detailed descripti
 | [`09-research-validation-qa`](#phase-09--research-validation-qa) | Hostile-third-party reproducibility, methodology, and ethics audit |
 | [`10-scholarly-submission-strategist`](#phase-10--scholarly-submission-strategist) | Venue selection, formatting, archival release, reviewer-response matrix |
 
-### Research Workflow — Cross-Phase Tools (7)
+### Research Workflow — Cross-Phase Tools (8)
 
 | Agent | Purpose |
 |---|---|
 | [`ai-paper-reviewer`](#ai-paper-reviewer) | Dual benevolent/hostile pre-submission review across all ten phases |
 | [`arxiv-gap-scanner`](#arxiv-gap-scanner) | Full-pipeline literature-gap scan against a body of work over an arxiv window |
 | [`citation-provenance-auditor`](#citation-provenance-auditor) | Citation gate: PID + BibTeX + claim-mapping + canonicality, severity-tiered |
+| [`claim-disposition-gate`](#claim-disposition-gate) | Total claim-surface enumeration at results freeze; five-way disposition; ledger + risk register turn re-reviews into lookups |
 | [`literature-synthesis-auditor`](#literature-synthesis-auditor) | Agreement/conflict matrices across sources; consensus extraction; methodological divergence |
 | [`research-session-memory`](#research-session-memory) | Indexed cross-session memory: concepts, approaches, negative results, open questions |
 | [`scientific-narrative-architect`](#scientific-narrative-architect) | Multi-scale narrative architecture across audiences (Nature/Physics/AI conf/Blog) |
@@ -159,6 +160,7 @@ Map your specific issue to the right agent:
 | **Want to learn the math deeply** | `proof-dissection-orchestrator` | Produces personalized lecture notes or interactive walkthrough |
 | **Unsure what to disclose about AI use** | `ai-contribution-disclosure-auditor` | Builds the assistance ledger; drafts the disclosure statement; flags understatement |
 | **Result is correct but nobody can explain it** | `lean-proof-chain-validator` (Phase 7) or `ai-paper-reviewer` (talk test) | Explicability gate for formal work; talk test for manuscripts |
+| **Every review round finds a different error** | `claim-disposition-gate` | Dispositions the whole claim surface once (PROVED/MEASURED/TESTED/HEDGED/CUT); later reviews become ledger lookups |
 
 ### Review Workflow: From Issues to Agents
 
@@ -220,6 +222,7 @@ Use the ai-paper-reviewer agent on paper.pdf with mode: pipeline
 | **Remember findings across sessions** | `research-session-memory` | Index concepts, approaches, negative results, open questions |
 | **Fix draft clarity issues** | `narrative-clarity-auditor` | Register-calibrated (blog/paper/lecture-note/etc.) |
 | **Catch overclaiming** | `epistemic-calibration-auditor` | Language-to-evidence matching + devil's advocate |
+| **Gate a paper at results freeze** | `claim-disposition-gate` | Enumerates and dispositions every claim; emits `claim_ledger.md` + risk register; `mode: delta` re-runs only what a revision touched |
 
 ### Multi-Agent Orchestration
 
@@ -229,6 +232,7 @@ Some agents **orchestrate** others automatically:
 - **`research-shaping-orchestrator`** → sequences `research-divergence-cartographer` → `red-thread-selector` → `scientific-narrative-architect` (sculpt) → `06-argument-architect`
 - **`proof-dissection-orchestrator`** → sequences `paper-compressor` → `proof-chain-cartographer` → `math-review-router` (optional) → `proof-tutor`
 - **`math-review-router`** → delegates to `reframer`, `perturber`, `math-constructor`, `math-strategist`, `obstructor`
+- **`claim-disposition-gate`** → delegates depth checks per disposition: `lean-proof-chain-validator` (PROVED), `evidence-provenance-auditor` (MEASURED), `obstructor` (TESTED), `epistemic-calibration-auditor` (HEDGED), `citation-provenance-auditor` (priority claims); owns totality and the ledger itself
 
 When you invoke an orchestrator, the sub-agents run automatically — you don't need to call them individually.
 
@@ -305,10 +309,11 @@ For a fresh research project where the framing is not yet locked.
 5. `05-research-analysis-interpreter` — analyze with robustness/ablation
 6. `06-argument-architect` — distill 1–3 irreducible claims; the agent's DoD now invokes the writing auditors
 7. `07-paper-structure-architect` — section-level architecture; delegates clarity and theorem-presentation to the auditors
-8. `08-research-revision-validator` — close loopholes; pairs with `epistemic-calibration-auditor`
-9. `09-research-validation-qa` — adversarial reproducibility audit
-10. `10-scholarly-submission-strategist` — venue alignment, formatting, archival
-11. `ai-paper-reviewer` — pre-submission internal review
+8. `claim-disposition-gate` — results frozen, draft stable: disposition the entire claim surface once; emits `claim_ledger.md` + risk register
+9. `08-research-revision-validator` — close loopholes *against the ledger* (delta-only on revision rounds); pairs with `epistemic-calibration-auditor`
+10. `09-research-validation-qa` — adversarial reproducibility audit of the artifacts behind PROVED/MEASURED/TESTED entries
+11. `10-scholarly-submission-strategist` — venue alignment, formatting, archival
+12. `ai-paper-reviewer` — pre-submission internal review, in ledger mode: findings cite ledger entries or report enumeration failures
 
 `scientific-narrative-architect` is invoked throughout phases 6–10 for drafting, restructuring, audience adaptation, and quality control.
 
@@ -393,6 +398,7 @@ agent-specs/
 │   │   │   ├── ai-paper-reviewer.md
 │   │   │   ├── arxiv-gap-scanner.md
 │   │   │   ├── citation-provenance-auditor.md
+│   │   │   ├── claim-disposition-gate.md
 │   │   │   ├── literature-synthesis-auditor.md
 │   │   │   ├── research-session-memory.md
 │   │   │   ├── scientific-narrative-architect.md
@@ -502,6 +508,12 @@ Orchestrates a seven-phase literature-gap scan against a body of work — paper 
 ### Citation Provenance Auditor
 
 Performs comprehensive citation audits: establishes persistent identifiers (DOI, arXiv, ISBN), verifies BibTeX entries against authoritative sources (Crossref, arXiv, PubMed, DBLP) with field-by-field diffs, maps every citation occurrence to specific claims with evidence pointers and support strength, and assesses canonicality (peer-reviewed over preprint, primary over secondary). Generates provenance files per citation key and TeX annotation comments.
+
+### Claim Disposition Gate
+
+Runs once, at results freeze, and dispositions the paper's **entire falsifiable-claim surface**: every claim across the theory, empirical, and interface zones gets exactly one of five dispositions — **PROVED** (machine-checked, ledger reference at a pinned commit), **MEASURED** (pipeline-produced, script + data provenance), **TESTED** (falsification attempted and survived, artifact kept), **HEDGED** (prose scoped to exactly what is established), or **CUT**. The undispositioned residue is emitted as the risk register — the exact set of places a reviewer will strike. Enumeration is verified against an eight-failure-mode × three-zone grid (satellite claims, constant drift, statement drift, vacuity, universal claims, unverified computation, positioning, edge omission — each with a theory, empirical, and interface face), and a ten-step gate runs in priority order: five prevention rules (generate don't transcribe; non-vacuity by construction; every-regime statements; single source of truth across the theory↔empirics boundary; freeze-or-regenerate verified prose), three mechanical passes (numeric spot-checks and parameter sweeps; intra-paper cross-reference audit; quantifier lint), and two human passes (framing counterexample hunt; individually verified priority claims).
+
+The design premise: review rounds recur because each reviewer samples a different slice of an *unenumerated* claim space. Disposition the whole surface once and later reviews become lookups — `08-research-revision-validator` verifies the manuscript against the ledger and audits only revision deltas, `09-research-validation-qa` validates the artifacts behind the dispositions, and `ai-paper-reviewer` reviews by ledger lookup, reporting any claim missing from the ledger as an enumeration failure. Depth checks are delegated (`lean-proof-chain-validator` for PROVED, `evidence-provenance-auditor` for MEASURED, `obstructor` for TESTED, `epistemic-calibration-auditor` for HEDGED, `citation-provenance-auditor` for priority claims); the gate owns totality and the ledger. `mode: delta` re-dispositions only the claims a revision touches. Distinct from `claim-interrogator` (verdicts on someone else's paper under review) — this gate dispositions *your own* paper's surface before packaging.
 
 ### Literature Synthesis Auditor
 

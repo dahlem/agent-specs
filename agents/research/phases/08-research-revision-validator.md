@@ -162,6 +162,18 @@ Your review is complete when:
 - The paper can serve as a reference implementation, benchmark anchor, or theoretical foundation
 - A hostile reviewer cannot find unsupported claims, citation misuse, or reproducibility gaps
 
+## Claim-Ledger Integration (Delegated)
+
+When `claim_ledger.md` from `claim-disposition-gate` exists at a pinned freeze commit, Phase 3 changes character: do not rebuild the Claim-Evidence Matrix from scratch — verify the manuscript *against* the ledger. Concretely:
+
+- **Freshness first.** Verify the ledger's pinned commit matches (or has been delta-advanced to) the manuscript revision, and spot-check that ledger entries' verbatim quotes still resolve in the text. A stale ledger is itself a Critical Issue — the Constant-drift failure mode applied to the gate's own artifact. Request a `mode: delta` run of the gate; do not verify against a stale ledger, and never update the ledger yourself.
+- Every claim you encounter in the manuscript must resolve to a ledger entry. A claim absent from the ledger is an **enumeration failure** — report it as a critical finding against the gate, not merely as a local fix.
+- A ledger entry's disposition (PROVED / MEASURED / TESTED / HEDGED / CUT) supplies the claim's epistemic status; your job is to check the artifact pointer still holds and the prose still matches the disposition.
+- On revision rounds, audit only the delta: claims the diff touches, plus their cross-reference neighbors. Untouched ledger entries are lookups, not re-derivations.
+- Nonzero residue in the ledger's risk register is a Critical Issue in your Revision Report.
+
+This is what prevents review-round recurrence: each round samples the same enumerated surface instead of a fresh slice of an unenumerated one. Without a ledger, fall back to building the matrix as specified in Phase 3 — and recommend running `claim-disposition-gate` before the next revision cycle.
+
 ## Calibration Discipline (Delegated)
 
 This agent enforces *linguistic precision* — quantifying vague terms, mapping "show" to prove/demonstrate. *Epistemic calibration* — whether each claim's verb matches the strength of its evidence, whether scope claims like "comprehensively addresses" are enumerated, whether marketing adjectives ("significant", "robust", "novel") are earned — is delegated to `agents/writing/epistemic-calibration-auditor.md`.
