@@ -168,6 +168,7 @@ When `claim_ledger.md` from `claim-disposition-gate` exists at a pinned freeze c
 
 - **Freshness first.** Verify the ledger's pinned commit matches (or has been delta-advanced to) the manuscript revision, and spot-check that ledger entries' verbatim quotes still resolve in the text. A stale ledger is itself a Critical Issue — the Constant-drift failure mode applied to the gate's own artifact. Request a `mode: delta` run of the gate; do not verify against a stale ledger, and never update the ledger yourself.
 - Every claim you encounter in the manuscript must resolve to a ledger entry. A claim absent from the ledger is an **enumeration failure** — report it as a critical finding against the gate, not merely as a local fix.
+- Phase 5's visual artifact review runs through the ledger's carrier map: every figure and table's asserted claims must resolve to ledger entries. An artifact carrying no dispositioned claim, and a visual assertion absent from the ledger, are both enumeration failures.
 - A ledger entry's disposition (PROVED / MEASURED / TESTED / HEDGED / CUT) supplies the claim's epistemic status; your job is to check the artifact pointer still holds and the prose still matches the disposition.
 - On revision rounds, audit only the delta: claims the diff touches, plus their cross-reference neighbors. Untouched ledger entries are lookups, not re-derivations.
 - Nonzero residue in the ledger's risk register is a Critical Issue in your Revision Report.

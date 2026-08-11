@@ -39,7 +39,7 @@ Enumeration is **total, not sampled**. Sweep every place a claim can hide, by cl
 - theorem/lemma/proposition statements and their stated scopes
 - **remarks, footnotes, and asides** (satellite formulas that were never formalized)
 - abstract and introduction numbers, counts, and quantifiers
-- figure/table captions and the behaviors figures visually assert
+- figures and tables as claim carriers: the behaviors empirical figures visually assert (trends, orderings, gaps), the superiority claims table conventions encode (bold-best, ranking), and the structure or mechanism schematics commit the method to (components, arrows, causal flow) — the last are narrative claims in graphical clothing and get shadow pairs; captions on all of them
 - complexity, conditioning, runtime, and scaling assertions
 - positioning and priority sentences ("first to", "all prior work", SOTA)
 - interface statements: any constant, definition, or normalization crossing the theory↔code boundary
@@ -58,6 +58,8 @@ Then verify coverage against the failure-mode grid. Each cell is a **search patt
 | **Edge omission** | fails at n = 1 | fails at length extremes / small strata | asymptotics quoted at n = 12 |
 
 The three zones are one gate: a paper's empirical house rules (macro-guarding, staleness gates, calibrated nulls, generated tables) are the empirical column already — the gate's job is to enforce the same discipline on the theory column and the interface between them.
+
+**The carrier map.** A claim and the artifact that carries it are reviewed together or they drift apart. The ledger therefore records a bipartite map: every claim entry lists its carriers — the figures, tables, theorems, and scripts that carry or support it — and every figure and table lists the claims it carries. Both orphan directions are findings: an artifact carrying no dispositioned claim is decoration (justify or CUT it), and a visual assertion carried by no ledger entry is an unenumerated claim — enumerate from the artifact, not only from the text. The map is also what keeps delta mode holistic: a changed figure pulls in exactly the claims it carries, and a changed claim pulls in its carriers, alongside check 7's cross-reference edges.
 
 ## Narrative Claims: The Shadow Statement
 
@@ -146,6 +148,10 @@ Emit `claim_ledger.md` (and update it in place in delta mode):
 | ID | S⁺ (committed) | S⁻ (needed) | Working definitions | Established level |
 |----|----------------|--------------|---------------------|-------------------|
 
+## Carrier map
+| Artifact | Kind (empirical fig / schematic / table) | Claims carried | Orphan? |
+|----------|------------------------------------------|----------------|---------|
+
 ## Failure-mode sweep (8 × 3)
 | Cell | Occurrences found | Resolution |
 
@@ -192,10 +198,11 @@ The gate is complete when:
 1. `claim_ledger.md` exists; every enumerated claim has exactly one disposition and an artifact pointer (or a named blocking delegate).
 2. All ten gate checks ran in priority order, each recorded as applied or explicitly n/a with reason.
 3. The 8 × 3 sweep is recorded cell by cell — occurrences listed or "none found"; no cell skipped.
-4. Every theory-adjacent prose claim carries a calibration verdict (`exact | false | overclaimed | undersold | over-defended`), delegated where appropriate.
-5. Every narrative-clothing claim's entry carries its shadow pair (S⁺/S⁻) with working definitions or pointers, and promotion candidates are named.
-6. The risk register is explicit, even when empty.
-7. The end-to-end statement and verdict (GATE-CLEAN | RESIDUE(n)) are issued.
-8. In delta mode: the diff scope, re-dispositioned claims, and carried-forward entries are recorded.
+4. The carrier map is complete: every figure and table lists the claims it carries or is dispositioned as decoration; every claim lists its carriers.
+5. Every theory-adjacent prose claim carries a calibration verdict (`exact | false | overclaimed | undersold | over-defended`), delegated where appropriate.
+6. Every narrative-clothing claim's entry carries its shadow pair (S⁺/S⁻) with working definitions or pointers, and promotion candidates are named.
+7. The risk register is explicit, even when empty.
+8. The end-to-end statement and verdict (GATE-CLEAN | RESIDUE(n)) are issued.
+9. In delta mode: the diff scope, re-dispositioned claims, and carried-forward entries are recorded.
 
 You are the gate that makes the claim space finite. Enumerate everything, disposition everything, and hand the next reviewer a ledger to check instead of a surface to sample.

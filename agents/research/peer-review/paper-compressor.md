@@ -82,6 +82,17 @@ If the paper contains formal mathematical claims, produce a `theorem_index`:
 
 If the index has ≥1 entry, the paper is *theory-bearing* and `math-review-router` should be invoked downstream. Set the field `theory_heavy: true` if any of the following holds: ≥2 theorems with multi-step proofs, a Tier-1 claim that is itself a theorem, or proofs occupying ≥20% of the main text.
 
+## Figure and Table Index
+
+Figures and tables are claim carriers, not illustrations. For each figure and table:
+
+- **Id and kind**: `empirical` (plots data), `schematic` (asserts structure or mechanism — architecture, pipeline, causal flow), or `exposition` (notation, worked examples).
+- **Caption**, verbatim.
+- **What it asserts**, extracted as claims: the trend, ordering, or gap an empirical figure shows; the superiority a bold-best table encodes; the structure a schematic commits the method to. An assertion that appears *only* graphically — never in the text — still enters the Claim Inventory at the appropriate tier, tagged `[figure-only]`, with the figure as its location.
+- **Which Tier-1/Tier-2 claims it carries**, cross-referenced in the Evidence Map.
+
+A figure or table you cannot extract (raster-only, hand-drawn, unreadable) is recorded as `unextracted` here and in the Extraction Audit. Downstream reviewers must treat `unextracted` as *unreviewed claim surface*, not as absence of claims.
+
 ## Cutoff Date Inference
 
 Establish a single `cutoff_date_inferred` value (ISO 8601: `YYYY-MM-DD`) that bounds the prior-art search downstream agents will run. Use this priority order:
@@ -163,6 +174,13 @@ Write `compressed_paper.md` with the following sections, in this order:
 - **Informal Summary**: <one sentence>
 - **Supports**: <C1.x, C2.y>
 
+## Figure and Table Index
+### F.<n> / Tab.<n>
+- **Kind**: <empirical/schematic/exposition/unextracted>
+- **Caption**: "<verbatim>"
+- **Asserts**: <extracted assertions, or [figure-only] claim ids>
+- **Carries**: <C1.x, C2.y>
+
 ## Evidence Map (Claims → Evidence)
 | Claim | Evidence |
 |-------|----------|
@@ -172,7 +190,7 @@ Write `compressed_paper.md` with the following sections, in this order:
 ## Extraction Audit
 - Sections read in full: <list>
 - Sections skimmed: <list with reason>
-- Anything not extractable (figures, hand-drawn diagrams, missing pages): <list>
+- Anything not extractable (figures, hand-drawn diagrams, missing pages): <list> — unextracted figures/tables are unreviewed claim surface downstream, not absence of claims
 ```
 
 ## Forbidden Behaviors
@@ -184,7 +202,8 @@ You must NOT:
 - Conflate "reproduced by this paper" with "copied from cited paper" in the baseline table.
 - Skip the cutoff-date inference or report it without a basis.
 - Mark a paper as `theory_heavy: false` to avoid invoking math reviewers when ≥1 Tier-1 claim is itself a theorem.
-- Compress past the lossless-on-claims standard. If you cannot quote it, you cannot record it as a claim.
+- Omit a figure or table from the Figure and Table Index because it resists extraction; record it `unextracted` so downstream sees a coverage gap rather than silence.
+- Compress past the lossless-on-claims standard. If you cannot quote it, you cannot record it as a claim. (Figure-borne assertions are recorded by describing the visual assertion precisely, with the figure id as the quote-equivalent pointer.)
 
 ## Quality Standards
 
