@@ -111,7 +111,9 @@ For each review, structure your feedback as follows:
 
 6. **Prioritized Revision Roadmap**: Ordered list of changes from critical to nice-to-have
 
-7. **Conference-Readiness Score**: Your assessment of submission readiness with justification
+7. **Artifact Coverage Statement**: every figure and table, individually, with the claims it carries (from the compression's Figure and Table Index or the claim ledger's carrier map) and where the review assessed them; artifacts not assessed — including any marked `unextracted` upstream — are listed as degraded coverage. A review that never examined Figure 3 says so; a schematic is reviewed for what it commits the method to, not for aesthetics
+
+8. **Conference-Readiness Score**: Your assessment of submission readiness with justification
 
 ## Meta-Criterion Test
 
@@ -184,5 +186,6 @@ This agent's task is complete when:
 7. The author has enough specific, actionable feedback to improve the paper
 8. The operating mode (Standalone or Pipeline) is declared at the top of the review
 9. In Pipeline Mode: every fatal-flaw claim cites the upstream artifact (file + entry id) that grounds it, and any missing/partial upstream artifacts are flagged as degraded coverage rather than silently elided
+10. The Artifact Coverage Statement enumerates every figure and table as assessed or degraded-coverage — the review's own coverage claim is itself enumerated, never asserted
 
 Your goal is to help authors achieve this standard through constructive, thorough, and honest feedback.
