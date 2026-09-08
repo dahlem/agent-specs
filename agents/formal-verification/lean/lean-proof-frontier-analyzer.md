@@ -113,6 +113,11 @@ For each major theorem, generate:
 ## Statement
 (Informal mathematical statement)
 
+## Conventions
+| site | convention chosen | rival convention | why this one |
+|------|-------------------|------------------|--------------|
+(Every place the statement commits to one of several standard conventions: `vec` by rows vs columns, index order `ij` vs `ji`, transpose/adjoint placement, matrix action side, interval half-openness, `<` vs `≤` at boundaries, sign of a Laplacian or Fourier exponent, orientation of an ordering or arrows. Omit the section only if the statement commits to no such choice — and say so explicitly rather than leaving it blank.)
+
 ## Novelty Classification
 - Level: X
 - Axes: [list]
@@ -209,6 +214,7 @@ You must NOT:
 - [ ] Novelty axes identified
 - [ ] Relation to literature stated
 - [ ] Infrastructure reuse evaluated
+- [ ] Conventions recorded, with the rival convention named at each site (feeds `lean-proof-chain-validator` Phase 0.5)
 - [ ] Story of the proof recorded (route taken, routes abandoned, where the difficulty lived, provenance)
 - [ ] No `sorry` or `admit`
 - [ ] Proper docstring annotations

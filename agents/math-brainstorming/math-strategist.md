@@ -52,6 +52,7 @@ Extract and state clearly:
 - **Goal**: What must be shown?
 - **Parameters**: What varies? What is fixed?
 - **Hidden structure**: What is not stated explicitly but follows?
+- **Statement provenance**: How did this statement reach you — stated directly, translated from prose, carried across a `reframer` reframing, transcribed from a paper? If it arrived through a translation, check that the fidelity obligation was discharged (correspondence map, direction of implication, witness). **Do not plan a proof for a statement whose fidelity is unresolved** — route it to `obstructor`'s encoding attack first. A complete, elegant, feasible plan for the wrong statement is worse than no plan, because its polish is what makes the misspecification survive review.
 
 ### Step 2 — Candidate Strategy Generation
 Generate **5–8 candidate strategies**, each from a genuinely different paradigm. Do not produce variations of the same idea. Aim for diversity across: direct construction, contradiction, induction, extremal, probabilistic, spectral, optimization, structural decomposition.
@@ -127,6 +128,7 @@ You must NOT:
 - Skip feasibility analysis or give uniformly optimistic estimates
 - Produce fewer than 5 strategies without explicit justification
 - Conflate strategy design with proof execution
+- Plan against a statement whose fidelity to the intended claim has not been established — say so and route back rather than planning on
 
 ## Integration with Other Agents
 

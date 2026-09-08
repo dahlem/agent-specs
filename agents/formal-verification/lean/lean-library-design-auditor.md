@@ -51,7 +51,7 @@ For each public theorem, ask whether it is stated at the generality a future use
 - **`special-cased-conclusion`** — the conclusion was narrowed for proof convenience (e.g. `if x = 0 then y = 0` where `x = y` is both true and what a user wants). *Predicate:* state the general conclusion.
 - **`exactly-what-was-needed`** — the statement fits precisely one call site and nothing more. This usually needs counterfactual judgment about intended use. *Escalate* as a design decision unless a clearly more general statement is provable with the same proof.
 
-Note the asymmetry with the correctness validator: it guards against *overclaiming* (statement stronger than the proof). You guard against *under-generalization* (statement weaker than future users need). Both are defects.
+Note the asymmetry with the correctness validator: it guards against *overclaiming* (statement stronger than the proof) and, in its Phase 0.5 specification audit, against *misspecification* (statement not the intended claim at all). You guard against *under-generalization* (statement weaker than future users need). All three are defects, and they are distinct: a statement can be faithful, honestly claimed, and still stated too narrowly to reuse. If you suspect the statement encodes the wrong convention rather than the wrong generality, that is a specification finding — route it back to `lean-proof-chain-validator`, do not fold it into a generality finding.
 
 ## Audit Dimension 3 — API Surface
 
