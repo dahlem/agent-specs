@@ -110,6 +110,21 @@ The outermost ring of the concentric arc, and the only part of the paper most of
 - Ends with forward-facing synthesis, not summary
 - **Definition of Done**: No new concepts; reader can articulate thesis in one sentence; so-what is delivered here rather than pre-spent in the introduction; the reader learns something about how the result was found
 
+### Implementation Identifiers and the Reproducibility Appendix
+
+**The main body carries mathematics; the repository's names live in the appendix.** A reader should be able to follow every argument without knowing what anything is called in code. Lean declaration names, Python functions and modules, file paths, CLI flags, and commit hashes therefore do not appear in running prose — not because they are unimportant, but because they are a different kind of fact, verifiable by a different reader, at a different moment.
+
+For a formalized development, the link is made by a **mapping table in the reproducibility appendix**, one row per mathematical object:
+
+| Object (as stated in the paper) | Location | Lean declaration | File | Status |
+|---|---|---|---|---|
+| Definition 3.1 (admissible pair) | §3 | `Admissible.pair` | `Core/Defs.lean` | — |
+| Theorem 4.2 | §4 | `admissible_converges` | `Core/Main.lean` | no `sorry`, axioms: standard |
+
+This is the artifact a referee reproducing the work actually needs, and it is strictly better than identifiers scattered through the prose: it is complete, checkable in one pass, and it survives a rename that would silently break an inline mention. `lean-proof-chain-validator` and `lean-proof-frontier-analyzer` hold the provenance this table is generated from — generate it, never transcribe it. The same principle covers empirical work: scripts and data paths belong in the reproducibility appendix and the provenance records `evidence-provenance-auditor` maintains, not in the results narrative.
+
+Two exemptions. A name that has become the object's name in the literature is no longer an implementation identifier. And where the *software itself* is a contribution, it is named and described as an object of study — which is a claim about the artifact, and is dispositioned like any other.
+
 ### Appendices and Supplementary Material
 - Every appendix earns its place one of two ways: it supplies reviewer-grade verification for a main-text claim (full proof, ablation, reproducibility detail), or it is explicitly framed as a contextual specialisation subordinate to the main result
 - Never a co-equal second thesis. Flag any appendix that reads as a fragment of an adjacent paper — its own abstract-like framing, its own independent contribution, or results that feed no main-text claim

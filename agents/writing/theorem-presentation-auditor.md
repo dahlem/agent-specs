@@ -64,7 +64,17 @@ Every theorem with a non-trivial proof must have a modular architecture composed
    - `[technical]` — non-trivial but standard once you see the move
    - `[bookkeeping]` — algebraic manipulation, change of variables, simplification
 
-   The discipline is satisfied by either (a) explicit inline tags `[L]`, `[T]`, `[B]`; (b) macros (`\loadbearing{…}`, `\technical{…}`, `\bookkeeping{…}`) with documented rendering; or (c) consistent typographic convention (e.g., bold for load-bearing, italic for technical, regular for bookkeeping) declared in the paper's conventions section. The auditor accepts any consistent system; absence of a system is the violation.
+   **These are working labels, not paper content.** `load-bearing`, `technical`, and `bookkeeping` are this auditor's vocabulary for reasoning about a proof; they are construction-industry metaphor, and printing them puts tooling jargon in front of a mathematical reader. The default form is therefore an annotation that renders to nothing — LaTeX comments, or macros defined to no-ops — whose whole job is to discipline the prose around them.
+
+   What the reader receives is the *discrimination*, expressed in the register mathematicians actually use to signal where difficulty lives:
+
+   | Working label | How it reaches the reader |
+   |---|---|
+   | `load-bearing` | "The main difficulty is …", "This is the only point at which [hypothesis] is used", "The crux is …" — plus the expository weight of item 5 |
+   | `technical` | "A standard argument gives …", "By a routine computation …" |
+   | `bookkeeping` | compressed, or moved to an appendix, without ceremony |
+
+   A visible tagging system — inline markers, rendered macros, or a declared typographic convention — is acceptable only where the venue's own conventions already use one. The auditor accepts any consistent system, visible or invisible; absence of a system is the violation, and *printing this agent's vocabulary* is a separate violation flagged under apparatus leakage.
 
 5. **Expository weight tracks the tags.** The tags are a claim about where the difficulty lives; the prose must corroborate it. Measure the space each tagged step receives and check the ordering: `load-bearing` steps get more exposition than `technical`, which get more than `bookkeeping`. A `[load-bearing]` step dispatched in one clause while a `[bookkeeping]` change of variables runs half a page is a violation — either the tags are wrong or the writing is inverted, and the audit must say which it thinks.
 
@@ -103,7 +113,7 @@ The compact rhythm form is required: theorem block + one combined paragraph for 
 - **Lemmas cited from prior work without their own intuition.** "By Lemma 3.2 of [12]…" with no reminder of what Lemma 3.2 says is a violation in any paper-register theorem.
 - **Inline anonymous claims doing real work.** "Note that $f$ is Lipschitz; this follows by …" with a 4-line argument. The Lipschitz claim should be its own named lemma.
 - **Appendix proof with no labels matching the sketch.** The reviewer cannot jump from the sketch's named load-bearing step to the appendix's elaboration. Cross-references must be bidirectional.
-- **Significance tagging applied inconsistently.** Some proofs use `[L]/[T]/[B]`, others use bold/italic, others use nothing. Pick one system and apply it everywhere.
+- **Significance tagging applied inconsistently.** Some proofs annotate, others do not; or a paper mixes an invisible working system with a visible one. Pick one system and apply it everywhere. Where the system is visible, it must also survive the apparatus-leakage check — a consistent convention built from this agent's vocabulary is consistently wrong.
 - **Significance tagging applied as decoration.** Every step labeled `[load-bearing]` defeats the purpose. The labels carry information only when they discriminate.
 - **Tags contradicted by the prose.** A step tagged `[load-bearing]` gets one clause; a `[bookkeeping]` step gets three paragraphs. The tagging and the writing disagree about where the difficulty is. Flag with both locations and state which you believe.
 - **Uniformly polished proof.** No expository gradient at all — every step written to the same finish and length, so the tags are the only differentiator and the prose carries no independent signal. Characteristic of machine-generated or heavily machine-edited proofs. The fix is to expand the load-bearing steps, not to trim the rest.

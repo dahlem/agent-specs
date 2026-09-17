@@ -905,6 +905,12 @@ Use the narrative-clarity-auditor agent with register: lecture-note
 
 The auditor emits `clarity_audit.md` with a calibration block, per-rule verdicts, anti-pattern findings, recommended minimal rewrites, and the deliberately-not-enforced list. Generative invocation emits `clarity_checklist.md`.
 
+Two anti-patterns worth calling out, because both enter a paper by *revision* rather than by design and neither is visible to the author:
+
+**Apparatus leakage** — vocabulary belonging to the process that produced the paper surfacing in the paper itself. These agents share a working vocabulary (`load-bearing`, `disposition`, `residue`, `carrier`, `spine`, `so-what`, `gate`, `ledger`, `seam`, …) that is precise among themselves and reads as tooling jargon, or construction-industry metaphor, to a mathematical reader. The test is not whether a term is meaningful but whether a reader who has never seen this pipeline would recognise it as the field's language. It is the vocabulary counterpart of the rule that audit apparatus never obligates a paper to display it — and `theorem-presentation-auditor`'s significance labels are annotations that render to nothing for exactly this reason, reaching the reader as "the main difficulty is …" rather than as a printed tag.
+
+**Implementation identifiers in the main body** — Lean declaration names, Python functions, file paths, commit hashes in running prose. The main body carries mathematics; a reader should follow every argument without knowing what anything is called in a repository. For formalized work the link is a generated object-map table in the reproducibility appendix (`07-paper-structure-architect` owns the placement rule, `lean-proof-chain-validator` emits the table) — complete, checkable in one pass, and it survives a rename that would silently break an inline mention.
+
 When the discipline changes, it changes here. Other agents reference; they do not duplicate.
 
 ### Epistemic Calibration Auditor
