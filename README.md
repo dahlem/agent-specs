@@ -6,11 +6,11 @@ Specialized Claude Code agents for rigorous AI research workflows, designed to s
 
 This repository contains agent specifications organized into six categories:
 
-1. **Research Workflow** — A structured 10-phase methodology for taking research from problem framing through submission, plus cross-phase tools including session memory and literature synthesis.
+1. **Research Workflow** — A structured 10-phase methodology for taking research from problem framing through submission, plus cross-phase tools including session memory, literature synthesis, and two record-keeping gates: `hypothesis-register-keeper` (what the project committed to testing, registered before it knew) and `claim-disposition-gate` (what the paper asserts, dispositioned once at results freeze).
 2. **Research Shaping** — A diverge-then-converge layer that turns a body of work into the one paper it should become; an expanded entry point into phase 06.
 3. **Peer Review** — A coordinated, cutoff-bounded review pipeline that produces structured artifacts for the AI paper reviewer to ground its verdicts in. The **Proof Dissection Track** is a parallel sub-track for *reading* a theoretical paper rather than reviewing it (cartography → personalized LaTeX/memoir lecture note).
 4. **Math Brainstorming** — An iterative ecosystem of agents for mathematical problem exploration, construction, and synthesis.
-5. **Writing & Documentation** — Cross-cutting writing auditors used directly or invoked by paper-writing agents to enforce six orthogonal disciplines across any document register: narrative clarity, epistemic calibration, evidence provenance, citation provenance, theorem presentation, and AI-contribution disclosure.
+5. **Writing & Documentation** — Cross-cutting writing auditors used directly or invoked by paper-writing agents to enforce six orthogonal disciplines across any document register: narrative clarity, epistemic calibration, evidence provenance, citation provenance, theorem presentation, and AI-contribution disclosure. Plus `manuscript-update-gate`, which fires on every manuscript change and routes to those auditors — exposition, unlike correctness, decays under editing.
 6. **Formal Verification** — Agents for Lean 4 proof development, validation, and documentation.
 
 The research framework operationalizes both **benevolent** and **hostile** reviewer perspectives:
@@ -1127,11 +1127,88 @@ The script:
 find agents -name "*.md" -exec cp {} ~/.claude/agents/ \;
 ```
 
+Copies do not track the repo — re-copy after every pull. Prefer the sync script.
+
+### The writing gate (optional, but install it once and forget it)
+
+`manuscript-update-gate` is the one agent that must fire without being asked, because
+exposition decays on every edit and nobody remembers to re-check it. It ships with
+hooks, and the two commands below do different jobs — a common point of confusion:
+
+```bash
+scripts/install-writing-gate.sh --global          # ONCE PER MACHINE
+scripts/install-writing-gate.sh init <paper-repo> # once per paper
+```
+
+**`--global` is the install.** It writes a `PostToolUse` hook (notices manuscript
+source changing) and a `Stop` hook (blocks the turn from ending while the manuscript
+is unreconciled) into `~/.claude/settings.json`. Every session in every directory
+then carries the gate, including sessions opened long afterwards. Run it once, open
+`/hooks` (or restart) to load it into the session you ran it from, and never run it
+again.
+
+**`init` is not an install.** It writes a `.manuscript-gate.json` marker into one
+paper. Nothing is registered and no reload is needed — the hooks read the marker at
+runtime, so a paper marked mid-session is gated immediately.
+
+The marker exists because the hooks are global and therefore fire everywhere.
+Something has to tell a paper from a code repository, or the `Stop` hook would block
+every session you ever open — in this repository alone, 49 markdown files would trip
+it. **So the gate is installed everywhere and switched on nowhere;** `init` switches
+it on for one paper, and doubles as that paper's config:
+
+```json
+{ "globs": ["*.tex"], "ledger": "writing_ledger.md", "register": "theoretical-paper" }
+```
+
+Set `"globs": ["*.md"]` for a markdown paper. The config lives with the paper rather
+than in a central list, so co-authors get it when they clone. Mark several at once —
+`init` is idempotent, so rerun it freely as you add papers:
+
+```bash
+for p in ~/papers/*/; do scripts/install-writing-gate.sh init "$p"; done
+```
+
+After marking a paper, run `manuscript-update-gate` once in `mode: full` to lay down
+a baseline `writing_ledger.md`. Until that ledger exists the `Stop` hook blocks at
+the end of every session in that repository — the forcing function working as
+designed, but better met deliberately than during an unrelated ten-minute fix.
+
+`--repo <dir>` installs the hooks into a single repository's own
+`.claude/settings.json` instead, for papers whose co-authors should get them through
+the repository; add `--local` to write a gitignored `settings.local.json`.
+
+### Model tiers
+
+Every agent declares a `model:` family alias — `fable` for scientific judgment and
+cross-artifact synthesis, `opus` for substantial reasoning along a specified path,
+`sonnet` for mechanical passes (currently 30 / 15 / 1). Aliases, never pinned ids, so
+a new release is picked up without editing this repository;
+`scripts/lint-descriptions.sh` enforces that. The assignment rationale, and what to
+do when a new model ships, are in [DESCRIPTION-STYLE.md](DESCRIPTION-STYLE.md).
+
 ## Agent Memory
 
 The math brainstorming agents support **persistent agent memory** at `~/.claude/agent-memory/{agent-name}/`. This allows agents to accumulate knowledge across sessions — recording which patterns worked, which approaches failed, and what structural insights were discovered.
 
 Memory setup is user-local and not tracked in this repo. Each agent's spec references its memory directory; the memory infrastructure is created automatically on first use.
+
+### Three stores, deliberately separate
+
+Persistent state lives in three places with different owners, lifetimes, and
+mutability. Conflating them is the commonest way a record stops being trustworthy.
+
+| Store | Location | What it holds | Mutability |
+|---|---|---|---|
+| Agent memory | `~/.claude/agent-memory/{agent}/` (user-local) | what an agent learned about *how to work* — patterns that paid off, approaches that failed | freely revised |
+| `research-session-memory` | `research-memory/` (in project) | the investigative trail: concepts, approaches, negative results, open questions | freely revised — an entry's current understanding is *meant* to be rewritten |
+| `hypothesis-register-keeper` | `hypothesis-register/` (in project) | what the project committed to testing, before it knew | **append-only**; frozen blocks are never rewritten, because the value is entirely in having been written before the answer was known |
+
+The first two are retrospective and revisable. The third is prospective and sealed:
+correction happens by supersession, never by edit, and `status` is derived from an
+append-only event log rather than set by hand. An open question in session memory is
+not a hypothesis in the register — it becomes one only when someone states a
+falsifiable proposition with a contrast and a falsification criterion and registers it.
 
 ## Phase Completion Criteria
 
