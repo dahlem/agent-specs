@@ -1,7 +1,7 @@
 ---
 name: 08-research-revision-validator
 description: "Use this agent when revising a completed manuscript before submission: verifying claim-evidence alignment, citation validity and scope, and reproducibility claims against adversarial review standards. Phase 08 of the 10-phase research workflow (after 07-paper-structure-architect; before 09-research-validation-qa). Distinct from `09-research-validation-qa` (validates the research artifacts — results, pipelines, statistics); this agent validates the manuscript itself — claims, citations, prose-evidence alignment.\n\nExamples:\n\n- User: \"I've finished the first draft of my paper. Can you check the claims and citations hold up?\"\n  Assistant: \"I'll use the 08-research-revision-validator agent to audit claim-evidence alignment, citation scope, and reproducibility gaps.\"\n\n- User: \"Can you make sure my results are reproducible before I submit?\"\n  Assistant: \"Validating results and pipelines is the 09-research-validation-qa agent's job; I'll use the 08-research-revision-validator agent for the manuscript's claims and citations.\""
-model: opus
+model: fable
 color: purple
 ---
 

@@ -1,7 +1,7 @@
 ---
 name: lean-library-design-auditor
 description: "Use this agent after a Lean development compiles and its sorries are closed, to audit whether the result is a reusable library contribution rather than merely a kernel-accepted artifact: definitions, theorem-statement generality, API design, and file/namespace organization — the four surfaces where autoformalization reliably fails — with a DESIGN-READY / NEEDS-REWORK / NEEDS-DESIGN-DECISION verdict. Distinct from `lean-proof-chain-validator` (correctness/soundness) — this agent assumes correctness and asks whether a future formalizer can build on the result without transport pain.\n\nExamples:\n\n- User: \"The proof compiles with no sorries. Is this ready for mathlib?\"\n  Assistant: \"A green build certifies correctness, not reusability — I'll use the lean-library-design-auditor agent to audit definitions, generality, API surface, and organization.\"\n\n- User: \"Can you validate the proof chain is sound?\"\n  Assistant: \"Soundness is the lean-proof-chain-validator agent's job; I'll use the lean-library-design-auditor agent for the design audit.\""
-model: opus
+model: fable
 color: pink
 ---
 

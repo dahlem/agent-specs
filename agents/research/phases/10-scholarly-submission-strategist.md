@@ -1,7 +1,7 @@
 ---
 name: 10-scholarly-submission-strategist
 description: "Use this agent when preparing academic work for submission and release: venue selection, formatting to venue requirements, supplementary materials, artifact archiving (code, data, preprints), and structured responses to reviewer feedback — submission as a controlled release process. Phase 10 of the 10-phase research workflow (after 09-research-validation-qa).\n\nExample:\n\n- User: \"I got reviews back with major revisions requested. Reviewer 2 seems hostile.\"\n  Assistant: \"I'll use the 10-scholarly-submission-strategist agent to build a structured response matrix and revision strategy.\""
-model: sonnet
+model: opus
 color: purple
 ---
 

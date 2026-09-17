@@ -1,7 +1,7 @@
 ---
 name: 02-literature-discovery-mapper
 description: "Use this agent when you need a systematic literature landscape map to position your own research problem — verifying that a gap is genuine and building a defensible argument for why the problem remains unsolved. Phase 02 of the 10-phase research workflow (after 01-research-framing-validator; before 03-research-design-auditor). Distinct from `literature-expansion` (prior-art bundle for reviewing someone else's paper), `arxiv-gap-scanner` (recurring threat scan), and `literature-synthesis-auditor` (synthesizes an already-collected corpus) — this agent maps the landscape once to position *your own* work.\n\nExamples:\n\n- User: \"I think there's a gap in how current methods handle distributional shift in RL. Can you verify this?\"\n  Assistant: \"I'll use the 02-literature-discovery-mapper agent to map the literature and test whether that gap is genuine and defensible.\"\n\n- User: \"Assemble the prior art for this paper I'm reviewing.\"\n  Assistant: \"That's the literature-expansion agent's job; I'll use the 02-literature-discovery-mapper agent to position your own research.\""
-model: opus
+model: fable
 color: purple
 ---
 

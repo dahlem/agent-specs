@@ -1,7 +1,7 @@
 ---
 name: arxiv-gap-scanner
 description: "Use this agent to run a full literature-gap scan against a body of work (paper directory, formal-verification module, or research roadmap) over a defined arxiv window: abstract bulk-fetch, triage, PDF pulls, per-paper deep review, and synthesis into an Impact × Effort × Stream matrix with a deadline-sorted action list in a working scan directory. Distinct from `02-literature-discovery-mapper` (single-pass landscape map to position your own problem) and `literature-expansion` (one-shot review-time bundle) — this agent is the recurring full-pipeline threat scan of an ongoing program.\n\nExamples:\n\n- User: \"Scan arxiv math + cs.LG-theory 2025-2026 against my publication roadmap.\"\n  Assistant: \"I'll use the arxiv-gap-scanner agent to run the full pipeline — triage, PDF pulls, deep review — and report a deadline-sorted action list.\"\n\n- User: \"Map the literature to position my research problem.\"\n  Assistant: \"A one-shot positioning map is the 02-literature-discovery-mapper agent's job; I'll use the arxiv-gap-scanner agent for the recurring threat scan.\""
-model: opus
+model: fable
 color: cyan
 ---
 

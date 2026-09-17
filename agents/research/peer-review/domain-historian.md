@@ -1,7 +1,7 @@
 ---
 name: domain-historian
 description: "Use this agent after `paper-compressor` and `literature-expansion` to calibrate the *significance* verdict: what counts as a Tier-1 contribution in this subfield as of the paper's cutoff date, and whether the paper under review meets that bar — the rubric the final reviewer uses to answer 'so what.' Stage 3 of the peer-review pipeline (parallel with baseline-scout; feeds ai-paper-reviewer). Distinct from `venue-archetype-distiller` (profiles a venue's winners into a recipe) — this agent calibrates the significance of *one* paper under review.\n\nExamples:\n\n- User: \"Is this contribution actually significant given the state of the field?\"\n  Assistant: \"I'll use the domain-historian agent to produce a significance rubric calibrated to the paper's cutoff date.\"\n\n- User: \"What does a winning NeurIPS paper look like in this area?\"\n  Assistant: \"Profiling a venue's winners is the venue-archetype-distiller agent's job; I'll use the domain-historian agent to judge whether *this* paper meets the significance bar.\""
-model: opus
+model: fable
 color: cyan
 ---
 

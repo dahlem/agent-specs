@@ -1,7 +1,7 @@
 ---
 name: epistemic-calibration-auditor
 description: "Use this agent to audit any agent output, draft, audit document, handoff record, or end-of-turn summary for overclaim, coverage inflation, hidden negative results, and miscalibrated verdicts, including a devil's-advocate pass that constructs the strongest counter-argument to each load-bearing claim. Configurable by `audit_target` (paper | audit_document | agent_handoff | status_report | blog | informal). Safeguards both directions — flags underclaim as well as overclaim.\n\nExample:\n\n- User: \"My paper's discussion section reads salesy. Audit it for overclaim.\"\n  Assistant: \"I'll use the epistemic-calibration-auditor agent with audit_target: paper — language calibration plus devil's advocate on each Tier-1 claim.\""
-model: opus
+model: fable
 color: red
 ---
 

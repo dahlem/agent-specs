@@ -1,7 +1,7 @@
 ---
 name: lean-proof-chain-validator
 description: "Use this agent when a Lean proof development reaches a milestone and needs research-grade validation: specification fidelity (does the formal statement say what was meant?), non-vacuity, logical soundness, dependency closure, epistemic correctness (novelty and assumptions), ecosystem robustness, and negative-result documentation — mathlib-submission and ITP/CPP-adjacent standards. Distinct from `lean-library-design-auditor` (design/reusability after correctness is established) — this agent establishes correctness.\n\nExample:\n\n- User: \"I've finished proving the main theorem about compact operators. Can you validate the proof chain?\"\n  Assistant: \"I'll use the lean-proof-chain-validator agent to run a comprehensive validation of the proof chain.\""
-model: opus
+model: fable
 color: pink
 ---
 

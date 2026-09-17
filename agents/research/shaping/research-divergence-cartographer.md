@@ -1,7 +1,7 @@
 ---
 name: research-divergence-cartographer
 description: "Use this agent when you have an accumulated body of work — results, theorems, experiments, abandoned threads — and need to diverge over the candidate papers it could become: 5-12 candidate red threads, each with a core claim, evidence map, novelty type, contribution axis, and risk profile. Stage 1 of the research-shaping pipeline; it deliberately over-generates and does not select — `red-thread-selector` chooses downstream.\n\nExample:\n\n- User: \"I have six months of results scattered across three threads. What papers could come out of this?\"\n  Assistant: \"I'll use the research-divergence-cartographer agent to enumerate candidate red threads spanning different novelty types and contribution axes.\""
-model: opus
+model: fable
 color: green
 ---
 

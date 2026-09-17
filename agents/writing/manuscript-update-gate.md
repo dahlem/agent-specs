@@ -1,7 +1,7 @@
 ---
 name: manuscript-update-gate
 description: "Use this agent when a manuscript changes — any revision, reviewer response, or section rewrite — to gate the writing: it owns the so-what distribution contract (abstract carries all four narrative questions, the introduction withholds so-what, the conclusion delivers it), the notation ledger, spine-vs-appendix-vs-cut placement, and cross-section continuity, then routes depth to the writing auditors. Configurable by `mode` (full | delta) and `register`. Distinct from `claim-disposition-gate` (dispositions the claim surface once at results freeze) — this gate governs exposition, which decays on every edit.\n\nExamples:\n\n- User: \"I reworked section 4 and added an appendix.\"\n  Assistant: \"I'll use the manuscript-update-gate agent in delta mode to re-check notation, seams, and placement against the diff.\"\n\n- User: \"Are the paper's claims properly supported?\"\n  Assistant: \"That's the claim-disposition-gate agent's job; I'll use the manuscript-update-gate agent for how the paper reads after the edit.\""
-model: opus
+model: fable
 color: yellow
 ---
 

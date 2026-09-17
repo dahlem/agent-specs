@@ -1,7 +1,7 @@
 ---
 name: 04-research-data-architect
 description: "Use this agent when designing, constructing, or validating research data, datasets, benchmarks, or experimental artifacts: construct tables mapping theory to observables, collection protocols, synthetic data generation, provenance documentation, and quality-assurance checks. Phase 04 of the 10-phase research workflow (after 03-research-design-auditor; before 05-research-analysis-interpreter).\n\nExample:\n\n- User: \"I need to create a benchmark for measuring hallucination in language models\"\n  Assistant: \"I'll use the 04-research-data-architect agent to design the benchmark with proper construct mapping and validity checks.\""
-model: sonnet
+model: opus
 color: purple
 ---
 

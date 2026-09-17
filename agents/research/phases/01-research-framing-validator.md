@@ -1,7 +1,7 @@
 ---
 name: 01-research-framing-validator
 description: "Use this agent when beginning a new AI research project that needs rigorous problem framing: validating that a research problem is properly scoped, motivated from first principles, and meets definition-of-done criteria before advancing to theory or experimentation. Phase 01 of the 10-phase research workflow (before 02-literature-discovery-mapper).\n\nExample:\n\n- User: \"I want to research better attention mechanisms for transformers\"\n  Assistant: \"That's an early-stage idea that needs rigorous framing — I'll use the 01-research-framing-validator agent to structure and validate the problem statement.\""
-model: opus
+model: fable
 color: purple
 ---
 

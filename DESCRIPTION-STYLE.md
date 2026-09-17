@@ -50,6 +50,46 @@ Prose fields in this order, then examples:
 - ≤ 1,100 for cluster agents carrying disambiguation + a boundary example (lint warns above this)
 - 1,300 hard cap (lint error)
 
+## Model selection
+
+The `model:` key sets which model tier an agent runs on. Two rules keep this from
+rotting as the model lineup changes.
+
+**Always a family alias, never a pinned id.** `opus`, `sonnet`, `haiku`, `fable` —
+an alias resolves to the current model in that family, so a new release is picked
+up with no edit to this repository. `claude-opus-5` or a dated id pins an agent to
+a model that will age out. `scripts/lint-descriptions.sh` rejects anything
+containing a digit, and anything outside the tier list.
+
+**Assign by capability demand, not by reputation.** State what the agent's hardest
+step actually requires, so the choice can be re-evaluated against a model that does
+not exist yet:
+
+| Demand the agent's hardest step makes | Tier |
+|---|---|
+| **Scientific judgment**: adversarial search for counterexamples, verdicts a competent reviewer would contest, deciding whether a hedge is honest, distinguishing a refutation from an abandonment, constructing the object that separates two readings | `fable` |
+| **Cross-artifact synthesis** where the finding is a property of the *set* — shape diagnostics, spine-to-contribution ratios, orphan sweeps in both directions, totality over a claim surface | `fable` |
+| **Substantial reasoning along a specified path**: structured extraction with tiering judgment, dependency maps, protocol and format conformance, orchestration and routing between other agents | `opus` |
+| **Mechanical passes** with a decision procedure that fits in the prompt — indexing, retrieval, formatting | `sonnet` |
+
+The distribution is deliberately top-heavy (30 / 15 / 1): this repository is almost
+entirely science work, and science work is the first two rows. The mid tier is for
+agents that *serve* the judgment — compressors, cartographers, orchestrators, and
+provenance tracers — whose hard part is coverage and fidelity rather than verdict.
+
+**Re-tier by re-reading the table, never by shifting everything one notch.** A
+blanket promotion preserves whatever misalignment the old split had; it is the
+relative ordering that needs re-deriving. When this repository moved to three tiers,
+four agents went from the *bottom* tier straight to the top — `03`, `05`, `06`, and
+`09` had all grown adversarial passes since they were first assigned — while fifteen
+`opus` agents stayed put and became the mid tier. Neither group moved by one step.
+
+**When a new model ships**, do not rename tiers across the repository. Add it to
+`MODEL_TIERS`, write down which row of the table it satisfies and on what evidence,
+then move individual agents deliberately. An agent whose spec has grown — new
+adversarial passes, new cross-artifact synthesis — may have outgrown its tier
+regardless of what shipped; that is a re-read of the table, not an upgrade.
+
 ## Canonical pipeline numberings
 
 - **Research phases**: `Phase NN of the 10-phase research workflow (after <NN-1>-…; before <NN+1>-…).`

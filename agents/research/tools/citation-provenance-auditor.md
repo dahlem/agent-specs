@@ -1,7 +1,7 @@
 ---
 name: citation-provenance-auditor
 description: "Use this agent to verify, audit, and document citation provenance in LaTeX/BibTeX papers: bibliographic metadata, claim-to-evidence mapping into cited works, canonicality, citation gaps, and structured provenance records. Part of the provenance triad — `evidence-provenance-auditor` audits where *numbers* came from, `ai-contribution-disclosure-auditor` audits where the *work* came from, this agent audits where *claims* came from.\n\nExample:\n\n- User: \"My paper is ready for NeurIPS submission. I need to make sure all citations are properly verified.\"\n  Assistant: \"I'll use the citation-provenance-auditor agent to audit metadata, claim-to-evidence mapping, and canonicality across the bibliography.\""
-model: sonnet
+model: opus
 color: purple
 ---
 

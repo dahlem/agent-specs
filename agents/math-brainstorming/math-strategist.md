@@ -1,7 +1,7 @@
 ---
 name: math-strategist
 description: "Use this agent when a mathematical problem needs structured proof planning or solution strategy design: it synthesizes insights from the other math-brainstorming agents into candidate attack plans with bottleneck analysis. Designs the roadmap — it does NOT attempt full proofs. Late stage of the math-brainstorming cycle (after reframer, perturber, math-constructor, and obstructor; feeds research-director).\n\nExample:\n\n- User: \"The reframer found three representations — algebraic, combinatorial, topological. Which should we pursue?\"\n  Assistant: \"I'll use the math-strategist agent to evaluate them and design proof plans for the most promising ones.\""
-model: opus
+model: fable
 color: purple
 ---
 

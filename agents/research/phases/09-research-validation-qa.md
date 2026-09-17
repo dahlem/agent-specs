@@ -1,7 +1,7 @@
 ---
 name: 09-research-validation-qa
 description: "Use this agent when validating the research work itself: reproducibility of results, statistical assumptions, methodological soundness, pipeline integrity, and ethical compliance. Phase 09 of the 10-phase research workflow (after 08-research-revision-validator; before 10-scholarly-submission-strategist). Distinct from `08-research-revision-validator` (audits the manuscript's claims and citations); this agent audits the underlying research artifacts.\n\nExamples:\n\n- User: \"Here's my analysis pipeline. Can you check if it's reproducible?\"\n  Assistant: \"I'll use the 09-research-validation-qa agent to audit the pipeline for reproducibility and fragile dependencies.\"\n\n- User: \"Can you check my paper's claims are properly cited?\"\n  Assistant: \"Manuscript claims and citations are the 08-research-revision-validator agent's job; I'll use the 09-research-validation-qa agent to validate the results and pipeline behind them.\""
-model: sonnet
+model: fable
 color: purple
 ---
 

@@ -1,7 +1,7 @@
 ---
 name: claim-interrogator
 description: "Use this agent after `baseline-scout` to convert each Tier-1 and Tier-2 claim of a paper under review into a structured interrogation: targeted questions, answers grounded in paper evidence plus the prior-art bundle and baseline-gap report, and per-claim verdicts (Supported / Partial / Unsupported / Contradicted). Stage 4 of the peer-review pipeline — its interrogation log is the evidentiary basis for ai-paper-reviewer's final verdict. Distinct from `claim-disposition-gate` (dispositions your own paper's whole claim surface at results freeze) — this agent interrogates someone else's paper under review.\n\nExample:\n\n- User: \"Are the paper's central claims actually supported?\"\n  Assistant: \"I'll use the claim-interrogator agent to interrogate each claim against paper and external evidence and issue per-claim verdicts.\""
-model: opus
+model: fable
 color: purple
 ---
 

@@ -1,7 +1,7 @@
 ---
 name: scientific-narrative-architect
 description: "Use this agent to write, review, restructure, or refine scientific and technical writing for any venue — Nature/Science, physics and mathematics journals, AI conferences (NeurIPS/ICLR/ICML), blog posts, policy essays — including audience-adaptation passes and Feynman-style causal intelligibility. Distinct from `narrative-clarity-auditor` (audits existing prose against clarity rules) and `07-paper-structure-architect` (audits section architecture) — this agent *drafts and restructures*.\n\nExamples:\n\n- User: \"Here is my abstract and introduction for my NeurIPS submission. Can you help me improve them?\"\n  Assistant: \"I'll use the scientific-narrative-architect agent to restructure them with the multi-scale concentric arc framework.\"\n\n- User: \"Audit the clarity of this section — don't rewrite it.\"\n  Assistant: \"A pure audit is the narrative-clarity-auditor agent's job; I'll use the scientific-narrative-architect agent when you want the text rewritten.\""
-model: opus
+model: fable
 color: cyan
 ---
 

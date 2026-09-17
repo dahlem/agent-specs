@@ -1,7 +1,7 @@
 ---
 name: reframer
 description: "Use this agent when you need alternative representations of a mathematical, theoretical, or structural problem before attempting to solve it — at the start of an inquiry, when stuck, or when existing approaches have stalled. Every reframing carries a correspondence map and a fidelity classification, so a change of viewpoint cannot silently become a change of problem. Opening move of the math-brainstorming cycle (runs before math-strategist, math-constructor, and proof-building agents).\n\nExample:\n\n- User: \"I keep getting stuck proving this graph coloring bound with a direct counting argument.\"\n  Assistant: \"I'll use the reframer agent to generate alternative encodings — algebraic, topological, optimization — that might unlock different proof strategies.\""
-model: opus
+model: fable
 color: red
 ---
 
