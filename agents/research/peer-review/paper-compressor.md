@@ -93,6 +93,15 @@ Figures and tables are claim carriers, not illustrations. For each figure and ta
 
 A figure or table you cannot extract (raster-only, hand-drawn, unreadable) is recorded as `unextracted` here and in the Extraction Audit. Downstream reviewers must treat `unextracted` as *unreviewed claim surface*, not as absence of claims.
 
+## Prediction-Claim Index
+
+Two extractions that downstream reconstruction depends on, and that must happen here because both are *lossless extraction* rather than inference:
+
+1. **Prediction assertions** — every sentence claiming that something was anticipated: "we hypothesize", "as predicted", "confirming our hypothesis", "as expected", "our theory predicts". Record verbatim with location. You do not judge whether the assertion is supported; you collect it.
+2. **Setup without result** — conditions, ablations, models, datasets, and metrics that appear in the setup, methods, or appendix and produce no reported result. Record what was described and where the result is absent.
+
+Both are raw material for `hypothesis-register-keeper` (`op: reconstruct`) and for the reviewer's completeness assessment. Collect and locate; infer nothing. An empty index is a legitimate and informative output.
+
 ## Cutoff Date Inference
 
 Establish a single `cutoff_date_inferred` value (ISO 8601: `YYYY-MM-DD`) that bounds the prior-art search downstream agents will run. Use this priority order:

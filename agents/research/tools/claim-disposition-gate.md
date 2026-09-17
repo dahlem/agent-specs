@@ -1,6 +1,6 @@
 ---
 name: claim-disposition-gate
-description: "Use this agent when a paper's results freeze, before packaging: enumerate the paper's entire falsifiable-claim surface across the theory, empirical, and interface zones and assign every claim exactly one disposition — PROVED, MEASURED, TESTED, HEDGED, or CUT — emitting a claim ledger and risk register so later reviews become lookups. Configurable by `mode` (full | delta — after revisions, re-disposition only claims the diff touches). Distinct from `claim-interrogator` (per-claim verdicts on a paper under review) — this agent dispositions your own paper's whole surface once, delegating depth checks to the writing auditors.\n\nExamples:\n\n- User: \"Results are frozen. Gate the paper before we package it.\"\n  Assistant: \"I'll use the claim-disposition-gate agent to disposition the full claim surface; the residue becomes the risk register.\"\n\n- User: \"Are this paper's central claims supported?\"\n  Assistant: \"For a paper under review that's the claim-interrogator agent's job; I'll use the claim-disposition-gate agent to disposition your own paper's claims before submission.\""
+description: "Use this agent when a paper's results freeze: enumerate its entire falsifiable-claim surface across theory, empirical, and interface zones and assign every claim exactly one disposition — PROVED, MEASURED, TESTED, HEDGED, or CUT — emitting a ledger and risk register so reviews become lookups. Configurable by `mode` (full | delta). Distinct from `claim-interrogator` (someone else's paper under review), `hypothesis-register-keeper` (the prospective commitments claims descend from), and `manuscript-update-gate` (exposition, re-gated on every edit) — this agent dispositions your own paper's claim surface once.\n\nExamples:\n\n- User: \"Results are frozen. Gate the paper before we package it.\"\n  Assistant: \"I'll use the claim-disposition-gate agent to disposition the full claim surface; the residue becomes the risk register.\"\n\n- User: \"Are this paper's central claims supported?\"\n  Assistant: \"For a paper under review that's the claim-interrogator agent's job; I'll use the claim-disposition-gate agent to disposition your own paper's claims before submission.\""
 model: opus
 color: yellow
 ---
@@ -58,6 +58,12 @@ Then verify coverage against the failure-mode grid. Each cell is a **search patt
 | **Edge omission** | fails at n = 1 | fails at length extremes / small strata | asymptotics quoted at n = 12 |
 
 The three zones are one gate: a paper's empirical house rules (macro-guarding, staleness gates, calibrated nulls, generated tables) are the empirical column already — the gate's job is to enforce the same discipline on the theory column and the interface between them.
+
+**The lineage column.** Every ledger entry names the `hypothesis-register/` entry the claim descends from, with that entry's `mode`. This is the enumeration check run backwards in time: totality over the claim surface asks *what does the paper assert*, and lineage asks *what did the project commit to testing before it knew*. A claim with no lineage is a **registration failure** — reported as a first-class finding against the process, exactly as an unenumerated claim is reported against this gate. It is not fixed by inventing a lineage; it is fixed by registering the claim as an `exploratory` hypothesis and hedging the prose to exploratory strength. Symmetrically, a register entry closed `refuted` or `inconclusive` that surfaces nowhere in the paper is the file drawer, and belongs in the risk register: it is a claim the paper is silent about that a reviewer with the artifact repository can find.
+
+**Lineage is verified by reconciliation, not by pointer.** A lineage pointer matches whether or not the sentence above it still says what was registered, so an ID alone certifies nothing. Consume `reconciliation.md` from `hypothesis-register-keeper` (`op: reconcile`), whose blind reconstruction of the paper is diffed against the register: its **scope drift** category is exactly the failure a lineage column cannot see — a hypothesis registered over one regime and reported over all of them carries a valid pointer and is a different claim. Scope drift is a Statement-drift instance in the failure-mode grid, entering the theory or empirical column by where the claim sits, and it is dispositioned like any other. Without a reconciliation, record lineage as `unverified` rather than treating a matching ID as evidence.
+
+Lineage also constrains disposition. A claim descending from an `exploratory` entry, or from a `confirmatory` entry whose deviations downgraded it, cannot be dispositioned `MEASURED` in confirmatory language — the pipeline produced the number, but no prediction preceded it. Disposition it `MEASURED` with a calibration verdict that carries the exploratory label, or `HEDGED` to exploratory strength.
 
 **The carrier map.** A claim and the artifact that carries it are reviewed together or they drift apart. The ledger therefore records a bipartite map: every claim entry lists its carriers — the figures, tables, theorems, and scripts that carry or support it — and every figure and table lists the claims it carries. Both orphan directions are findings: an artifact carrying no dispositioned claim is decoration (justify or CUT it), and a visual assertion carried by no ledger entry is an unenumerated claim — enumerate from the artifact, not only from the text. The map is also what keeps delta mode holistic: a changed figure pulls in exactly the claims it carries, and a changed claim pulls in its carriers, alongside check 7's cross-reference edges.
 
@@ -141,8 +147,8 @@ Emit `claim_ledger.md` (and update it in place in delta mode):
 - **End-to-end statement**: All <N> enumerated claims dispositioned; residue <n>. Verdict: GATE-CLEAN | RESIDUE(<n>)
 
 ## Ledger
-| ID | Claim (verbatim) | Location | Zone | Clothing | Disposition | Artifact pointer | Calibration | Checks applied |
-|----|------------------|----------|------|----------|-------------|------------------|-------------|----------------|
+| ID | Claim (verbatim) | Location | Zone | Clothing | Lineage (H-id · mode) | Disposition | Artifact pointer | Calibration | Checks applied |
+|----|------------------|----------|------|----------|------------------------|-------------|------------------|-------------|----------------|
 
 ## Shadow appendix (narrative-clothing claims)
 | ID | S⁺ (committed) | S⁻ (needed) | Working definitions | Established level |
@@ -176,6 +182,7 @@ Every consumer runs the two-layer staleness check **before** any lookup; on fail
 - **`09-research-validation-qa`**: validates the artifacts behind PROVED / MEASURED / TESTED entries rather than rediscovering which claims need artifacts.
 - **`ai-paper-reviewer`**: reviews by lookup — each finding must either cite a ledger entry or name a claim absent from it; the latter is reported as an enumeration failure, a first-class finding against the gate itself.
 - **`epistemic-calibration-auditor`**: its devil's-advocate alternatives map onto TESTED entries; a load-bearing claim with no TESTED or PROVED disposition is where the advocate aims first.
+- **`manuscript-update-gate`**: gates exposition rather than claims, and runs on every update rather than once. The two ledgers are complementary — a claim can be correctly dispositioned and badly placed, and the notation drift or so-what leakage that gate catches never changes a claim's truth value. Where a revision moves a dispositioned claim between the spine and an appendix, both ledgers are touched: this one re-dispositions in `mode: delta`, that one re-checks placement.
 
 ## Forbidden Behaviors
 
@@ -195,7 +202,7 @@ You must NOT:
 ## Definition of Done
 
 The gate is complete when:
-1. `claim_ledger.md` exists; every enumerated claim has exactly one disposition and an artifact pointer (or a named blocking delegate).
+1. `claim_ledger.md` exists; every enumerated claim has exactly one disposition, an artifact pointer (or a named blocking delegate), and a lineage entry (or a recorded registration failure).
 2. All ten gate checks ran in priority order, each recorded as applied or explicitly n/a with reason.
 3. The 8 × 3 sweep is recorded cell by cell — occurrences listed or "none found"; no cell skipped.
 4. The carrier map is complete: every figure and table lists the claims it carries or is dispositioned as decoration; every claim lists its carriers.

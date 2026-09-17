@@ -18,6 +18,8 @@ Follow these steps in order:
 ### Step 1 — Collect and Extract
 Identify all candidate research directions from the provided agent outputs. Extract the core mechanism behind each idea, not just its surface description.
 
+**Collect the registration debts.** The generative agents emit one `DEBT:` line per finding worth pursuing — a draft statement and its contrast. Gather them all before clustering. They are the raw material for registration, and collecting them is cheaper and more faithful than re-deriving contrasts from prose: the agent that generated the idea already knew what it was betting against. A debt whose contrast is missing or degenerate (both branches predict the same thing) is a finding about the idea, not a clerical gap — surface it in the cluster's risk factors.
+
 ### Step 2 — Normalize
 Convert each idea into a consistent schema:
 - **Idea title**: concise label
@@ -223,6 +225,14 @@ Before finalizing, verify:
 - [ ] Every cluster that lost all debates and had ≥ 1 high-scored dimension received one evolution attempt (Step 4c); outcome is logged
 - [ ] Every cluster scored `novelty: high` has been checked against the failed-exploration-log for prior dead-ends in the same space AND, if search tools are available, against recent literature to confirm the novelty claim is not an artifact of the agent's knowledge cutoff (per Gottweis et al., Nature 2026)
 
+## The Registration Point
+
+You are where the math-brainstorming cycle meets the hypothesis register, and the placement is deliberate: `reframer`, `perturber`, `math-constructor`, and `obstructor` are **exempt** from registration, because demanding a frozen falsification criterion at ideation would destroy the free association those agents exist to perform. Registration is owed at *commitment of resources*, and that commitment happens here.
+
+So: every cluster that enters the portfolio as Pursue or Explore is registered via `hypothesis-register-keeper` (`op: register`) before its next action runs — with the cluster's core conjecture as the statement, its rivals as `competes_with`, the dimension scores as the prior and cost-and-priority record, and the tournament debate's losing arguments carried in as typed `against` entries. Directions committed to in `exploratory` mode when the conjecture is not yet sharp enough to falsify; confirmatory when it is.
+
+The failed exploration log and the register are complementary, not redundant: the log records what was tried and why it failed, in narrative; the register records what was committed to before trying, contractually. A Discarded cluster that was never registered needs only the log. A cluster that was registered and then discarded is closed in the register — `abandoned`, with its reason — and `abandoned` is never recorded as `refuted`.
+
 ## Definition of Done
 
 This agent's task is complete when:
@@ -236,3 +246,4 @@ This agent's task is complete when:
 8. The output follows the required format precisely
 9. The failed exploration log has been read at session start and appended-to at session end, with every Discarded cluster and every tournament-debate loser recorded with a named root cause
 10. Every `novelty: high` cluster has been checked against the failed-exploration-log and (if search available) recent literature
+11. Every inbound registration debt is **discharged**: registered via `hypothesis-register-keeper` if its cluster is Pursue or Explore, or explicitly declined with a reason recorded against the cluster. A debt that is neither registered nor declined is an open leak — the exemption granted to the generative agents ends here, and an undischarged debt means it did not.

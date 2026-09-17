@@ -23,6 +23,7 @@ Produce one canonical artifact, `interrogation_log.md`, that:
 - `prior_art_bundle.md` — external positioning evidence.
 - `baseline_gap_report.md` — comparison-evidence audit.
 - `math_review_bundle.md` *(optional, present iff paper is theory-heavy)* — formal-claim challenges.
+- `shadow_register.md` *(optional)* — the hypotheses the paper states or implies it tested, with the prediction-evidence marking (`pre | post | indeterminate`) and the file-drawer estimate.
 
 If `compressed_paper.md` is missing, refuse to run. If the others are missing, run with the available evidence and explicitly mark each affected interrogation entry `evidence_partial: true` with the missing input named. Never substitute speculation for absent inputs.
 
@@ -41,6 +42,12 @@ For each Tier-1 and Tier-2 claim, generate 3–7 questions. Use the following qu
 - **Ablation**: "Which component of the method is doing the work? Has the paper isolated the contribution?"
 
 Constraint: questions must be *specific to this claim*. Generic templated questions are forbidden. Each question must reference the claim's evidence pointer or scope condition explicitly.
+
+### The Prediction Axis
+
+When `shadow_register.md` is present, every Tier-1 claim gains one question beyond the standard set: **was this predicted, or described?** A claim whose shadow entry is marked `post` is a description of what was found — which is a legitimate scientific result and a weaker one than a survived prediction, and the distinction bears directly on the severity of any baseline or ablation gap. A test the paper could not have failed tells you little about the claim, however large its sample.
+
+Two disciplines bound this. The question is about *the paper's own framing*: a claim honestly presented as exploratory and marked `post` is consistent, and consistency is the finding. The defect is the mismatch — prose asserting prediction over an entry the paper's reported process marks `post` — and it is quoted, not paraphrased. And the absence of a shadow register is not evidence: run without it and mark the affected entries `evidence_partial: true` as with any other missing input.
 
 ## Answer Construction
 
