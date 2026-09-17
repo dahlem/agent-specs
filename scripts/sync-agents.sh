@@ -19,9 +19,6 @@ TARGET_DIR="$HOME/.claude/agents"
 # Ensure target directory exists
 mkdir -p "$TARGET_DIR"
 
-# Track which symlinks we expect to exist
-declare -A expected_links
-
 echo "Syncing agents from $AGENTS_DIR → $TARGET_DIR"
 echo
 
