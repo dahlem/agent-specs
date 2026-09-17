@@ -265,6 +265,17 @@ Each NR entry must state:
 - Conclusion (what was learned)
 - Evidence (Lean artifact or counterexample sketch)
 
+#### 6.4 Register Closure
+
+Formalization is theory development, and a conjecture taken to Lean is a hypothesis under test. Where the development has a `hypothesis-register/`, each theorem in scope resolves to a register entry, and this phase closes it:
+
+- A theorem proved closes its entry `closed: supported`, with the ledger reference at the pinned commit as the closing artifact. Note the asymmetry the formal setting makes sharp — the disposition certifies *truth*, not originality; novelty stays Phase 3's business.
+- A refuted conjecture closes `refuted`, with the counterexample as the artifact. A conjecture whose formal statement turned out to be a mistranslation of the intended claim closes `vacated`, not `refuted` — the claim was never tested, only misencoded (Phase 0.5's fidelity disposition is the evidence).
+- An attempt abandoned on a `typeclass_obstruction`, `library_gap`, or `performance` wall closes `abandoned` with that failure mode as the reason, and the NR entry as the artifact. This is the same distinction Phase 6 already enforces between "we proved it false" and "we could not get there", carried into the register where it survives the session.
+- A statement weakened to get it through the kernel is a **supersession**, not an edit: the original entry closes first, and the weakened statement is registered as a successor with reason `refinement`. Silently proving something weaker than what was registered is the formal-methods face of moving the goalposts, and Phase 0.5's specification audit is what catches it.
+
+Registration itself is owed before the attempt begins, not after — the `execution-started` event names the commit at which formalization started.
+
 ### Phase 7: Human Comprehension & Process Provenance
 
 A proof chain that is correct, closed, and robust can still be a liability if no human understands *why* it works. Kernel acceptance certifies that the term type-checks; it certifies nothing about whether the result can be explained, refereed, taught, or built on. Tao (ICM 2026, *Mathematics in the age of AI*) names the resulting state directly: a verified proof of a major result that nobody understands well enough to explain — already visible in AI-generated submissions to open-problem sites where *even the submitters* decline to vouch for correctness. Machine checking makes that state possible; it does not make it acceptable. This phase is the gate against it.

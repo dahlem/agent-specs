@@ -55,12 +55,17 @@ Prose fields in this order, then examples:
 - **Research phases**: `Phase NN of the 10-phase research workflow (after <NN-1>-…; before <NN+1>-…).`
 - **Peer review**: Stage 1 `paper-compressor` → Stage 2 `literature-expansion` →
   Stage 3 `baseline-scout` ∥ `domain-historian` (+ conditional `math-review-router`
-  when `theory_heavy: true`) → Stage 4 `claim-interrogator` → Stage 5 `ai-paper-reviewer`.
+  when `theory_heavy: true`, + optional `hypothesis-register-keeper` with
+  `op: reconstruct`) → Stage 4 `claim-interrogator` → Stage 5 `ai-paper-reviewer`.
 - **Proof dissection**: compress → cartography → optional adversarial → tutor.
 - **Research shaping**: `research-divergence-cartographer` → `red-thread-selector`
   → optional Sculpt Mode → `06-argument-architect` handoff.
 - **Math brainstorming cycle**: `reframer` → `perturber` / `math-constructor` →
   `obstructor` → `math-strategist` → `research-director` (one relational clause per agent).
+
+Two agents are deliberately *not* pipeline-positioned, and their descriptions say
+when they fire rather than what they follow: `manuscript-update-gate` (on every
+manuscript change) and `hypothesis-register-keeper` (before every execution).
 
 Note: this file lives at the repo root deliberately — anything under `agents/`
 gets symlinked into `~/.claude/agents/` and would be loaded as a pseudo-agent.

@@ -22,7 +22,7 @@ A phase succeeds when a hostile reviewer cannot identify a fatal flaw and a bene
 
 ## Agent Index
 
-All 44 agents at a glance. Click an agent name to jump to its detailed description.
+All 46 agents at a glance. Click an agent name to jump to its detailed description.
 
 ### Research Workflow — Phases (10)
 
@@ -39,7 +39,7 @@ All 44 agents at a glance. Click an agent name to jump to its detailed descripti
 | [`09-research-validation-qa`](#phase-09--research-validation-qa) | Hostile-third-party reproducibility, methodology, and ethics audit |
 | [`10-scholarly-submission-strategist`](#phase-10--scholarly-submission-strategist) | Venue selection, formatting, archival release, reviewer-response matrix |
 
-### Research Workflow — Cross-Phase Tools (8)
+### Research Workflow — Cross-Phase Tools (9)
 
 | Agent | Purpose |
 |---|---|
@@ -47,6 +47,7 @@ All 44 agents at a glance. Click an agent name to jump to its detailed descripti
 | [`arxiv-gap-scanner`](#arxiv-gap-scanner) | Full-pipeline literature-gap scan against a body of work over an arxiv window |
 | [`citation-provenance-auditor`](#citation-provenance-auditor) | Citation gate: PID + BibTeX + claim-mapping + canonicality, severity-tiered |
 | [`claim-disposition-gate`](#claim-disposition-gate) | Total claim-surface enumeration at results freeze; five-way disposition; ledger + risk register turn re-reviews into lookups |
+| [`hypothesis-register-keeper`](#hypothesis-register-keeper) | Append-only pre-registration record: hypothesis, contrast, falsification criterion, prior — registered before execution, closed by evidence, never overwritten |
 | [`literature-synthesis-auditor`](#literature-synthesis-auditor) | Agreement/conflict matrices across sources; consensus extraction; methodological divergence |
 | [`research-session-memory`](#research-session-memory) | Indexed cross-session memory: concepts, approaches, negative results, open questions |
 | [`scientific-narrative-architect`](#scientific-narrative-architect) | Multi-scale narrative architecture across audiences (Nature/Physics/AI conf/Blog) |
@@ -60,7 +61,7 @@ All 44 agents at a glance. Click an agent name to jump to its detailed descripti
 | [`research-divergence-cartographer`](#research-divergence-cartographer) | Over-generate 5–12 candidate red threads from a body of work |
 | [`red-thread-selector`](#red-thread-selector) | Converge on one thread via six-dimension scoring + mandatory mechanism checks |
 
-### Peer Review Pipeline (6)
+### Peer Review Pipeline (6, plus one cross-listed)
 
 | Agent | Purpose |
 |---|---|
@@ -70,6 +71,7 @@ All 44 agents at a glance. Click an agent name to jump to its detailed descripti
 | [`domain-historian`](#domain-historian) | Subfield-specific significance rubric; four-stage at-time vs counterfactual verdict |
 | [`claim-interrogator`](#claim-interrogator) | Per-Tier-1/2-claim verdicts with 3–7 questions and severity tags |
 | [`math-review-router`](#math-review-router) | Routes theorem questions to math-brainstorming agents when `theory_heavy: true` |
+| [`hypothesis-register-keeper`](#hypothesis-register-keeper) (`op: reconstruct`) | *Cross-listed from Cross-Phase Tools.* Optional shadow register of a paper under review: predicted vs. described, prediction-claim audit, file-drawer estimate |
 
 ### Proof Dissection Track (3)
 
@@ -90,7 +92,7 @@ All 44 agents at a glance. Click an agent name to jump to its detailed descripti
 | [`obstructor`](#obstructor) | Adversarial stress-test: counterexamples, hidden assumptions, structural impossibilities, mistranslated encodings, vacuous hypotheses |
 | [`research-director`](#research-director) | Synthesize and prioritize brainstorming outputs into a research portfolio |
 
-### Writing & Documentation (6 auditors)
+### Writing & Documentation (6 auditors + 1 gate)
 
 | Agent | Audits |
 |---|---|
@@ -100,6 +102,7 @@ All 44 agents at a glance. Click an agent name to jump to its detailed descripti
 | [`citation-provenance-auditor`](#citation-provenance-auditor) | *That cited works are real, canonical, and support the cited claim* (gate-enforced; lives in `research/tools/`) |
 | [`theorem-presentation-auditor`](#theorem-presentation-auditor) | *That every theorem has rhythm and every proof has reviewer-skimmable architecture* |
 | [`ai-contribution-disclosure-auditor`](#ai-contribution-disclosure-auditor) | *How the work was produced* — assistance ledger, disclosure accuracy, unattributed reuse |
+| [`manuscript-update-gate`](#manuscript-update-gate) | *That the writing survived the edit* — fires on every manuscript change; owns the so-what contract, notation ledger, placement, and seams; routes depth to the auditors above |
 
 ### Formal Verification (3)
 
@@ -163,7 +166,16 @@ Map your specific issue to the right agent:
 | **Lean accepts it, but is it the theorem we meant?** | `lean-proof-chain-validator` (Phase 0.5) | Back-translates from the Lean alone; convention register; discriminating instantiation; fidelity disposition |
 | **Statement might be a mistranslation of the informal claim** | `obstructor` (encoding attack) + `math-constructor` (discriminating instance) | Enumerates rival readings; builds the smallest instance on which they disagree |
 | **Hypotheses might not be satisfiable at all** | `obstructor` (vacuity attack) or `lean-proof-chain-validator` (Phase 0.5.3) | Demands a witness per hypothesis set; flags collapse to degenerate instances |
+| **Writing quality decays across revisions** | `manuscript-update-gate` | Fires on manuscript change; re-checks so-what distribution, notation, placement, seams against the diff |
+| **Notation collides or is used before defined** | `manuscript-update-gate` (notation ledger) | Symbol table with first-use locations; flags collision, silent redefinition, orphans, convention drift |
+| **Paper is bloating and the science is muddied** | `manuscript-update-gate` (placement) | Spine / appendix / cut triage on every update; reports the spine-to-contribution *ratio*, not length |
+| **Conclusion has nothing left to say** | `manuscript-update-gate` (so-what contract) | The introduction pre-spent the significance; the contract withholds so-what until the conclusion |
 | **Every review round finds a different error** | `claim-disposition-gate` | Dispositions the whole claim surface once (PROVED/MEASURED/TESTED/HEDGED/CUT); later reviews become ledger lookups |
+| **Unclear whether a result was predicted or discovered** | `hypothesis-register-keeper` | Registration pinned to a pre-execution commit; confirmatory vs exploratory mode is enforced, not asserted |
+| **A hypothesis quietly changed shape mid-project** | `hypothesis-register-keeper` (`op: audit`) | Frozen-block immutability check over git history; supersession requires closing the original first |
+| **Refuted hypotheses vanished from the write-up** | `hypothesis-register-keeper` + `10-scholarly-submission-strategist` | File-drawer sweep: every closed entry must reach a `disclosure-noted` event before release |
+| **Paper's claim is subtly wider than what was registered** | `hypothesis-register-keeper` (`op: reconcile`) | Blind reconstruction diffed against the register; scope drift is invisible to a lineage pointer |
+| **Reviewing a paper that may have HARKed** | `hypothesis-register-keeper` (`op: reconstruct`) | Shadow register: predicted vs. described per claim, prediction-claim audit, file-drawer estimate — never "they didn't pre-register" |
 
 ### Review Workflow: From Issues to Agents
 
@@ -305,20 +317,23 @@ End-to-end usage patterns. Each workflow names the agents in invocation order; c
 
 For a fresh research project where the framing is not yet locked.
 
-1. `01-research-framing-validator` — define the problem rigorously
+0. `hypothesis-register-keeper` — open `hypothesis-register/`; every step below registers before it executes and appends afterwards
+1. `01-research-framing-validator` — define the problem rigorously; exits by *registering* the hypothesis (contrast, falsification criterion, prior)
 2. `02-literature-discovery-mapper` — position the work; gate cited literature through `citation-provenance-auditor`
-3. `03-research-design-auditor` — convert framing to a testable plan
-4. `04-research-data-architect` — build data with provenance documented end-to-end
-5. `05-research-analysis-interpreter` — analyze with robustness/ablation
+3. `03-research-design-auditor` — convert framing to a testable plan; the approved design fills the frozen block and is appended as `design-linked`
+4. `04-research-data-architect` — build data with provenance documented end-to-end, never before the hypothesis it will test is registered
+5. `05-research-analysis-interpreter` — analyze with robustness/ablation; log deviations, then *close* each hypothesis against its pre-specified criterion
 6. `06-argument-architect` — distill 1–3 irreducible claims; the agent's DoD now invokes the writing auditors
 7. `07-paper-structure-architect` — section-level architecture; delegates clarity and theorem-presentation to the auditors
 8. `claim-disposition-gate` — results frozen, draft stable: disposition the entire claim surface once; emits `claim_ledger.md` + risk register
 9. `08-research-revision-validator` — close loopholes *against the ledger* (delta-only on revision rounds); pairs with `epistemic-calibration-auditor`
 10. `09-research-validation-qa` — adversarial reproducibility audit of the artifacts behind PROVED/MEASURED/TESTED entries
-11. `10-scholarly-submission-strategist` — venue alignment, formatting, archival
+11. `10-scholarly-submission-strategist` — venue alignment, formatting, archival; releases the register with its closure tally and file-drawer accounting
 12. `ai-paper-reviewer` — pre-submission internal review, in ledger mode: findings cite ledger entries or report enumeration failures
 
 `scientific-narrative-architect` is invoked throughout phases 6–10 for drafting, restructuring, audience adaptation, and quality control.
+
+`manuscript-update-gate` is not a step in this sequence — it fires on *every* manuscript change from the first draft onward, including during phases 8–10 and after submission when reviewer responses land. Install the hooks once per machine (`scripts/install-writing-gate.sh --global`) and mark each paper once (`… init <paper-repo>`); the gate then runs in `mode: delta` against each diff, in every session, without being invoked by hand.
 
 ### Workflow B — Convert a body of work into the paper hiding inside it
 
@@ -402,6 +417,7 @@ agent-specs/
 │   │   │   ├── arxiv-gap-scanner.md
 │   │   │   ├── citation-provenance-auditor.md
 │   │   │   ├── claim-disposition-gate.md
+│   │   │   ├── hypothesis-register-keeper.md
 │   │   │   ├── literature-synthesis-auditor.md
 │   │   │   ├── research-session-memory.md
 │   │   │   ├── scientific-narrative-architect.md
@@ -428,6 +444,7 @@ agent-specs/
 │   │   ├── obstructor.md
 │   │   └── research-director.md
 │   ├── writing/                                 # Cross-cutting writing tools (any document type)
+│   │   ├── manuscript-update-gate.md             # Fires on manuscript change; routes to the auditors below
 │   │   ├── narrative-clarity-auditor.md
 │   │   ├── epistemic-calibration-auditor.md
 │   │   ├── evidence-provenance-auditor.md
@@ -440,7 +457,10 @@ agent-specs/
 │           └── lean-library-design-auditor.md
 ├── scripts/
 │   ├── sync-agents.sh                           # Symlink agents into ~/.claude/agents/
-│   └── lint-descriptions.sh                     # Enforce DESCRIPTION-STYLE.md (--stats for token load)
+│   ├── lint-descriptions.sh                     # Enforce DESCRIPTION-STYLE.md (--stats for token load)
+│   ├── install-writing-gate.sh                  # --global (once per machine) · init <paper> (once per paper)
+│   └── hooks/
+│       └── manuscript-gate.sh                   # PostToolUse notify + Stop check (ledger-manifest staleness)
 └── DESCRIPTION-STYLE.md                         # Frontmatter-description conventions (budgets, template, examples)
 ```
 
@@ -517,6 +537,22 @@ Performs comprehensive citation audits: establishes persistent identifiers (DOI,
 Runs once, at results freeze, and dispositions the paper's **entire falsifiable-claim surface**: every claim across the theory, empirical, and interface zones gets exactly one of five dispositions — **PROVED** (machine-checked, ledger reference at a pinned commit), **MEASURED** (pipeline-produced, script + data provenance), **TESTED** (falsification attempted and survived, artifact kept), **HEDGED** (prose scoped to exactly what is established), or **CUT**. The undispositioned residue is emitted as the risk register — the exact set of places a reviewer will strike. Narrative claims (mechanism talk, explanatory and naturalness assertions) are dispositioned via internally constructed **shadow statement pairs** — the strongest statement the prose commits to (S⁺) vs. the weakest the argument needs (S⁻), with working definitions on demand — audit apparatus that never obligates the paper to display the formalism, but makes hedging, testing, and calibration well-posed and flags cheap promotions to formal results. A **carrier map** couples every claim to the figures and tables that carry it and every artifact back to its claims — schematics are dispositioned for the structure they commit the method to — so claims and their visuals are reviewed together and orphans in either direction are findings. Enumeration is verified against an eight-failure-mode × three-zone grid (satellite claims, constant drift, statement drift, vacuity, universal claims, unverified computation, positioning, edge omission — each with a theory, empirical, and interface face), and a ten-step gate runs in priority order: five prevention rules (generate don't transcribe; non-vacuity by construction; every-regime statements; single source of truth across the theory↔empirics boundary; freeze-or-regenerate verified prose), three mechanical passes (numeric spot-checks and parameter sweeps; intra-paper cross-reference audit; quantifier lint), and two human passes (framing counterexample hunt; individually verified priority claims).
 
 The design premise: review rounds recur because each reviewer samples a different slice of an *unenumerated* claim space. Disposition the whole surface once and later reviews become lookups — `08-research-revision-validator` verifies the manuscript against the ledger and audits only revision deltas, `09-research-validation-qa` validates the artifacts behind the dispositions, and `ai-paper-reviewer` reviews by ledger lookup, reporting any claim missing from the ledger as an enumeration failure. Depth checks are delegated (`lean-proof-chain-validator` for PROVED, `evidence-provenance-auditor` for MEASURED, `obstructor` for TESTED, `epistemic-calibration-auditor` for HEDGED, `citation-provenance-auditor` for priority claims); the gate owns totality and the ledger. `mode: delta` re-dispositions only the claims a revision touches. Distinct from `claim-interrogator` (verdicts on someone else's paper under review) — this gate dispositions *your own* paper's surface before packaging.
+
+### Hypothesis Register Keeper
+
+Owns `hypothesis-register/` — the lab record of what the project committed to believing, and when. Every experiment, analysis, and theory-development step registers its hypothesis **before** executing, and nothing is ever overwritten afterwards. Two failure modes motivate the design: **retrospective hypothesis formation** (a hypothesis written after the result always fits the result — so registration is pinned to a pre-execution commit, and the timestamp is the evidence) and **silent revision** (a record that can be edited records only its latest author's belief).
+
+Each entry has two regions with different mutability. The **frozen block**, sealed at registration, holds the statement, its **contrast** (a hypothesis with no stated alternative is not testable — everything confirms it), scope conditions, the operationalization (construct → observable → metric), the **discriminating prediction** (what we expect if H holds *and* if the contrast holds — identical branches mean the test discriminates nothing and registration is refused), the falsification criterion with thresholds, the pre-specified analysis plan (estimator, exclusions, multiplicity correction, stopping rule), a **severity argument** (*why would this test probably have failed if H were false?*), prior credence and predicted effect size, cost and priority, lineage, and the registration pin. The **event log** is append-only over a closed vocabulary — `registered`, `argument-added`, `design-linked`, `execution-started`, `deviation`, `evidence-recorded`, `closed`, `reopened`, `superseded-by`, `claim-linked`, `disclosure-noted`. `status` is a pure function of that log and is never hand-set, which is what makes it unfakeable without an event naming an actor and a commit. `abandoned` and `refuted` are never conflated: "we stopped because it was going badly" and "the evidence killed it" have different epistemic weight, and collapsing them is how a file drawer disguises itself as a research programme.
+
+Two disciplines keep the record honest under pressure. **The one-way rule**: exploratory entries (statement + contrast only, registered in seconds) can never be promoted to confirmatory — a promising exploratory finding is promoted by registering a *new* confirmatory hypothesis tested on unused data, so exploration stays free and nothing is gained by mislabelling it later. **The goalpost rule**: a hypothesis that is `under-test` with evidence recorded cannot be superseded to escape its result; it is closed first, then a successor is registered. Supersession never edits — it creates a new entry, and the old one keeps its original text forever plus a terminal `superseded-by` pointer.
+
+The register is non-optional by construction, enforced at three independent points. **Prevention**: `03`, `04`, `05`, `research-director`, and the Lean validators refuse to execute against an unregistered hypothesis (`BLOCKED: unregistered hypothesis`); clearing the block is one cheap call, but executing-then-registering is not available, because the pin would carry the later commit. **Detection**: `claim-disposition-gate` carries a lineage column — a ledger claim with no hypothesis behind it is a **registration failure**, reported exactly as an enumeration failure is; and every closed entry must reach a `disclosure-noted` event, so refuted hypotheses that vanished from the paper are named. **Disclosure**: `09-research-validation-qa` audits pre-registration adherence (retrospective registration, undisclosed deviations, exploratory results dressed as confirmatory) and `10-scholarly-submission-strategist` releases the closure tally. Layer 1 makes compliance easy, layer 2 makes non-compliance visible, layer 3 makes it costly — and no layer depends on the others being honoured.
+
+**Reading a paper as a witness.** Two operations turn the register on a manuscript, and they are the same competence from different vantage points. `op: reconcile` reads *your own* paper: reconstruct what it appears to have tested **blind** — before opening the register, because reconstructing with the register in hand biases every judgment toward finding a match — then diff into five categories (file drawer, registration failure, **scope drift**, mode mismatch, outcome mismatch). Scope drift is why the operation exists: a lineage pointer matches whether or not the sentence above it still says what was registered, so a hypothesis registered over one regime and reported over all of them carries a valid ID and is a different claim. Nothing else sees it — the register's audit reads the register, the claim gate reads the paper, and the drift lives exactly between them. Consumed by `claim-disposition-gate` (which records lineage as `unverified` without it), `08`, `09`, and `ai-paper-reviewer` in Ledger Mode.
+
+`op: reconstruct` reads *someone else's* paper, where no register exists, and emits `shadow_register.md` — audit apparatus with the same standing as the claim gate's shadow statements: never appended to, never authoritative, never presented as the authors' own. Each entry is text-bounded (`stated | implied | absent`, contrast `stated | inferable | none`, prediction evidence `pre | post | indeterminate`), alongside a prediction-claim audit, a file-drawer estimate, and a diagnostic on the *shape* of the set — every hypothesis supported, each scoped precisely to the effect observed, no negative results. `paper-compressor` supplies the raw material losslessly (prediction assertions verbatim; setup-without-result items); `claim-interrogator` gains a prediction axis (*was this predicted, or described?*); `ai-paper-reviewer` consumes it in Pipeline Mode. **The fairness bound is explicit and enforced**: most venues do not require pre-registration, "did not pre-register" is not an issuable finding, and a shadow register that comes back uninformative is an honest result. The legitimate findings are narrow — prose asserting prediction the reported process cannot support (quoted), exploratory work framed as confirmatory, and conditions described but never reported.
+
+Registration is owed at *commitment*, not at ideation: `reframer`, `perturber`, `math-constructor`, and `obstructor` are deliberately exempt, and `research-director` is where the brainstorming cycle registers what it decides to pursue. Because an exemption with no exit is a bypass, the exemption ends at **carry-forward**: each generative agent emits a one-line `DEBT:` (candidate statement + contrast) per finding worth pursuing, the director discharges every inbound debt by registering or declining it with a reason, and `math-strategist` holds the exit gate — roadmaps circulate freely, but one handed onward for execution needs a registered target. A debt left in an artifact that never reached the director is the audit trail showing where registration was skipped. Debts are not owed in review mode (`math-review-router`), where the hypotheses under examination belong to someone else's paper. `op: audit` runs eight mechanical checks over git history — frozen-block immutability via `git log -L`, pin ordering against first execution, status derivation, event well-formedness, lineage closure, prediction discrimination, orphan sweeps in both directions, and a residue sweep listing hypotheses closed `supported` with standing counter-arguments. Distinct from `research-session-memory` (retrospective, revisable investigative trail) and `claim-disposition-gate` (what the paper asserts at freeze) — this agent holds the prospective commitments both are checked against.
 
 ### Literature Synthesis Auditor
 
@@ -803,6 +839,34 @@ Synthesizes, deduplicates, evaluates, and prioritizes research ideas from all br
 ## Writing & Documentation Agents
 
 Cross-cutting writing tools that operate on *any* document register — blog post, tutorial, lecture note, tech report, empirical paper, theoretical paper, Nature letter, policy essay. Designed to be invoked directly by an author and also called by other agents in the repo (`proof-tutor`, `scientific-narrative-architect`, `07-paper-structure-architect`) so the discipline has a single canonical home.
+
+### Manuscript Update Gate
+
+Fires on **every manuscript change** — revision, reviewer response, section rewrite — because exposition is a distinct goal from correctness and, unlike correctness, it decays under editing. A proved theorem stays proved when section 4 is rewritten; notation introduced in a new subsection collides with section 2's, a paragraph moved for flow now precedes the definition it depends on, and each reviewer response bolts on one more caveat. Every edit is locally reasonable and the document degrades globally, which is why exposition needs a gate that fires on *change* rather than a review that fires once.
+
+The framing is Tao's (ICM 2026, *Mathematics in the age of AI*): a result climbs generation → verification → **exposition** → publication → **canonicalization**, each stage a separate objective that optimizing an earlier one does not deliver. A verified result nobody can digest has failed at stage three, and canonicalization — "the slowest stage of all" and "the most valuable part of the entire process" — is unreachable from there.
+
+It owns four doctrines that belong to no auditor, each specifically an *update* pathology:
+
+- **The so-what distribution contract.** The abstract carries all four narrative questions; the introduction fans out *why/what/how* and **withholds so-what**; the conclusion delivers so-what at full strength. Spending significance in the introduction is how a paper arrives at its ending with nothing left to say. The conclusion also carries the **digestion surface** — the authors' own account of what was tried, where the difficulty sat, which step surprised them; Tao notes that AI tools are "quite opaque about their problem-solving process," and that this account is what lets another researcher build on the result. This contract overrides `07-paper-structure-architect`'s introduction sequence, which permits a consequence step; `07` governs everything else about section architecture.
+- **The notation ledger.** A regenerated symbol table with first-use locations, flagging use-before-definition (the commonest breakage, since sections are written and reordered independently), collision, silent redefinition, orphans left behind by moved material, and convention drift.
+- **Placement.** Spine / appendix / cut triage applied to *every* update, extending `scientific-narrative-architect`'s Sculpt Mode rule that the default is cut, not appendix — Sculpt Mode runs only after research-shaping, so accreted material never meets it. The finding is always the **ratio**, never the length: attaching supportive material to the spine changes the spine-to-contribution ratio, and the ratio is what a reader uses to find the contribution.
+- **Cross-section continuity.** Seam integrity, reference resolution, single-mechanism through-line, and the *growth* of defensive register across revision rounds — a pattern only visible across updates, since each round adds one caveat and none are ever removed.
+
+A **delta enumeration table** maps each kind of change to the checks it invalidates (abstract edited → contract; section reordered → notation in full, since ordering is global; reviewer-response material → placement, accretion, calibration), so updates are cheap and untouched regions carry forward. Depth is delegated, never re-derived: `narrative-clarity-auditor` (whose rule 7 already carries Tao's natural-friction argument — the parts an author found difficult retain a friction that is *information*, and uniform polish destroys it), `07-paper-structure-architect`, `theorem-presentation-auditor`, `epistemic-calibration-auditor`. Distinct from `claim-disposition-gate` (dispositions the claim surface once at results freeze) — a claim can be correctly dispositioned and badly placed.
+
+**Invocation is the point.** Agent specs cannot make themselves run, so the gate ships with hooks — installed **once per machine**, not per session and not per repository:
+
+```bash
+scripts/install-writing-gate.sh --global          # once, ever
+scripts/install-writing-gate.sh init <paper-repo> # once per paper
+```
+
+`--global` wires `scripts/hooks/manuscript-gate.sh` into `~/.claude/settings.json` as a `PostToolUse` hook (notes when manuscript source changes) and a `Stop` hook (blocks the turn from ending while the manuscript is unreconciled). Every session in every directory then carries the gate.
+
+That is only safe because the hooks are **inert outside marked papers**. `init` writes `.manuscript-gate.json`, which is both the marker and the per-paper config (`globs`, `ledger`, `register`); the hook looks for it in the nearest ancestor directory and exits immediately if there is none, before any filesystem scan. A code repository full of markdown costs one `stat` call. Papers are independent — each has its own marker, globs, and ledger — so any number can be open in parallel sessions, and working from a subdirectory finds the marker by walking up. Default globs are `*.tex`; a markdown paper sets `"globs": ["*.md"]`.
+
+Staleness is mechanical: `writing_ledger.md` carries a **manifest of source-file hashes**, and the Stop hook recomputes them — the same two-layer contract `claim_ledger.md` uses, made runnable. The installer merges into existing hooks, is idempotent, refuses to write over malformed JSON (a broken settings file silently disables every setting in it), and offers `--repo <dir>` for papers whose hooks should be shared with co-authors through the repository.
 
 ### Narrative Clarity Auditor
 

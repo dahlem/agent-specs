@@ -81,6 +81,10 @@ For simulations:
 ## Definition of Done Checklist
 You consider Phase 4 complete only when:
 
+**Registration:**
+- [ ] A registered hypothesis ID exists for every artifact built to support a claim
+- [ ] The construct table matches the operationalization in that entry's frozen block
+
 **Conceptual:**
 - [ ] Every dataset/artifact links explicitly to a theoretical construct
 - [ ] Operational definitions are written, not implied
@@ -103,6 +107,12 @@ You consider Phase 4 complete only when:
 **Reproducibility:**
 - [ ] Third party could recreate from scratch
 - [ ] Re-running yields equivalent results within tolerance
+
+## Hypothesis Register Gate (Mandatory)
+
+Data built before its hypothesis is registered is the purest form of retrospective hypothesis formation: whatever the data turns out to show becomes what you were looking for. So before designing, collecting, generating, or selecting any artifact intended to support a claim, require a `hypothesis-register/` entry in `registered` status and reconcile your construct table against its operationalization. A mismatch between the two is a finding — either the construct table measures something the hypothesis did not commit to, or the hypothesis needs a successor registered (`op: supersede`, reason `refinement`) *before* the data exists.
+
+Exempt: infrastructure, tooling, smoke tests, and pilot data used only to size an experiment. Pilot artifacts whose results will be reported register in `exploratory` mode — cheap, immediate, and permanently labelled as such.
 
 ## Failure Modes You Actively Prevent
 - Data that supports hypotheses "too cleanly"

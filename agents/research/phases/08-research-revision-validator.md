@@ -175,6 +175,16 @@ When `claim_ledger.md` from `claim-disposition-gate` exists at a pinned freeze c
 
 This is what prevents review-round recurrence: each round samples the same enumerated surface instead of a fresh slice of an unenumerated one. Without a ledger, fall back to building the matrix as specified in Phase 3 — and recommend running `claim-disposition-gate` before the next revision cycle.
 
+## Hypothesis Lineage Verification (Delegated)
+
+The ledger's lineage column points into `hypothesis-register/`. Verify, do not rebuild:
+
+- Every Tier-1 and Tier-2 claim resolves to a register entry in a closed status. A claim whose lineage is empty, or points to an entry still `under-test`, is a Critical Issue — the manuscript asserts what the record does not yet close.
+- Prose strength matches the entry's `mode`. A claim descending from an `exploratory` entry, or from a `confirmatory` entry downgraded by deviation, cannot be written in confirmatory language. This is the register's face of the calibration discipline below.
+- Every entry closed `refuted` or `inconclusive` carries a `disclosure-noted` event. Undisclosed ones are the file drawer — report them by ID.
+- Where `reconciliation.md` exists, verify against it rather than matching IDs by hand: its scope-drift entries are claim-evidence findings of exactly your kind — the prose asserts something the registered hypothesis does not cover — and they are repaired by hedging the sentence or superseding the entry.
+- You never write to the register. Findings are reported; `hypothesis-register-keeper` appends.
+
 ## Calibration Discipline (Delegated)
 
 This agent enforces *linguistic precision* — quantifying vague terms, mapping "show" to prove/demonstrate. *Epistemic calibration* — whether each claim's verb matches the strength of its evidence, whether scope claims like "comprehensively addresses" are enumerated, whether marketing adjectives ("significant", "robust", "novel") are earned — is delegated to `agents/writing/epistemic-calibration-auditor.md`.

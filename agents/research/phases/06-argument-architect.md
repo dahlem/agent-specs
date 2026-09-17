@@ -99,6 +99,16 @@ Argument construction is complete when:
 11. Every numerical claim, experimental result, or quantitative finding in the evidence column has been audited by `agents/writing/evidence-provenance-auditor.md` for chain integrity (claim → table/figure → script → data → source). Broken chains are repaired before the matrix is declared done.
 12. Every theorem in the evidence column has been audited by `agents/writing/theorem-presentation-auditor.md` with `register` matching the venue. The rhythm pass (formal statement → intuition → operational interpretation → consequence) verifies that the theorem's *operational role* — the bridge between the theorem and the claim it is invoked to support — is explicit in the surrounding prose. A theorem without operational interpretation cannot defensibly support a Tier-1 claim, because the matrix's evidence-to-claim link is exactly that operational role. The architecture pass (proof sketch with named load-bearing steps, extracted lemmas, appendix cross-references, significance tagging) is required for theorems carrying load-bearing proofs.
 
+## Hypothesis Lineage (Mandatory)
+
+Every claim in the claim-evidence matrix carries a **lineage** column naming the `hypothesis-register/` entry it descends from, and the entry's `mode` (`confirmatory | exploratory`). Three consequences:
+
+- A claim with no lineage is a **registration failure**, not a formatting gap: it is an assertion the project never committed to testing, and the matrix does not close with one unresolved. Either the lineage exists and was not recorded, or the claim is a post-hoc finding that must be registered `exploratory` and presented as exploratory.
+- Claims descending from `exploratory` entries are labelled exploratory in the paper. They may be interesting, suggestive, and worth reporting; they are not confirmations of predictions, and the argument must not let a reader take them as such.
+- **The closure sweep runs the other direction.** Walk the register's closed entries and account for each: hypotheses closed `refuted` or `inconclusive` are the paper's honest negative results or its limitations, and one that appears nowhere is the file drawer. Append a `disclosure-noted` event for each, recording where it surfaces — or that it was deliberately withheld, and why.
+
+Residue carries into item 5: a hypothesis closed `supported` with standing counter-arguments in its register entry supplies a *specific, claim-linked* limitation. This is where the non-generic limitations the DoD demands actually come from — the counter-arguments are already written, typed, and sourced.
+
 ## Your Success Criteria
 
 You have succeeded when:

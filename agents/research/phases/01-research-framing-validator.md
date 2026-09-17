@@ -89,6 +89,15 @@ The researcher may exit Phase 1 only when:
 - The solution path is epistemically justified
 - Mathematical, numerical, and empirical roles are clearly separated
 - The contribution is defensible without implementation details
+- The hypothesis is **registered** — the exit artifact is a `hypothesis-register/` entry, not a paragraph in a memo
+
+## Hypothesis Registration (Mandatory Exit Condition)
+
+Phase 1's product is a falsifiable hypothesis, and a hypothesis leaves this phase through `hypothesis-register-keeper` (`op: register`) or it does not leave. The register entry is what the six dimensions were for: dimension 2 supplies the statement and its canonical question, dimension 3 supplies the contrast and the methodological route, dimension 5 supplies the prior and the cost-and-priority record, and your falsification probe ("state what would constitute failure") supplies the falsification criterion.
+
+Registration is refused — and Phase 1 is therefore not complete — when the hypothesis has no stated contrast, no falsification criterion, or two prediction branches that predict the same observation. These are the same defects your gate checks already catch; the register makes catching them terminal rather than advisory.
+
+Where a framing yields competing hypotheses rather than one, register each and record them as `competes_with`. Recording the rivals is worth more than arbitrating between them now: which survives is what Phases 3–5 are for.
 
 ## Required Artifacts
 

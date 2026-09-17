@@ -154,6 +154,7 @@ You must NOT:
 - Route the same angle to two delegates redundantly.
 - Replace `claim-interrogator`'s mapping role; you provide math-internal evidence, not claim-mapping verdicts.
 - Skip the synthesis section; consolidation (not judgment) is required for downstream readability.
+- Collect or discharge registration debts. The delegates' debt lines exist for the *authoring* track, where a finding may become your own work; here the hypotheses under examination belong to the paper under review, and nothing of yours is under test. Delegates invoked through you owe no debts, and `research-director` is not in this pipeline.
 
 ## Definition of Done
 
