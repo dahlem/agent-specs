@@ -52,6 +52,18 @@ The outermost ring of the concentric arc, and the only part of the paper most of
 
 **Definition of Done**: the title is repeatable from memory, names the contribution rather than the activity, supplies a handle or deliberately declines to, carries no so-what, matches the venue's title-pattern family where an archetype exists, and has gained no qualifier since the last revision that it did not earn.
 
+### Headings and Paragraph Labels
+
+Every heading, at every level, obeys the title's discipline scaled down: **it carries the finding, not the index of the activity that produced it.**
+
+`Test 7: What the geometry forbids stays forbidden in a network` contains a good heading and a defect. The clause after the colon is exactly right — it states a result, it is memorable, a reader can carry it. `Test 7:` is the defect: an ordinal from the *process*, asking the reader to track a numbering that means nothing outside the authors' working notes. Delete the prefix and the heading improves with no loss.
+
+Flag and rewrite: `Test 7:`, `Experiment 3:`, `Ablation 2:`, `Study B:`, `Analysis 4:`, `Case 1:`, `Setting (iii):` — wherever the ordinal is doing the labelling rather than the content. Two exemptions: a genuine cross-reference target the text actually refers back to (and then the label is *in addition to* the finding, never instead of it), and a venue convention that numbers experiments.
+
+The general test: **read the table of contents alone.** If it reads as a list of things the authors did, the headings are process labels. If it reads as a sequence of things the field now knows, they are findings. The second is what makes a paper skimmable by the reader who decides in ninety seconds whether to read it properly.
+
+This is the same failure as apparatus leakage one level up: numbering is how *we* organised the work, not what the work established.
+
 ### Abstract and Contribution Statement
 - Must compress the entire logical arc into a lossless representation
 - Starts with structural problem, not method
@@ -143,6 +155,24 @@ The four narrative questions are not distributed evenly across the paper:
 | Conclusion | **so-what**, at full strength | new concepts |
 
 This contract is owned by `manuscript-update-gate`, which re-checks it on every manuscript update — the distribution is easy to satisfy in a first draft and is broken by ordinary revision, most often when a reviewer response pulls an implication forward into the introduction. Your section-level enforcement above and its update-level enforcement are the same rule applied at different frequencies.
+
+## Research History: Narration, Never Assertion
+
+Papers routinely carry the shape of how the work actually happened — the first framing, the assumption that turned out wrong, the correction. Some of that is valuable and some of it damages the reader, and the line between them is sharp.
+
+**The rule: no deferred correction.** The paper's spine — definitions, theorems, claims, and the statements the argument depends on — presents everything in its final, correct form at first appearance. A reader builds their mental model once, from the correct version.
+
+What fails is leading with a statement the authors know to be wrong, letting it stand as current and load-bearing, and correcting it pages later. Every reader who skims retains the wrong version; every reader who reads linearly spends the interval reasoning from a false premise; and a reader who stops early is left worse informed than if the passage had been cut. The research took the wrong turn — the *reader* need not.
+
+**What remains legitimate**, because the correction is *co-located* rather than deferred:
+
+- `One might expect X; in fact Y` — the naive expectation and its refutation in the same breath. This is motivation, and it is often the clearest way to convey why a result is surprising.
+- An explicitly marked superseded framing: "earlier work modelled this as X; that fails because …". Attributed, dated, and never asserted in the paper's own voice as current.
+- The **digestion surface** in the conclusion — the authors' account of what was tried, where the difficulty sat, which step surprised them. This is *narration about the research*, clearly located after the reader holds the correct picture, and it is exactly what Tao argues assists a result's digestion. It is not a contradiction of this rule but its complement: history belongs where it informs, not where it misinforms.
+
+The test is **where the reader is when the correction arrives.** Same sentence or same paragraph: narration, keep it. Sections later: deferred correction, restructure it.
+
+The project's own history has a home already — superseded hypotheses live in `hypothesis-register/` with their closure records, and the investigative trail lives in `research-memory/`. Both are complete, both are checkable, and neither needs the paper to re-narrate it. That the history is preserved elsewhere is precisely what frees the paper's spine to state only what is true.
 
 ## Venue Archetype (Optional Input)
 

@@ -91,11 +91,13 @@ Delta mode is the point of this agent. Map each changed region to the checks it 
 | Abstract edited | full contract (1); introduction fan-out consistency; conclusion payload |
 | Introduction edited | contract (1) — especially so-what leakage; seams (4) |
 | Conclusion edited | contract (1); digestion surface; through-line (4) |
+| Heading added or renamed | **process-ordinal headings** — a heading naming the activity rather than the finding; read the new table of contents alone and check it lists what is known, not what was done |
 | Section added or reordered | notation (2) in full — ordering is global; seams (4); placement (3) |
 | New definition or symbol | notation (2); `narrative-clarity-auditor` rules 1, 2, 6 on the new material |
 | New theorem or proof | `theorem-presentation-auditor`; notation (2); placement (3); implementation identifiers (below) |
 | Any new prose at all | **apparatus leakage** and **implementation identifiers** — both enter by revision, never by design: a reviewer response quotes an agent's finding verbatim, or an author reaches for the repository name while explaining what a step does. `narrative-clarity-auditor` owns both anti-patterns; you run them over the diff |
 | New figure, table, or appendix | placement (3); carrier linkage via `claim-disposition-gate` if a ledger exists |
+| A claim's statement changed anywhere | **deferred correction** — the earlier occurrence may now state the superseded version while the later one is correct. This is how the pathology is *created*: a revision fixes the statement where the author was looking and leaves the first appearance standing. Check every prior occurrence through the cross-reference network |
 | Prose rewritten in a verified passage | `epistemic-calibration-auditor`; the claim ledger's check 5 (freeze-or-regenerate) |
 | Reviewer-response material added | placement (3); defensive accretion (4); calibration |
 | Any edit at all | expository-weight ratio (`narrative-clarity-auditor` rule 7) over the edited region |
