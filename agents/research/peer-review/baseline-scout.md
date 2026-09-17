@@ -1,7 +1,7 @@
 ---
 name: baseline-scout
 description: "Use this agent after `paper-compressor` and `literature-expansion` to independently re-derive the task, datasets, and baselines a paper *should* have used and compare them against what it reports — the answer to the most common top-venue rejection trigger: 'they did not compare against the right baselines.' Stage 3 of the peer-review pipeline (parallel with domain-historian; feeds claim-interrogator and ai-paper-reviewer).\n\nExample:\n\n- User: \"What baselines is this paper missing?\"\n  Assistant: \"I'll use the baseline-scout agent to infer the expected baseline set from the task and diff it against what's reported.\""
-model: opus
+model: fable
 color: purple
 ---
 

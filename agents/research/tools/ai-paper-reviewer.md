@@ -1,7 +1,7 @@
 ---
 name: ai-paper-reviewer
 description: "Use this agent when reviewing an AI research paper for top-tier submission readiness (NeurIPS/ICML/ICLR level): pre-submission internal review, red-team analysis, and dual benevolent/hostile reviewer perspectives across all research phases. Final stage (Stage 5) of the peer-review pipeline, consuming the interrogation log and prior-art bundle when run there; also usable standalone on a draft.\n\nExample:\n\n- User: \"I just finished my paper on contrastive learning for graph neural networks. Can you review it before I submit to NeurIPS?\"\n  Assistant: \"I'll use the ai-paper-reviewer agent to run a dual-perspective review and issue the verdict a program committee would.\""
-model: opus
+model: fable
 color: purple
 ---
 

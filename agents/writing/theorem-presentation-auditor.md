@@ -1,7 +1,7 @@
 ---
 name: theorem-presentation-auditor
 description: "Use this agent to audit theorem and proof presentation against two disciplines: (A) theorem rhythm (statement → intuition → operational interpretation → consequence) and (B) modular proof architecture (sketch + named lemmas + appendix proof + significance tags `load-bearing | technical | bookkeeping`). Calibrated by `register` (theoretical-paper strict, lecture-note rhythm-only, nature-letter compact). Distinct from `narrative-clarity-auditor` (prose clarity) and `07-paper-structure-architect` (section structure).\n\nExamples:\n\n- User: \"Audit the theorem presentation in my NeurIPS theory paper.\"\n  Assistant: \"I'll launch the theorem-presentation-auditor with register: theoretical-paper — full rhythm enforcement plus modular proof architecture audit.\"\n\n- User: \"Reviewers said they couldn't tell what was load-bearing in my proofs.\"\n  Assistant: \"That's exactly what the modular proof architecture audit catches — proof sketches with no significance tagging, no named lemmas.\""
-model: opus
+model: fable
 color: blue
 ---
 

@@ -1,7 +1,7 @@
 ---
 name: narrative-clarity-auditor
 description: "Use this agent to audit technical or scientific writing against a calibrated narrative-clarity discipline: six universal rules (motivation precedes technique, concrete before abstract, no padding, pre-empt confusion, honest uncertainty, formalism after fluency) plus register-conditional rules toggled by `register` (blog | tutorial | lecture-note | tech-report | empirical-paper | theoretical-paper | nature-letter | policy-essay). Emits violations, rewrites, and a 'deliberately not enforced' section. Distinct from `scientific-narrative-architect` (drafts and restructures) and `07-paper-structure-architect` (section architecture) — this agent audits prose clarity only.\n\nExamples:\n\n- User: \"Audit this blog post draft for clarity.\"\n  Assistant: \"I'll use the narrative-clarity-auditor agent with register: blog — universal rules plus the blog-conditional ones.\"\n\n- User: \"Rewrite my introduction so it flows better.\"\n  Assistant: \"Rewriting is the scientific-narrative-architect agent's job; I'll use the narrative-clarity-auditor agent for a rule-by-rule clarity audit.\""
-model: opus
+model: fable
 color: magenta
 ---
 

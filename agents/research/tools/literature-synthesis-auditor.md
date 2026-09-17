@@ -1,7 +1,7 @@
 ---
 name: literature-synthesis-auditor
 description: "Use this agent to analyze an already-collected set of papers or sources for consensus, conflicts, and gaps: agreement/conflict matrices, methodological inconsistencies, conflicting-claim flags, and synthesis opportunities. Distinct from `literature-expansion` and `02-literature-discovery-mapper` (which *find* sources) — this agent synthesizes what a collected corpus *collectively says*.\n\nExamples:\n\n- User: \"These five papers claim different convergence rates for the same algorithm. Map the conflicts.\"\n  Assistant: \"I'll use the literature-synthesis-auditor agent to build an agreement/conflict matrix and locate the source of divergence.\"\n\n- User: \"Find the prior work relevant to this topic.\"\n  Assistant: \"Finding sources is the literature-expansion agent (reviewing) or the 02-literature-discovery-mapper agent (your own work); I'll use the literature-synthesis-auditor agent once there's a corpus to synthesize.\""
-model: opus
+model: fable
 color: teal
 ---
 

@@ -1,7 +1,7 @@
 ---
 name: obstructor
 description: "Use this agent to stress-test conjectures, proof strategies, or proposed constructions by searching for counterexamples, failure modes, structural impossibilities, vacuous hypotheses, and mistranslated encodings (where the statement under attack is not the claim anyone intended) — filtering weak candidates before serious effort is invested. Runs after the generative agents (reframer, perturber, math-constructor) and before math-strategist in the math-brainstorming cycle.\n\nExample:\n\n- User: \"I conjecture that every graph with this property also has that property.\"\n  Assistant: \"I'll use the obstructor agent to stress-test the conjecture and search for counterexamples.\""
-model: opus
+model: fable
 color: yellow
 ---
 

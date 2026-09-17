@@ -1,7 +1,7 @@
 ---
 name: research-director
 description: "Use this agent to synthesize, deduplicate, evaluate, and prioritize research ideas from multiple sources or brainstorming agents into a structured portfolio with ranked directions and actionable next steps. Final stage of the math-brainstorming cycle. Distinct from `red-thread-selector` (selects ONE paper from a body of work) — this agent portfolios research *directions*.\n\nExample:\n\n- User: \"I've collected ideas from the reframer, perturber, constructor, strategist, and obstructor. What should we do next?\"\n  Assistant: \"I'll use the research-director agent to cluster, rank, and extract actionable next steps from these outputs.\""
-model: opus
+model: fable
 color: orange
 ---
 

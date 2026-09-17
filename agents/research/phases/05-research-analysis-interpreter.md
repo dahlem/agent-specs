@@ -1,7 +1,7 @@
 ---
 name: 05-research-analysis-interpreter
 description: "Use this agent when analyzing and interpreting research artifacts — data, simulations, proofs, trained models — to validate findings and test hypotheses: integrity checks, statistical methods, robustness and sensitivity analysis, ablations, and interpretation against theory and prior work. Phase 05 of the 10-phase research workflow (after 04-research-data-architect; before 06-argument-architect).\n\nExample:\n\n- User: \"Training is done and the results are in. Can you check whether my hypothesis about attention patterns holds?\"\n  Assistant: \"I'll use the 05-research-analysis-interpreter agent to analyze the results and validate the hypothesis.\""
-model: sonnet
+model: fable
 color: purple
 ---
 

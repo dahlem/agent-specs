@@ -1,7 +1,7 @@
 ---
 name: red-thread-selector
 description: "Use this agent after `research-divergence-cartographer` to pick the one paper hiding inside a body of work: it scores each candidate thread on novelty, clarity, technical depth, significance, evidence sufficiency, and narrative inevitability (penalizing density, claim sprawl, and unsupported ambition), simulates a dual benevolent/hostile reviewer per candidate, and emits the selected thread with runners-up and audit trail. Stage 2 of the research-shaping pipeline. Distinct from `research-director` (portfolios research *directions*) — this agent selects ONE paper to write.\n\nExample:\n\n- User: \"We have 9 candidate threads. Which one becomes the paper?\"\n  Assistant: \"I'll use the red-thread-selector agent to score each thread, run the dual-lens reviewer simulation, and select one with a full audit trail.\""
-model: opus
+model: fable
 color: orange
 ---
 

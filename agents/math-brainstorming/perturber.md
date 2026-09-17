@@ -1,7 +1,7 @@
 ---
 name: perturber
 description: "Use this agent to explore the neighborhood of a mathematical or theoretical problem by systematically modifying assumptions, parameters, constraints, or regimes — mapping nearby variants to reveal hidden structure, essential assumptions, phase transitions, and simpler solvable cases. Generative stage of the math-brainstorming cycle (after reframer, alongside math-constructor; feeds obstructor and math-strategist).\n\nExample:\n\n- User: \"I'm trying to prove this connectivity result for random graphs. I'm stuck.\"\n  Assistant: \"I'll use the perturber agent to explore nearby variants and identify which assumptions are essential.\""
-model: opus
+model: fable
 color: blue
 ---
 

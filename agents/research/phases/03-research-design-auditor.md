@@ -1,7 +1,7 @@
 ---
 name: 03-research-design-auditor
 description: "Use this agent when converting a framed research problem into a testable, auditable research design: methodology choice and justification, variable and construct definitions, data strategy, evaluation metrics, and reproducibility and ethics standards — before experimentation begins. Phase 03 of the 10-phase research workflow (after 02-literature-discovery-mapper; before 04-research-data-architect).\n\nExample:\n\n- User: \"I have a hypothesis that attention head pruning preserves task performance while cutting compute. Help me design the methodology.\"\n  Assistant: \"I'll use the 03-research-design-auditor agent to develop a defensible, auditable research design for that hypothesis.\""
-model: sonnet
+model: fable
 color: purple
 ---
 

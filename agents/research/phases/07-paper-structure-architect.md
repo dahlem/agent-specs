@@ -1,7 +1,7 @@
 ---
 name: 07-paper-structure-architect
 description: "Use this agent when structuring or auditing an academic paper's narrative architecture: whether each section answers the four core questions (why this exists, what gap, how addressed, so what) with progressive elaboration across the document. Phase 07 of the 10-phase research workflow (after 06-argument-architect; before 08-research-revision-validator). Distinct from `scientific-narrative-architect` (venue-general drafting and restructuring) and `narrative-clarity-auditor` (sentence-level prose clarity) — this agent is the structural gate for section architecture.\n\nExamples:\n\n- User: \"My paper draft is complete. Is it ready for submission?\"\n  Assistant: \"I'll use the 07-paper-structure-architect agent to run the paper-level definition-of-done checklist and verify structural coherence.\"\n\n- User: \"Can you tighten the prose in my introduction?\"\n  Assistant: \"Sentence-level clarity is the narrative-clarity-auditor agent's job; I'll use the 07-paper-structure-architect agent if you want the section architecture audited.\""
-model: sonnet
+model: opus
 color: purple
 ---
 

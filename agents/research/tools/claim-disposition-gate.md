@@ -1,7 +1,7 @@
 ---
 name: claim-disposition-gate
 description: "Use this agent when a paper's results freeze: enumerate its entire falsifiable-claim surface across theory, empirical, and interface zones and assign every claim exactly one disposition — PROVED, MEASURED, TESTED, HEDGED, or CUT — emitting a ledger and risk register so reviews become lookups. Configurable by `mode` (full | delta). Distinct from `claim-interrogator` (someone else's paper under review), `hypothesis-register-keeper` (the prospective commitments claims descend from), and `manuscript-update-gate` (exposition, re-gated on every edit) — this agent dispositions your own paper's claim surface once.\n\nExamples:\n\n- User: \"Results are frozen. Gate the paper before we package it.\"\n  Assistant: \"I'll use the claim-disposition-gate agent to disposition the full claim surface; the residue becomes the risk register.\"\n\n- User: \"Are this paper's central claims supported?\"\n  Assistant: \"For a paper under review that's the claim-interrogator agent's job; I'll use the claim-disposition-gate agent to disposition your own paper's claims before submission.\""
-model: opus
+model: fable
 color: yellow
 ---
 
