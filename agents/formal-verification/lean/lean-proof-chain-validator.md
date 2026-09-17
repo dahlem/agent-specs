@@ -265,7 +265,13 @@ Each NR entry must state:
 - Conclusion (what was learned)
 - Evidence (Lean artifact or counterexample sketch)
 
-#### 6.4 Register Closure
+#### 6.4 Paper-Facing Object Map
+
+Where the development backs a paper, emit the mapping table its reproducibility appendix needs — one row per mathematical object: the object as the paper states it, its location in the paper, the Lean declaration, the file, and its status (`sorry`-free, axioms used). You already hold every field from the scope lock and the dependency closure; assembling them here is what keeps Lean names out of the paper's main body, where `07-paper-structure-architect` forbids them.
+
+Generate it, never transcribe it. A hand-copied declaration name is the Satellite-claim failure mode in `claim-disposition-gate`'s grid, and it breaks silently on the next rename — which is precisely the argument for a generated table over identifiers scattered through prose.
+
+#### 6.5 Register Closure
 
 Formalization is theory development, and a conjecture taken to Lean is a hypothesis under test. Where the development has a `hypothesis-register/`, each theorem in scope resolves to a register entry, and this phase closes it:
 
