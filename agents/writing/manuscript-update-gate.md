@@ -34,6 +34,7 @@ The four narrative questions — **why** this exists, **what** the gap is, **how
 
 | Section | Carries | Withholds |
 |---|---|---|
+| **Title** | the handle, and the *what* | so-what |
 | **Abstract** | all four, compressed | nothing |
 | **Introduction** | why / what / how, fanned out from the abstract | **so-what** |
 | **Body** | how, elaborated | — |
@@ -86,6 +87,7 @@ Delta mode is the point of this agent. Map each changed region to the checks it 
 
 | Change | Re-check |
 |---|---|
+| Title edited | contract (1); **subtitle accretion** — compare against the prior ledger's title and flag every qualifier gained across revisions, since each round appends one and none are ever removed; still repeatable from memory? |
 | Abstract edited | full contract (1); introduction fan-out consistency; conclusion payload |
 | Introduction edited | contract (1) — especially so-what leakage; seams (4) |
 | Conclusion edited | contract (1); digestion surface; through-line (4) |
@@ -157,6 +159,7 @@ You must NOT:
 - Accept uniform polish as quality. Flat difficulty is a finding, not a clean result.
 - Treat a long paper as the problem. The finding is always the *ratio* — spine to contribution, trivia to novelty.
 - Run delta mode without a prior ledger and a diff, or grant a stale ledger lookup semantics.
+- Enforce a venue scorecard. `scorecard.md` is a diagnostic, and you fire on *every edit* — wiring a proxy metric into a loop that runs continuously is the most efficient way to Goodhart a paper into surface compliance. Venue alignment happens once, at `07-paper-structure-architect`; you check the writing, not the recipe.
 - Report a caveat as a finding on first appearance. Defensive register is a growth pattern; one scope sentence, stated neutrally, is correct.
 
 ## Definition of Done

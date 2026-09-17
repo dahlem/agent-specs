@@ -324,12 +324,13 @@ For a fresh research project where the framing is not yet locked.
 4. `04-research-data-architect` — build data with provenance documented end-to-end, never before the hypothesis it will test is registered
 5. `05-research-analysis-interpreter` — analyze with robustness/ablation; log deviations, then *close* each hypothesis against its pre-specified criterion
 6. `06-argument-architect` — distill 1–3 irreducible claims; the agent's DoD now invokes the writing auditors
-7. `07-paper-structure-architect` — section-level architecture; delegates clarity and theorem-presentation to the auditors
-8. `claim-disposition-gate` — results frozen, draft stable: disposition the entire claim surface once; emits `claim_ledger.md` + risk register
-9. `08-research-revision-validator` — close loopholes *against the ledger* (delta-only on revision rounds); pairs with `epistemic-calibration-auditor`
-10. `09-research-validation-qa` — adversarial reproducibility audit of the artifacts behind PROVED/MEASURED/TESTED entries
-11. `10-scholarly-submission-strategist` — venue alignment, formatting, archival; releases the register with its closure tally and file-drawer accounting
-12. `ai-paper-reviewer` — pre-submission internal review, in ledger mode: findings cite ledger entries or report enumeration failures
+7. `venue-archetype-distiller` *(when the target venue is chosen or being chosen)* — profile the venue's high-performers in your subfield; emits `archetype.md` + `scorecard.md`. Run it **here**, between settled claims and unbuilt sections: this is the last point at which structural alignment is cheap. Archetypes are per venue-and-subfield and reusable across papers, so this is skipped when you already have one
+8. `07-paper-structure-architect` — section-level architecture, title included; loads the archetype as venue-calibrated guidance and sets the `register` the auditors and the update gate share; delegates clarity and theorem-presentation to the auditors
+9. `claim-disposition-gate` — results frozen, draft stable: disposition the entire claim surface once; emits `claim_ledger.md` + risk register
+10. `08-research-revision-validator` — close loopholes *against the ledger* (delta-only on revision rounds); pairs with `epistemic-calibration-auditor`
+11. `09-research-validation-qa` — adversarial reproducibility audit of the artifacts behind PROVED/MEASURED/TESTED entries
+12. `10-scholarly-submission-strategist` — venue *fit* (structural alignment already happened at step 8), formatting, archival; releases the register with its closure tally and file-drawer accounting
+13. `ai-paper-reviewer` — pre-submission internal review, in ledger mode: findings cite ledger entries or report enumeration failures
 
 `scientific-narrative-architect` is invoked throughout phases 6–10 for drafting, restructuring, audience adaptation, and quality control.
 
@@ -499,6 +500,12 @@ Transforms validated results into coherent, defensible academic arguments. Enfor
 ### Phase 07 — Paper Structure Architect
 
 Enforces rigorous narrative architecture where every section answers four core questions (Why exists, What gap, How addressed, So what). Applies concentric narrative arc and progressive elaboration: abstracts compress the entire argument, introductions mirror the abstract at higher resolution, methods make the solution feel unavoidable, and results test claims rather than showcase experiments.
+
+The four questions are **not distributed evenly** — the title carries the handle and the *what*, the abstract carries all four compressed, the introduction fans out why/what/how and **withholds so-what**, and the conclusion delivers so-what at full strength plus the digestion surface (how the result was actually reached). Spending significance in the introduction is how a paper arrives at its ending with nothing left to say. `manuscript-update-gate` re-checks this contract on every edit, since ordinary revision breaks it — most often when a reviewer response pulls an implication forward.
+
+**Title discipline** lives here too, as the outermost ring of the arc: short enough to repeat from memory, naming the contribution rather than the activity, and **supplying the handle the community will use** — a paper offering none is recalled only by author-and-year, which is the entry condition for Tao's canonicalization stage, since results are taught under a name. Anti-patterns are named individually (`Towards …` hedging, stacked colons, unanswered question titles, forced backronyms, subtitle accretion across revisions). The seam with `narrative-clarity-auditor`'s ban on slogan-branding is exact: **the title may coin the handle; the body may not lean on it** — defined once beside the object, then the technical statement thereafter.
+
+**Venue alignment happens here**, not at submission. When `archetype.md` from `venue-archetype-distiller` exists, it is loaded as venue-calibrated guidance over section rhythm, opening move, evidence portfolio, and figure strategy — never overriding the four questions or the so-what contract, with conflicts surfaced rather than silently resolved, and always as a diagnostic rather than a target. This phase also sets the `register` that `narrative-clarity-auditor`, `theorem-presentation-auditor`, and `manuscript-update-gate` share, recorded in `.manuscript-gate.json` so they are all calibrated to the same venue.
 
 ### Phase 08 — Research Revision Validator
 
