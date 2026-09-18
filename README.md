@@ -460,6 +460,7 @@ agent-specs/
 │   ├── sync-agents.sh                           # Symlink agents into ~/.claude/agents/
 │   ├── lint-descriptions.sh                     # Enforce DESCRIPTION-STYLE.md (--stats for token load)
 │   ├── install-writing-gate.sh                  # --global (once per machine) · init <paper> (once per paper)
+│   ├── check-evidence-chain.py                  # Validate hypothesis → data → scalars → LaTeX macro chain
 │   └── hooks/
 │       └── manuscript-gate.sh                   # PostToolUse notify + Stop check (ledger-manifest staleness)
 └── DESCRIPTION-STYLE.md                         # Frontmatter-description conventions (budgets, template, examples)
@@ -1194,6 +1195,28 @@ designed, but better met deliberately than during an unrelated ten-minute fix.
 `--repo <dir>` installs the hooks into a single repository's own
 `.claude/settings.json` instead, for papers whose co-authors should get them through
 the repository; add `--local` to write a gitignored `settings.local.json`.
+
+### The evidence chain
+
+Numbers reach a paper by generation, never transcription. `scripts/check-evidence-chain.py <paper-repo>` validates the whole chain mechanically:
+
+```
+hypothesis-register/H-0007-*.md   registered hypothesis (frozen block)
+   └── doe/H-0007.yaml            the design, as an INPUT to the runner
+        ↓
+   results/H-0007.parquet         tidy observations, one row each
+   results/H-0007.json            citable scalars + input hashes + registered flags
+        ↓
+   macros/hypothesis_H0007.tex    generated \newcommand definitions
+        ↓ \input
+   paper.tex
+```
+
+Nine checks, ordered by what they prevent: **staleness** (input hashes no longer match the files), **drift** (a macro value matching no scalar — hand-edited or stale), **provenance** (results for a hypothesis with no register entry), **orphan-macro** / **orphan-scalar** / **undefined** / **collision** (the macro surface closed in both directions), **exploratory** (`registered: false` scalars whose claims must be hedged), and **precision** (more decimals printed than `n` supports). Exit 0 clean, 1 findings, 2 layout error; `--json` for CI.
+
+It also emits the **claim lineage map** — every namespaced macro names its hypothesis, so hypothesis→manuscript lineage is traversed rather than hand-maintained. That is the column `claim-disposition-gate` otherwise asks an author to fill in, and the chain `evidence-provenance-auditor` otherwise asserts.
+
+Configure per paper with `.evidence-chain.json` (directory names, manuscript globs, and `macro_pattern` — the namespace that distinguishes a generated macro from an ordinary LaTeX command; default `^H[A-Z]`, which `\Huge` does not match).
 
 ### Model tiers
 

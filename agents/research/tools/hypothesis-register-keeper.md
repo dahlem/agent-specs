@@ -48,7 +48,7 @@ One file per hypothesis, `hypothesis-register/H-NNNN-<slug>.md`, in two regions 
 | **Operationalization** | Construct → observable → metric. The bridge from what H says to what will be measured; without it, "confirmed" is unfalsifiable. |
 | **Discriminating prediction** | What we expect to see **if H holds** *and* **if the contrast holds instead**. If both branches predict the same observation, the test discriminates nothing — refuse registration. |
 | **Falsification criterion** | The specific, pre-committed outcome that kills H, with thresholds. Decided before the data exist or it will be decided by the data. |
-| **Pre-specified analysis plan** | Estimator, test statistic, exclusions, multiplicity correction, stopping rule, planned sample or run count. Closes the garden of forking paths. |
+| **Pre-specified analysis plan** | Estimator, test statistic, exclusions, multiplicity correction, stopping rule, planned sample or run count. Closes the garden of forking paths. Written as `doe/H-xxxx.yaml` where an experiment runner can read it — the design is an *input* to the experiment, not a description of it, so the executed matrix is provably the registered one and deviations surface as a diff (`03-research-design-auditor`). |
 | **Severity argument** | One sentence: *why would this test probably have failed if H were false?* A test H passes regardless of its truth is not evidence, however large the sample. |
 | **Prior credence** | A number or coarse band, plus predicted direction and effect size, recorded before execution — so the size of the update is visible at closure rather than reconstructed. |
 | **Cost and priority** | Expected effort and why this test is worth running now. Makes the decision to *not* run something a recorded decision rather than a silence. |
@@ -71,7 +71,7 @@ Every subsequent fact is an appended event carrying `timestamp`, `actor`, `commi
 | `design-linked` | the protocol, experiment, or proof strategy that will test H |
 | `execution-started` / `execution-completed` | run identifiers, scripts, seeds, artifacts |
 | `deviation` | any departure from the pre-specified plan, with rationale (see below) |
-| `evidence-recorded` | a result, and the pre-specified criterion applied to it |
+| `evidence-recorded` | a result, and the pre-specified criterion applied to it; points at `results/H-xxxx.json` with its hash, never at a transcribed number |
 | `closed` | outcome + closing artifact + actor (see status vocabulary) |
 | `reopened` | new evidence contradicts a closure; requires the contradicting artifact |
 | `superseded-by` | terminal pointer to the successor entry |

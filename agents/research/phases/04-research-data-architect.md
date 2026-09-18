@@ -108,6 +108,35 @@ You consider Phase 4 complete only when:
 - [ ] Third party could recreate from scratch
 - [ ] Re-running yields equivalent results within tolerance
 
+## The Export Contract: Two Tiers, Never Collapsed
+
+Every hypothesis exports two artifacts, and conflating them is the commonest way a paper's numbers stop being checkable.
+
+**Tidy observations** — `results/H-xxxx.parquet`, one row per observation (`run_id`, factor columns, `metric`, `value`). This is what lets a reviewer recompute your aggregate and what lets you add an error bar later without re-running. Parquet over CSV because floats round-trip exactly; export CSV alongside only when the data is small enough that a human might open it.
+
+**Citable scalars** — `results/H-xxxx.json`, only the numbers the paper states, *derived from the parquet by a committed script* and never hand-assembled:
+
+```json
+{ "hypothesis": "H-0007", "generated_at": "<iso>", "source_commit": "<hash>",
+  "inputs": [{"path": "results/H-0007.parquet", "sha256": "…"}],
+  "scalars": {
+    "acc_mean_treat": {
+      "value": 0.82341, "formatted": "82.3",
+      "ci95": [0.801, 0.846], "n": 5, "sd": 0.021,
+      "estimator": "mean over seeds", "rows": "condition=treat",
+      "registered": true
+    } } }
+```
+
+Four fields carry the weight:
+
+- **`formatted`** — the emitter owns rounding and significant figures, so the "prose says 82%, table says 82.34%" drift is structurally impossible. Never print more precision than `n` supports.
+- **`registered`** — `true` iff the metric appears in the frozen block's analysis plan. **This is the HARKing guard inside the data pipeline**: a metric that entered because someone saw the results is `false`, and every claim citing it must be labelled exploratory.
+- **`inputs[].sha256`** — the staleness anchor. Scalars whose inputs have changed are not citable.
+- **`estimator` / `rows`** — the reduction from observations to scalar, stated so it can be repeated.
+
+**Commit the JSON.** It is small and diffable, so a pull request shows *when a number changed* — a review affordance you lose entirely if scalars live only in artifact storage. The parquet may live in DVC or LFS when large.
+
 ## Hypothesis Register Gate (Mandatory)
 
 Data built before its hypothesis is registered is the purest form of retrospective hypothesis formation: whatever the data turns out to show becomes what you were looking for. So before designing, collecting, generating, or selecting any artifact intended to support a claim, require a `hypothesis-register/` entry in `registered` status and reconcile your construct table against its operationalization. A mismatch between the two is a finding — either the construct table measures something the hypothesis did not commit to, or the hypothesis needs a successor registered (`op: supersede`, reason `refinement`) *before* the data exists.

@@ -118,6 +118,8 @@ The register is an artifact, and artifacts are what you audit. Run `hypothesis-r
 
 Then run `op: reconcile` against the manuscript. Its blind reconstruction — the paper read as an independent witness to what was tested, recorded *before* the register is opened — is the check none of the other passes can perform: a claim can carry a valid lineage pointer, survive the ledger, and still not state the hypothesis that was registered. Treat **scope drift** as Major (Critical where the drift widens a claim past the regime that was tested), file drawer and registration failures at the severities their own sections give them.
 
+Where the paper uses generated macros, run `scripts/check-evidence-chain.py` as part of the reproducibility audit. Its `staleness` and `drift` errors are Critical — a stale scalar or a hand-edited macro means the paper states a number the data does not currently support, which is the exact failure a reproducibility audit exists to catch. `provenance` errors (results for an unregistered hypothesis) belong with the adherence findings above.
+
 `VIOLATIONS(n)` from the keeper's audit is a Critical finding in your gate verdict. A register that does not exist at all is itself the finding: report it as a process failure and name the phases that executed without one.
 
 ## Definition of Done
