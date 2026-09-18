@@ -220,6 +220,25 @@ Emit `provenance_audit.md`:
 - **`epistemic-calibration-auditor`** — orthogonal. Calibration audits whether the prose claim is calibrated to evidence; this auditor audits whether the evidence chain exists. Both can run on the same paper.
 - **`claim-disposition-gate`** — invokes this auditor for every claim dispositioned MEASURED: the chain integrity record (claim → script → data → source) is the artifact behind the disposition. A hand-transcribed value cannot be MEASURED; flag it back to the gate as a satellite claim.
 
+## The Macro Chain (Mechanical Mode)
+
+Where a paper uses generated macros, your chain — claim → table/figure → script → data → source — stops being something you assert and becomes something you traverse. Run `scripts/check-evidence-chain.py` and consume its findings rather than re-deriving them:
+
+| Its check | What it proves about your chain |
+|---|---|
+| `staleness` | the scalars' recorded input hashes still match the files on disk |
+| `drift` | every macro's value equals a `formatted` scalar — nothing was hand-edited |
+| `provenance` | every results file names a hypothesis that exists in the register |
+| `undefined` / `orphan-macro` / `collision` | the macro surface is closed in both directions |
+| `precision` | no more decimals printed than the sample size supports |
+| `exploratory` | scalars marked `registered: false`, whose claims must be hedged |
+
+**LaTeX mechanics you audit for.** Macros are emitted with `\newcommand` — never `\providecommand`, which silently keeps whatever was defined first, and never `\renewcommand`. A collision must abort the build. Macro names are namespaced per hypothesis. The index file that `\input`s them is generated too, because a hand-maintained index turns a forgotten hypothesis into a silent omission instead of a build error. There are no fallback definitions: a missing macro shows a loud box in draft mode and errors in final.
+
+**What a macro must never carry.** Numbers and formatted numbers only. The moment a pipeline emits `\HSevenVerdict{significantly outperforms}` it has automated the overclaim and placed it beyond `epistemic-calibration-auditor`'s reach. Interpretation is authored. The one exception is a significance marker derived from the *pre-registered* alpha, which is mechanical application of a registered rule rather than a judgment.
+
+**The staleness contract has three layers**, and the script is only the third: a build graph (the paper depends on the macro files, so LaTeX never sees a stale one), CI that regenerates and `git diff --exit-code`s the committed artifacts, and the input-hash pin the script checks. Artifacts are committed because a paper must build standalone for arXiv; CI is what closes the "regenerated locally, forgot to commit" hole.
+
 ## Forbidden Behaviors
 
 You must NOT:
