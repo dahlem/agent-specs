@@ -108,7 +108,7 @@ All 46 agents at a glance. Click an agent name to jump to its detailed descripti
 
 | Agent | Purpose |
 |---|---|
-| [`lean-proof-chain-validator`](#lean-proof-chain-validator) | Eight-phase research-grade Lean proof validation, incl. the specification audit and the explicability gate; PASS/CONDITIONAL/FAIL verdict |
+| [`lean-proof-chain-validator`](#lean-proof-chain-validator) | Eight-phase research-grade Lean proof validation, incl. the specification audit and the explicability gate; CHAIN-VALID / CHAIN-CONDITIONAL / CHAIN-INVALID verdict |
 | [`lean-proof-frontier-analyzer`](#lean-proof-frontier-analyzer) | Breadth-first dependency DAG; novelty classification; axiom-boundary documentation |
 | [`lean-library-design-auditor`](#lean-library-design-auditor) | Post-compile reusability audit — definitions, theorem generality, API, organization; DESIGN-READY / NEEDS-REWORK / NEEDS-DESIGN-DECISION |
 
@@ -395,11 +395,148 @@ For deciding *how* to shape (or where to send) a paper, using what actually succ
 
 Run step 1 once per candidate venue and diff the archetypes when choosing between venues.
 
+## The Agent Graph
+
+The workflows above narrate the common paths. This is the whole topology, and
+the parts of it that can be derived are derived — every pipeline row below is
+parsed out of the agent's own `description:` by `scripts/gen-graph.py`, so the
+table and the router read the same source. CI fails if the block is stale.
+
+**How the pipelines join.** Six tracks, four shared seams:
+
+```
+  an idea              ──▶ 01 ▶ 02 ▶ 03 ▶ 04 ▶ 05 ▶ 06 ▶ 07 ▶ 08 ▶ 09 ▶ 10
+                                                   ▲                      │
+  a body of work       ──▶ research shaping ───────┘                      │
+                           (diverge ▶ select ▶ sculpt)                    │
+                                                                          │
+  someone else's paper ──▶ peer review                                    │
+                           compress ▶ expand ▶ scout ∥ historian          │
+                                    ▶ interrogate ▶ review                │
+                                │              ▲                          │
+             shares compressor ──┤              └── math-review-router     │
+                                ▼                   routes theorems here  │
+  learning to read it  ──▶ proof dissection           │                   │
+                           compress ▶ cartography ▶ tutor                 │
+                                                      ▼                   │
+  a stuck theorem      ──▶ math brainstorming ◀───────┘                   │
+                           reframe ▶ construct ∥ perturb                  │
+                                   ▶ obstruct ▶ strategize ▶ direct       │
+                                                                          │
+  a Lean development   ──▶ frontier ▶ chain-validator ▶ library-design ───┘
+```
+
+The seams are the point. `paper-compressor` is one agent serving two tracks that
+want different things from it — reviewing a paper and learning to read it.
+`math-review-router` is how a peer review that hits a theorem borrows the
+math-brainstorming ecosystem instead of duplicating it. Research shaping does
+not end in a paper; it ends at phase 06, where the 10-phase workflow takes over.
+And the Lean track rejoins at phase 10, because a formalization that is
+`DESIGN-READY` is a submission, not a repository.
+
+Three things are deliberately absent from the generated graph. **Delegation
+edges** — which agent invokes which auditor — are hand-written in the [Auditor
+Consumption Matrix](#auditor-consumption-matrix), because the trigger matters
+and no parser can name it. **The writing gate** has no position at all: it fires
+on every manuscript change, which is the whole design. And the **hypothesis
+register** wraps everything rather than sitting in it.
+
+<!-- BEGIN GENERATED: agent-graph (scripts/gen-graph.py) -->
+
+### Pipelines
+
+Every row below is parsed from the agent's own `description:`, so this table and the router see the same topology.
+
+**Research workflow — 10 phases**
+
+| | Agent | Reads / feeds |
+|---|---|---|
+| 1 | [`01-research-framing-validator`](#phase-01--research-framing-validator) | before 02-literature-discovery-mapper |
+| 2 | [`02-literature-discovery-mapper`](#phase-02--literature-discovery-mapper) | after 01-research-framing-validator; before 03-research-design-auditor |
+| 3 | [`03-research-design-auditor`](#phase-03--research-design-auditor) | after 02-literature-discovery-mapper; before 04-research-data-architect |
+| 4 | [`04-research-data-architect`](#phase-04--research-data-architect) | after 03-research-design-auditor; before 05-research-analysis-interpreter |
+| 5 | [`05-research-analysis-interpreter`](#phase-05--research-analysis-interpreter) | after 04-research-data-architect; before 06-argument-architect |
+| 6 | [`06-argument-architect`](#phase-06--argument-architect) | after 05-research-analysis-interpreter; before 07-paper-structure-architect |
+| 7 | [`07-paper-structure-architect`](#phase-07--paper-structure-architect) | after 06-argument-architect; before 08-research-revision-validator |
+| 8 | [`08-research-revision-validator`](#phase-08--research-revision-validator) | after 07-paper-structure-architect; before 09-research-validation-qa |
+| 9 | [`09-research-validation-qa`](#phase-09--research-validation-qa) | after 08-research-revision-validator; before 10-scholarly-submission-strategist |
+| 10 | [`10-scholarly-submission-strategist`](#phase-10--scholarly-submission-strategist) | after 09-research-validation-qa |
+
+**Peer review**
+
+| | Agent | Reads / feeds |
+|---|---|---|
+| 1 | [`paper-compressor`](#paper-compressor) | every downstream reviewer consumes this artifact |
+| 2 | [`literature-expansion`](#literature-expansion) | feeds baseline-scout, claim-interrogator, and ai-paper-reviewer |
+| 3 | [`baseline-scout`](#baseline-scout) | parallel with domain-historian; feeds claim-interrogator and ai-paper-reviewer |
+| 3 | [`domain-historian`](#domain-historian) | parallel with baseline-scout; feeds ai-paper-reviewer |
+| 4 | [`claim-interrogator`](#claim-interrogator) | its interrogation log is the evidentiary basis for ai-paper-reviewer's final verdict |
+| 5 | [`ai-paper-reviewer`](#ai-paper-reviewer) | — |
+| cond | [`math-review-router`](#math-review-router) | between paper-compressor and claim-interrogator |
+
+**Research shaping**
+
+| | Agent | Reads / feeds |
+|---|---|---|
+| → | [`research-shaping-orchestrator`](#research-shaping-orchestrator) | entry point; sequences the stages below |
+| 1 | [`research-divergence-cartographer`](#research-divergence-cartographer) | — |
+| 2 | [`red-thread-selector`](#red-thread-selector) | — |
+
+**Proof dissection**
+
+| | Agent | Reads / feeds |
+|---|---|---|
+| → | [`proof-dissection-orchestrator`](#proof-dissection-orchestrator) | entry point; sequences the stages below |
+| 2 | [`proof-chain-cartographer`](#proof-chain-cartographer) | after paper-compressor; before proof-tutor |
+| last | [`proof-tutor`](#proof-tutor) | — |
+
+**Math brainstorming**
+
+| | Agent | Reads / feeds |
+|---|---|---|
+| 1 | [`reframer`](#reframer) | runs before math-strategist, math-constructor, and proof-building agents |
+| 2 | [`math-constructor`](#math-constructor) | after reframer, alongside perturber; feeds obstructor and math-strategist |
+| 2 | [`perturber`](#perturber) | after reframer, alongside math-constructor; feeds obstructor and math-strategist |
+| 3 | [`obstructor`](#obstructor) | after reframer, perturber, and math-constructor; feeds math-strategist |
+| 4 | [`math-strategist`](#math-strategist) | after reframer, perturber, math-constructor, and obstructor; feeds research-director |
+| last | [`research-director`](#research-director) | — |
+
+**Lean formalization**
+
+| | Agent | Reads / feeds |
+|---|---|---|
+| 1 | [`lean-proof-frontier-analyzer`](#lean-proof-frontier-analyzer) | before `lean-proof-chain-validator` |
+| 2 | [`lean-proof-chain-validator`](#lean-proof-chain-validator) | after `lean-proof-frontier-analyzer` |
+| 3 | [`lean-library-design-auditor`](#lean-library-design-auditor) | — |
+
+`cond` runs only when a flag fires; `last` is a declared final stage with no number; `→` is the orchestrator you invoke to run the whole track.
+
+### Agents that fire on a condition, not a position
+
+These declare no pipeline stage, deliberately: a gate that fires on every manuscript change, or a tool reached for when a question comes up, has no "after" to name.
+
+[`ai-contribution-disclosure-auditor`](#ai-contribution-disclosure-auditor), [`arxiv-gap-scanner`](#arxiv-gap-scanner), [`citation-provenance-auditor`](#citation-provenance-auditor), [`claim-disposition-gate`](#claim-disposition-gate), [`epistemic-calibration-auditor`](#epistemic-calibration-auditor), [`evidence-provenance-auditor`](#evidence-provenance-auditor), [`hypothesis-register-keeper`](#hypothesis-register-keeper), [`literature-synthesis-auditor`](#literature-synthesis-auditor), [`manuscript-update-gate`](#manuscript-update-gate), [`narrative-clarity-auditor`](#narrative-clarity-auditor), [`research-session-memory`](#research-session-memory), [`scientific-narrative-architect`](#scientific-narrative-architect), [`theorem-presentation-auditor`](#theorem-presentation-auditor), [`venue-archetype-distiller`](#venue-archetype-distiller).
+
+### Skills
+
+| Skill | Cited by |
+|---|---|
+| [`claim-tiers`](skills/claim-tiers/SKILL.md) | `06-argument-architect`, `domain-historian`, `paper-compressor`, `scientific-narrative-architect` |
+| [`verdict-protocol`](skills/verdict-protocol/SKILL.md) | `ai-contribution-disclosure-auditor`, `claim-disposition-gate`, `epistemic-calibration-auditor`, `evidence-provenance-auditor`, `hypothesis-register-keeper`, `lean-library-design-auditor`, `lean-proof-chain-validator`, `manuscript-update-gate`, `narrative-clarity-auditor`, `theorem-presentation-auditor` |
+| [`writing-registers`](skills/writing-registers/SKILL.md) | `07-paper-structure-architect`, `manuscript-update-gate`, `narrative-clarity-auditor`, `proof-tutor`, `theorem-presentation-auditor` |
+
+<!-- END GENERATED: agent-graph -->
+
 ## Repository Structure
 
 ```
 agent-specs/
 ├── README.md
+├── DESCRIPTION-STYLE.md
+├── skills/                                      # Doctrine several agents share
+│   ├── claim-tiers/SKILL.md
+│   ├── verdict-protocol/SKILL.md
+│   └── writing-registers/SKILL.md
 ├── agents/
 │   ├── research/
 │   │   ├── phases/                              # Sequential research workflow (10 phases)
@@ -461,14 +598,23 @@ agent-specs/
 │   ├── lint-descriptions.sh                     # Enforce DESCRIPTION-STYLE.md (--stats for token load)
 │   ├── install-writing-gate.sh                  # --global (once per machine) · init <paper> (once per paper)
 │   ├── check-evidence-chain.py                  # Validate hypothesis → data → scalars → LaTeX macro chain
+│   ├── check-boundaries.py                      # Boundary-symmetry check (lint check 11)
+│   ├── gen-graph.py                             # Regenerate the README agent/skill graph from the specs
+│   ├── boundary-exceptions.txt                  # Declared one-way boundaries, with reasons
 │   └── hooks/
-│       └── manuscript-gate.sh                   # PostToolUse notify + Stop check (ledger-manifest staleness)
+│       ├── manuscript-gate.sh                   # PostToolUse notify + Stop check (ledger staleness, evidence chain)
+│       └── spec-lint.sh                         # PostToolUse: lint the agent spec just edited
+├── .claude/settings.json                        # Repo-local hook wiring for spec-lint.sh
+├── .github/workflows/lint.yml                   # CI: descriptions, skills, evidence-chain checker
 └── DESCRIPTION-STYLE.md                         # Frontmatter-description conventions (budgets, template, examples)
 ```
 
 Frontmatter `description:` fields are loaded into every Claude Code session and drive
 agent routing; they follow the template, budgets, and example policy in
-[DESCRIPTION-STYLE.md](DESCRIPTION-STYLE.md), enforced by `scripts/lint-descriptions.sh`.
+[DESCRIPTION-STYLE.md](DESCRIPTION-STYLE.md), enforced by `scripts/lint-descriptions.sh` —
+which runs on every edit under `agents/` and in CI, so the budget is checked when it is
+cheapest to fix rather than when someone remembers. See
+[Keeping the specs honest](#keeping-the-specs-honest).
 
 ## Research Phases
 
@@ -860,7 +1006,7 @@ The framing is Tao's (ICM 2026, *Mathematics in the age of AI*): a result climbs
 
 It owns four doctrines that belong to no auditor, each specifically an *update* pathology:
 
-- **The so-what distribution contract.** The abstract carries all four narrative questions; the introduction fans out *why/what/how* and **withholds so-what**; the conclusion delivers so-what at full strength. Spending significance in the introduction is how a paper arrives at its ending with nothing left to say. The conclusion also carries the **digestion surface** — the authors' own account of what was tried, where the difficulty sat, which step surprised them; Tao notes that AI tools are "quite opaque about their problem-solving process," and that this account is what lets another researcher build on the result. This contract overrides `07-paper-structure-architect`'s introduction sequence, which permits a consequence step; `07` governs everything else about section architecture.
+- **The so-what distribution contract.** The abstract carries all four narrative questions; the introduction fans out *why/what/how* and **withholds so-what**; the conclusion delivers so-what at full strength. Spending significance in the introduction is how a paper arrives at its ending with nothing left to say. The conclusion also carries the **digestion surface** — the authors' own account of what was tried, where the difficulty sat, which step surprised them; Tao notes that AI tools are "quite opaque about their problem-solving process," and that this account is what lets another researcher build on the result. `07-paper-structure-architect` states the same sequence and also withholds so-what; this gate **owns** the contract and re-checks it on every update, while `07` governs everything else about section architecture.
 - **The notation ledger.** A regenerated symbol table with first-use locations, flagging use-before-definition (the commonest breakage, since sections are written and reordered independently), collision, silent redefinition, orphans left behind by moved material, and convention drift.
 - **Placement.** Spine / appendix / cut triage applied to *every* update, extending `scientific-narrative-architect`'s Sculpt Mode rule that the default is cut, not appendix — Sculpt Mode runs only after research-shaping, so accreted material never meets it. The finding is always the **ratio**, never the length: attaching supportive material to the spine changes the spine-to-contribution ratio, and the ratio is what a reader uses to find the contribution.
 - **Cross-section continuity.** Seam integrity, reference resolution, single-mechanism through-line, and the *growth* of defensive register across revision rounds — a pattern only visible across updates, since each round adds one caveat and none are ever removed.
@@ -1104,7 +1250,7 @@ The matrix encodes the design principle: auditors are canonical, callers referen
 
 ### Lean Proof Chain Validator
 
-Validates Lean proof chains for research-grade correctness across eight phases: scope locking (freezing Lean/mathlib versions), specification audit (below), logical soundness (zero `sorry`/`admit`/warnings), dependency closure (frontier YAML validation and axiom boundary checks), epistemic validation (novelty integrity, claim-proof alignment, quantifier discipline), infrastructure assessment (mathlib compatibility, conceptual compression), robustness (proof stability, rebuild/replay, boundary cases), and negative-result capture. Issues PASS/CONDITIONAL/FAIL verdicts with specific file/line references.
+Validates Lean proof chains for research-grade correctness across eight phases: scope locking (freezing Lean/mathlib versions), specification audit (below), logical soundness (zero `sorry`/`admit`/warnings), dependency closure (frontier YAML validation and axiom boundary checks), epistemic validation (novelty integrity, claim-proof alignment, quantifier discipline), infrastructure assessment (mathlib compatibility, conceptual compression), robustness (proof stability, rebuild/replay, boundary cases), and negative-result capture. Issues a CHAIN-VALID / CHAIN-CONDITIONAL / CHAIN-INVALID verdict with specific file/line references.
 
 **Phase 0.5 — the specification audit.** Lean accepting the proof and the intended claim having been proved are two different results: the kernel verifies that a term inhabits a type and has no access to what anyone meant, so a formal statement that mistranslates its informal source is verified exactly as thoroughly as one that does not. The canonical case is Kolda's Kronecker/vectorization identity, which Lean verifies without complaint while encoding the *other* vectorization convention — nothing in the correctness phases catches it, because there is nothing wrong with the proof. This phase treats formalization and proof as separate verification problems and audits the first before effort is spent on the second: **back-translation** (write out what the Lean literally says, working from the code alone *before* reading the informal statement — a primed reading skips exactly the index-order details at issue), a **convention register** at every site where more than one standard convention exists, a **non-vacuity witness** per hypothesis set (the same discipline `claim-disposition-gate` applies to papers; an uninhabited typeclass stack makes every theorem over it vacuous), **discriminating instantiation** against each rival reading, an **abstraction-drift** check, and **ambiguity surfacing** — where the informal source genuinely admits two readings, report both and stop rather than resolving toward whichever is easier to prove. An anti-gaming pass looks for statements edited into provability after a failed proof attempt and classifies each as legitimate correction or retreat-to-provable. Each theorem gets a fidelity disposition (`FAITHFUL` | `QUESTIONABLE` | `MISSPECIFIED` | `AMBIGUOUS-INTENT`); `MISSPECIFIED` is FAIL regardless of the other phases. The success criterion for the whole agent is accordingly **specification fidelity + non-vacuity + kernel acceptance** — kernel acceptance is one field in the verdict, never the definition of it, since making compilation the reward creates the incentive to modify the problem until it compiles.
 
@@ -1122,6 +1268,38 @@ Audits a *compiled, sorry-free* Lean development for reusability rather than cor
 
 **Where it sits.** This is the canonicalization stage of the pipeline. mathlib is the canonicalization infrastructure of formalized mathematics, and asking whether a development is something a future formalizer would build on *is* the digestion question — the slowest stage, the least automatable, and the most valuable. A NEEDS-REWORK verdict is not pedantry about style; it is the difference between a result that enters the shared corpus and one that sits in a repository nobody extends. A third cross-cutting rule records **adoption evidence** — independent downstream imports, in-project reuse across proof boundaries, single-call-site objects, upstream mathlib PR status — because reusability is a claim about the future that the author is the party least able to certify. Where no adoption evidence exists, DESIGN-READY is labelled as a *prediction* rather than reported as an established property.
 
+## Shared Doctrine (Skills)
+
+Three vocabularies are used by enough agents that keeping a copy in each one
+guarantees drift. They live in `skills/` and are symlinked into
+`~/.claude/skills/`, which makes them addressable by name from any working
+directory — a repo-relative path stops resolving the moment a spec is symlinked
+into `~/.claude/agents/` and run inside somebody else's project.
+
+| Skill | Owns | Why it is shared |
+|---|---|---|
+| `writing-registers` | the eight venue registers, the knob matrix, the rule for declaring a subset | five agents take a `register`; before extraction, `proof-tutor` carried a verbatim copy of the `lecture-note` column and three agents listed four values each without saying they were subsets |
+| `claim-tiers` | Tier-1/2/3, the authoring (exactly 1 / 2–4) vs. describing (1–3 / 3–8) cardinalities, and the separate significance-tier axis | twenty-one agents use the vocabulary; `domain-historian`'s "Tier-1 contribution" is a *different axis* from everyone else's "Tier-1 claim", and conflating them is the inference a paper's framing invites |
+| `verdict-protocol` | the terminal `VERDICT: <TOKEN> \| level=… \| findings=…` line and its four levels | ten agents end on a verdict; they previously used three mutually unparseable shapes, so no agent could branch on another's result |
+
+An agent **cites** a skill rather than restating it. Where an agent needs a
+variant — a register subset, a wider claim cardinality — it declares the variant
+at the citation site and says why.
+
+### The verdict line
+
+Every auditing or gating agent ends its output on one line:
+
+```
+VERDICT: CLARITY-MAJOR | level=blocking | findings=7
+```
+
+The token stays domain-specific, because `DESIGN-READY` says something
+`advisory` does not. The `level` field is what callers branch on, so a consumer
+never needs a lookup table of another agent's vocabulary. `indeterminate` is its
+own level: it means the check could not run for want of inputs, and reading it
+as a pass invents a guarantee nobody gave.
+
 ## Installation
 
 ### Using the sync script (recommended)
@@ -1134,6 +1312,7 @@ The sync script creates symlinks from `~/.claude/agents/` to the repo, keeping e
 
 The script:
 - Creates symlinks for all `.md` files under `agents/`
+- Creates symlinks for each `skills/<name>/` directory into `~/.claude/skills/`
 - Warns (does not overwrite) if a regular file already exists at the target
 - Removes stale symlinks from previous syncs
 - Is idempotent — safe to run repeatedly
@@ -1141,8 +1320,9 @@ The script:
 ### Manual installation
 
 ```bash
-# Copy all agents
+# Copy all agents and skills
 find agents -name "*.md" -exec cp {} ~/.claude/agents/ \;
+cp -R skills/* ~/.claude/skills/
 ```
 
 Copies do not track the repo — re-copy after every pull. Prefer the sync script.
@@ -1176,10 +1356,15 @@ it. **So the gate is installed everywhere and switched on nowhere;** `init` swit
 it on for one paper, and doubles as that paper's config:
 
 ```json
-{ "globs": ["*.tex"], "ledger": "writing_ledger.md", "register": "theoretical-paper" }
+{ "globs": ["*.tex"], "ledger": "writing_ledger.md", "register": "theoretical-paper",
+  "evidence_chain": true }
 ```
 
-Set `"globs": ["*.md"]` for a markdown paper. The config lives with the paper rather
+Set `"globs": ["*.md"]` for a markdown paper. `"evidence_chain": true` adds the
+[evidence chain](#the-evidence-chain) to the same `Stop` hook, so a manuscript
+that states a number its data no longer supports blocks on the same pass that
+catches stale exposition. One marker per paper, deliberately: two config files
+for one paper is two things to keep in step. The config lives with the paper rather
 than in a central list, so co-authors get it when they clone. Mark several at once —
 `init` is idempotent, so rerun it freely as you add papers:
 
@@ -1216,7 +1401,38 @@ Nine checks, ordered by what they prevent: **staleness** (input hashes no longer
 
 It also emits the **claim lineage map** — every namespaced macro names its hypothesis, so hypothesis→manuscript lineage is traversed rather than hand-maintained. That is the column `claim-disposition-gate` otherwise asks an author to fill in, and the chain `evidence-provenance-auditor` otherwise asserts.
 
-Configure per paper with `.evidence-chain.json` (directory names, manuscript globs, and `macro_pattern` — the namespace that distinguishes a generated macro from an ordinary LaTeX command; default `^H[A-Z]`, which `\Huge` does not match).
+It ends on the shared [verdict line](#the-verdict-line) — `EVIDENCE-CHAIN-CLEAN` (pass), `EVIDENCE-CHAIN-FINDINGS` (advisory), `EVIDENCE-CHAIN-BROKEN` (blocking) — so the hook and the auditors branch on it without parsing the report. A broken link blocks because the manuscript is then stating a number the committed data does not support; warnings travel as advisory, since whether an exploratory scalar is honestly hedged is a calibration judgment no script can settle.
+
+**Run it automatically.** Set `"evidence_chain": true` in a paper's `.manuscript-gate.json` and the `Stop` hook runs the checker on every turn, blocking only on `level=blocking`. Papers without the key are untouched, so a paper with no DoE chain is never blocked for not having one.
+
+Configure the layout in the same marker — `"evidence_chain": { ... }` instead of `true` — or in a standalone `.evidence-chain.json` if a repository already has one (it wins where both exist). The keys are directory names, manuscript globs, and `macro_pattern`: the namespace that distinguishes a generated macro from an ordinary LaTeX command (default `^H[A-Z]`, which `\Huge` does not match).
+
+### Keeping the specs honest
+
+Every `description:` in this repository is loaded into **every** Claude Code
+session — currently 46 of them, about 9,700 tokens. A spec that drifts past its
+budget therefore taxes sessions that have nothing to do with this repository,
+and that cost is invisible at the moment of editing. Two checks run without
+being asked:
+
+- **On every edit under `agents/`** — a `PostToolUse` hook in this repo's own
+  `.claude/settings.json` runs `scripts/lint-descriptions.sh` on the one file
+  that changed and puts any findings into the turn. Repo-local, so cloning is
+  the whole installation; silent when clean, and silent for every file outside
+  `agents/`.
+- **On every push and pull request** — `.github/workflows/lint.yml` runs the
+  full linter, prints the per-session token load, verifies that each
+  `skills/<name>/` is well-formed and that every skill an agent cites exists,
+  and fails if [the agent graph](#the-agent-graph) no longer matches the specs
+  (`scripts/gen-graph.py --check`).
+
+Eleven checks, from frontmatter shape through model-tier aliases to **boundary
+symmetry**: if A's description disambiguates from B, B's should disambiguate
+from A. Literal symmetry in a cluster of four would cost twelve boundary
+sentences, so a one-way boundary is allowed when it is declared in
+`scripts/boundary-exceptions.txt` with its reason. Undeclared asymmetry is an
+error; a declaration that no longer describes one is a warning. The rules
+themselves are in [`DESCRIPTION-STYLE.md`](DESCRIPTION-STYLE.md).
 
 ### Model tiers
 

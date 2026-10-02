@@ -7,7 +7,9 @@ regenerable from committed data. This checks the links mechanically, so that
 
     scripts/check-evidence-chain.py [paper-repo] [--json]
 
-Expected layout (override with .evidence-chain.json at the repo root):
+Expected layout (override with .evidence-chain.json at the repo root, or the
+`evidence_chain` key of .manuscript-gate.json — one marker per paper is enough,
+and the writing gate already needs that file):
 
     hypothesis-register/H-0007-*.md    registered hypotheses
     doe/H-0007.yaml                    the registered design
@@ -26,6 +28,11 @@ Checks, in order of what they prevent:
   7 collision      one macro name defined by two hypotheses
   8 exploratory    scalars marked registered:false, whose claims must be hedged
   9 precision      more decimals printed than the sample size supports
+
+Ends on the protocol line of the `verdict-protocol` skill, so the writing-gate
+hook and any agent can branch on it without parsing the report:
+
+    VERDICT: EVIDENCE-CHAIN-CLEAN | level=pass | findings=0
 
 Exit 0 clean, 1 findings, 2 layout error. Check 8 reports rather than decides:
 whether the surrounding prose is honestly hedged is a calibration judgment, not
@@ -77,13 +84,26 @@ def main() -> int:
 
     root = pathlib.Path(args.root).resolve()
     cfg = dict(DEFAULTS)
+    # Config lives in one of two places, in this order: the dedicated file if a
+    # repository already has one, otherwise the `evidence_chain` key of the
+    # writing-gate marker. A paper needs .manuscript-gate.json anyway, and two
+    # markers for one paper is two things to keep in step.
     cfg_file = root / ".evidence-chain.json"
-    if cfg_file.exists():
+    marker = root / ".manuscript-gate.json"
+    src = cfg_file if cfg_file.exists() else (marker if marker.exists() else None)
+    if src is not None:
         try:
-            cfg.update(json.loads(cfg_file.read_text()))
+            loaded = json.loads(src.read_text())
         except json.JSONDecodeError as e:
-            print(f"error: {cfg_file} is not valid JSON ({e})", file=sys.stderr)
+            print(f"error: {src} is not valid JSON ({e})", file=sys.stderr)
             return 2
+        if src is marker:
+            loaded = loaded.get("evidence_chain")
+            loaded = {} if loaded in (None, True, False) else loaded
+        if not isinstance(loaded, dict):
+            print(f"error: evidence-chain config in {src} is not an object", file=sys.stderr)
+            return 2
+        cfg.update(loaded)
 
     results_dir = root / cfg["results_dir"]
     macros_dir = root / cfg["macros_dir"]
@@ -213,11 +233,24 @@ def main() -> int:
         if name in defined:
             lineage.setdefault(defined[name][0], set()).update(files)
 
+    # A broken link means a number in the manuscript cannot be traced, so errors
+    # block. Warnings are the author's call and travel as advisory.
+    n_err = sum(1 for i in f.items if i["severity"] == "error")
+    n_find = sum(1 for i in f.items if i["severity"] != "info")
+    if n_err:
+        token, level = "EVIDENCE-CHAIN-BROKEN", "blocking"
+    elif n_find:
+        token, level = "EVIDENCE-CHAIN-FINDINGS", "advisory"
+    else:
+        token, level = "EVIDENCE-CHAIN-CLEAN", "pass"
+    verdict = f"VERDICT: {token} | level={level} | findings={n_find}"
+
     if args.json:
         print(json.dumps({
             "findings": f.items,
             "lineage": {k: sorted(v) for k, v in sorted(lineage.items())},
-            "verdict": "CHAIN-CLEAN" if not f else f"FINDINGS({sum(1 for i in f.items if i['severity'] != 'info')})",
+            "token": token, "level": level, "count": n_find,
+            "verdict": verdict,
         }, indent=2))
     else:
         for sev in ("error", "warn", "info"):
@@ -227,9 +260,9 @@ def main() -> int:
             print("\nClaim lineage (hypothesis -> manuscript files citing it):")
             for hyp, files in sorted(lineage.items()):
                 print(f"  {hyp} -> {', '.join(sorted(files))}")
-        n_err = sum(1 for i in f.items if i["severity"] != "info")
-        print(f"\n{'CHAIN-CLEAN' if not f else f'FINDINGS({n_err})'}"
-              f"  ({len(defined)} macros, {sum(len(v) for v in scalars.values())} scalars, {len(scalars)} hypotheses)")
+        print(f"\n{len(defined)} macros, {sum(len(v) for v in scalars.values())} scalars, "
+              f"{len(scalars)} hypotheses")
+        print(verdict)
     return 1 if f else 0
 
 

@@ -1,0 +1,57 @@
+name: lint
+
+# Descriptions are loaded into every Claude Code session, so a spec that drifts
+# past its budget taxes sessions that have nothing to do with this repository.
+# The edit hook (.claude/settings.json) catches that while editing; this catches
+# it when the edit arrived some other way.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  descriptions:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Lint agent descriptions
+        run: ./scripts/lint-descriptions.sh
+
+      - name: Per-session token load
+        run: ./scripts/lint-descriptions.sh --stats | tail -1
+
+      - name: README agent graph is current
+        run: python3 scripts/gen-graph.py --check
+
+      - name: Doctrine skills are well-formed
+        run: |
+          fail=0
+          for d in skills/*/; do
+            f="$d/SKILL.md"
+            [[ -f "$f" ]] || { echo "ERROR $d: no SKILL.md"; fail=1; continue; }
+            name="$(sed -n 's/^name: //p' "$f" | head -1)"
+            [[ "$name" == "$(basename "$d")" ]] \
+              || { echo "ERROR $f: name '$name' != directory '$(basename "$d")'"; fail=1; }
+            grep -q '^description: ' "$f" \
+              || { echo "ERROR $f: no description"; fail=1; }
+          done
+          exit $fail
+        shell: bash
+
+      - name: Every cited skill exists
+        run: |
+          fail=0
+          for s in $(grep -rhoE '`[a-z0-9][a-z0-9-]+` skill' agents | sed -E 's/`(.*)` skill/\1/' | sort -u); do
+            [[ -d "skills/$s" ]] || { echo "ERROR: agents cite skill '$s', which does not exist"; fail=1; }
+          done
+          exit $fail
+        shell: bash
+
+  evidence-chain:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Evidence-chain checker runs
+        run: python3 scripts/check-evidence-chain.py --help > /dev/null

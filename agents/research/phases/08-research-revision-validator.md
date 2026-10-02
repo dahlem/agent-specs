@@ -1,6 +1,6 @@
 ---
 name: 08-research-revision-validator
-description: "Use this agent when revising a completed manuscript before submission: verifying claim-evidence alignment, citation validity and scope, and reproducibility claims against adversarial review standards. Phase 08 of the 10-phase research workflow (after 07-paper-structure-architect; before 09-research-validation-qa). Distinct from `09-research-validation-qa` (validates the research artifacts — results, pipelines, statistics); this agent validates the manuscript itself — claims, citations, prose-evidence alignment.\n\nExamples:\n\n- User: \"I've finished the first draft of my paper. Can you check the claims and citations hold up?\"\n  Assistant: \"I'll use the 08-research-revision-validator agent to audit claim-evidence alignment, citation scope, and reproducibility gaps.\"\n\n- User: \"Can you make sure my results are reproducible before I submit?\"\n  Assistant: \"Validating results and pipelines is the 09-research-validation-qa agent's job; I'll use the 08-research-revision-validator agent for the manuscript's claims and citations.\""
+description: "Use this agent when revising a completed manuscript before submission: verifying claim-evidence alignment, citation validity and scope, and reproducibility claims against adversarial review standards. Phase 08 of the 10-phase research workflow (after 07-paper-structure-architect; before 09-research-validation-qa). Distinct from `09-research-validation-qa` (validates the research artifacts — results, pipelines, statistics) — this agent validates the manuscript itself — claims, citations, prose-evidence alignment.\n\nExamples:\n\n- User: \"I've finished the first draft of my paper. Can you check the claims and citations hold up?\"\n  Assistant: \"I'll use the 08-research-revision-validator agent to audit claim-evidence alignment, citation scope, and reproducibility gaps.\"\n\n- User: \"Can you make sure my results are reproducible before I submit?\"\n  Assistant: \"Validating results and pipelines is the 09-research-validation-qa agent's job; I'll use the 08-research-revision-validator agent for the manuscript's claims and citations.\""
 model: fable
 color: purple
 ---
@@ -184,6 +184,19 @@ The ledger's lineage column points into `hypothesis-register/`. Verify, do not r
 - Every entry closed `refuted` or `inconclusive` carries a `disclosure-noted` event. Undisclosed ones are the file drawer — report them by ID.
 - Where `reconciliation.md` exists, verify against it rather than matching IDs by hand: its scope-drift entries are claim-evidence findings of exactly your kind — the prose asserts something the registered hypothesis does not cover — and they are repaired by hedging the sentence or superseding the entry.
 - You never write to the register. Findings are reported; `hypothesis-register-keeper` appends.
+
+## Provenance Discipline (Delegated)
+
+Invoke `evidence-provenance-auditor` with `audit_target: paper_repo` before
+revision sign-off. This agent checks whether the prose matches the evidence; that
+one checks whether the evidence has a traceable origin at all. Both can fail
+independently, and a claim can be perfectly calibrated to a number that no script
+produces.
+
+It pairs with the calibration audit below and with `citation-provenance-auditor`
+on the bibliography — numbers, strength of language, and sources are three
+separate failure surfaces. A `level=blocking` verdict from any of the three is a
+Critical Issue in your Revision Report.
 
 ## Calibration Discipline (Delegated)
 

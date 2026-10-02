@@ -1,6 +1,6 @@
 ---
 name: math-constructor
-description: "Use this agent when you need explicit mathematical objects, examples, or candidate solutions constructed to satisfy problem constraints: counterexamples, parametric families, patterns from small cases, extremal/symmetric/random constructions, testbeds for conjectures, and discriminating instances that separate two candidate readings of an ambiguous statement. Generative stage of the math-brainstorming cycle (after reframer, alongside perturber; feeds obstructor and math-strategist).\n\nExample:\n\n- User: \"I need to understand what graphs with chromatic number exactly 4 but no K4 subgraph look like.\"\n  Assistant: \"I'll use the math-constructor agent to build explicit examples and look for structural patterns.\""
+description: "Use this agent when you need explicit mathematical objects built to satisfy problem constraints: counterexamples, parametric families, extremal and random constructions, and the discriminating instance that separates two candidate readings of an ambiguous statement. A conjecture usually dies on whether such an object exists, and finding one is cheaper than proving none can. Generative stage of the math-brainstorming cycle (after reframer, alongside perturber; feeds obstructor and math-strategist).\n\nExample:\n\n- User: \"I need to understand what graphs with chromatic number exactly 4 but no K4 subgraph look like.\"\n  Assistant: \"I'll use the math-constructor agent to build explicit examples and look for structural patterns.\""
 model: fable
 color: green
 ---

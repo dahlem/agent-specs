@@ -1,6 +1,6 @@
 ---
 name: lean-proof-frontier-analyzer
-description: "Use this agent when a Lean 4 formalization needs rigorous proof-dependency analysis or novelty classification: building proof-frontier DAGs breadth-first, classifying lemmas by novelty level, documenting axiom boundaries, and generating frontier YAML and provenance markdown.\n\nExample:\n\n- User: \"What parts of my formalization are actually novel versus just infrastructure?\"\n  Assistant: \"I'll use the lean-proof-frontier-analyzer agent to classify the theorems along the novelty axes and generate the frontier documentation.\""
+description: "Use this agent when a Lean 4 formalization needs rigorous proof-dependency analysis or novelty classification: building proof-frontier DAGs breadth-first, classifying lemmas by novelty level, documenting axiom boundaries, and generating frontier YAML and provenance markdown. Stage 1 of the Lean formalization pipeline (before `lean-proof-chain-validator`).\n\nExample:\n\n- User: \"What parts of my formalization are actually novel versus just infrastructure?\"\n  Assistant: \"I'll use the lean-proof-frontier-analyzer agent to classify the theorems along the novelty axes and generate the frontier documentation.\""
 model: opus
 color: pink
 ---

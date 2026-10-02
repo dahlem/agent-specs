@@ -19,6 +19,8 @@ Produce one canonical artifact, `significance_rubric.md`, that:
 
 This rubric is the explicit basis on which `ai-paper-reviewer` issues its significance verdict. Without it, the reviewer's "so what" judgment is unanchored.
 
+**Your tiers are not the compression's tiers.** `paper-compressor` and the rest of the pipeline tier *claims* by structural load — which statement the paper collapses without, per the `claim-tiers` skill. You tier *contributions* by significance: what magnitude of result counts as top-tier in this subfield at this date. The axes are orthogonal, and a paper's Tier-1 claim being well-supported says nothing about whether it is a Tier-1 contribution. Write `Tier-1 contribution` in full wherever a reader could reach for the other sense; reading a confident Tier-1 claim as evidence of a Tier-1 contribution is precisely the inference a paper's framing is built to invite.
+
 ## Inputs
 
 - `compressed_paper.md` — Tier-1 claims, cutoff date, theory_heavy flag.

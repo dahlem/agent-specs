@@ -8,7 +8,8 @@ process detail — belongs in the agent **body**, which is only loaded when the 
 is actually invoked.
 
 Run `scripts/lint-descriptions.sh` to check compliance; `--stats` prints per-agent
-sizes and the estimated per-session token load.
+sizes and the estimated per-session token load. You should rarely need to run it
+by hand — see [Enforcement](#enforcement).
 
 ## Format
 
@@ -29,14 +30,58 @@ Prose fields in this order, then examples:
    - `Use this agent when <situation>.` — situational agents
    - `Use this agent to <task>.` — tool-shaped agents
    - `Use this agent after <upstream> to <task>.` — pipeline workers
+
+   **Close on a consequence, not an inventory.** The trigger's last clause must
+   say what the agent is *for* — the failure it prevents, the decision it
+   settles, the thing the reader gets. A trigger that ends by listing its own
+   subsections tells the router what the agent contains and not when to reach for
+   it, and forty-six descriptions built that way read as one voice.
+
+   Compare, from this repository:
+
+   > …a Tier-1/2/3 claim inventory with verbatim quotes, method, evidence,
+   > datasets, baselines, assumptions, and the cutoff date bounding its
+   > prior-art context.
+
+   > …re-derive the task, datasets, and baselines a paper *should* have used and
+   > compare them against what it reports — the answer to the most common
+   > top-venue rejection trigger: "they did not compare against the right
+   > baselines."
+
+   Both enumerate. The second earns the enumeration by landing somewhere. The
+   strongest descriptions here (`baseline-scout`, `proof-chain-cartographer`,
+   `reframer`, `lean-library-design-auditor`, `manuscript-update-gate`) all do
+   this, and all of them break the comma-list habit the same way.
+
+   An enumeration is not the problem; an enumeration that *is* the sentence is.
+   Cut items until the ones left are the ones a router needs, then spend the
+   budget you reclaimed on the closing clause.
+
 2. **Parameters** (only for flag-bearing agents): one sentence listing flags with
    allowed values, e.g. `` Configurable by `register` (blog | tutorial | ...). ``
+   Values go in the description only when the router needs them to pick between
+   siblings. Where a parameter's vocabulary is owned by a doctrine skill, the
+   *body* cites the skill and declares any subset; the description carries at
+   most the values a user would actually type.
 3. **Position** (pipeline agents only), terse and ordinal — see canonical
    numberings below.
 4. **Distinct-from** (confusable agents only, last prose sentence):
    `` Distinct from `X` (X's scope) — this agent <boundary>. ``
-   Boundary sentences must be **symmetric**: if A disambiguates from B, B must
-   disambiguate from A.
+
+   Boundary sentences should be **symmetric**: if A disambiguates from B, B
+   should disambiguate from A, because the router may be looking at either one.
+   Literal symmetry in a cluster of four costs twelve boundary sentences, which
+   is more budget than the router gets back — so a one-way boundary is allowed
+   when the asymmetry is *declared*, in `scripts/boundary-exceptions.txt`, with
+   the reason. Undeclared asymmetry is a lint error; a declaration that no
+   longer describes one is a warning, so the file cannot quietly rot.
+
+   The repair that usually beats naming A is a **positive scope statement**: all
+   seven current exceptions exist because B's closing clause already says what B
+   is for in terms that exclude A — `narrative-clarity-auditor` closes on
+   "audits prose clarity only", which rules out theorem rhythm without ever
+   mentioning `theorem-presentation-auditor`. If you cannot write that reason,
+   write the boundary sentence instead.
 5. **Examples**: **1 canonical example** by default. A **2nd example only if it
    demonstrates a boundary** — a near-miss phrasing routed to the sibling agent, or
    the flag that distinguishes siblings. A 2nd example that merely restates the
@@ -90,6 +135,50 @@ then move individual agents deliberately. An agent whose spec has grown — new
 adversarial passes, new cross-artifact synthesis — may have outgrown its tier
 regardless of what shipped; that is a re-read of the table, not an upgrade.
 
+## Doctrine skills
+
+Three vocabularies are shared by enough agents that a copy in each one drifts.
+They live in `skills/` and are symlinked into `~/.claude/skills/` by
+`scripts/sync-agents.sh`, which makes them addressable by name from any working
+directory — unlike a repo-relative path, which stops resolving the moment a spec
+is symlinked into `~/.claude/agents/` and run somewhere else.
+
+| Skill | Owns | Cited by |
+|---|---|---|
+| `writing-registers` | the eight registers, the knob matrix, the subset rule | the writing auditors, `manuscript-update-gate`, `07`, `proof-tutor` |
+| `claim-tiers` | Tier-1/2/3, the authoring vs. describing cardinalities, the significance-tier collision | `scientific-narrative-architect`, `paper-compressor`, `06`, `domain-historian` |
+| `verdict-protocol` | the `VERDICT:` line and its four levels | the ten verdict-emitting agents, and `check-evidence-chain.py` |
+
+An agent **cites** a doctrine skill; it does not restate it. Restating is how the
+suite acquired a register column duplicated in `proof-tutor` and seven
+mutually-unparseable verdict vocabularies. If you need a variant, declare it as a
+variant at the citation site and say why — the subset rule in `writing-registers`
+is the worked example.
+
+## Enforcement
+
+The budget is invisible at the moment of editing, which is exactly when it is
+cheapest to respect — a description that drifts past its cap taxes every session
+in every directory, including sessions that have nothing to do with this
+repository. So the rules above are checked by machine at two points, and neither
+of them is a habit anyone has to remember:
+
+| When | What runs | How it reaches you |
+|---|---|---|
+| On every `Write`/`Edit` of a file under `agents/` | `scripts/hooks/spec-lint.sh` → the linter, on that one file | a `PostToolUse` hook wired in `.claude/settings.json`; silent when clean, otherwise the findings land in the turn |
+| On every push and pull request | the full linter, `--stats`, and a check that each `skills/<name>/` is well-formed and every skill an agent cites exists | `.github/workflows/lint.yml` |
+
+The hook is repo-local: it lives in `.claude/settings.json`, not your global
+settings, so cloning this repository is the whole installation. It lints only
+the file that was just edited, and it exits silently for anything outside
+`agents/`.
+
+`ERROR` is a hard cap or a broken contract and fails the build. `WARN` is a
+judgment the author has to make — the comma-count heuristic and a stale boundary
+declaration are both cases where only a reader can tell whether the text is
+fine. A warning that keeps firing is a sign the text should change or the
+exception should be declared, not that the check should be deleted.
+
 ## Canonical pipeline numberings
 
 - **Research phases**: `Phase NN of the 10-phase research workflow (after <NN-1>-…; before <NN+1>-…).`
@@ -102,6 +191,16 @@ regardless of what shipped; that is a re-read of the table, not an upgrade.
   → optional Sculpt Mode → `06-argument-architect` handoff.
 - **Math brainstorming cycle**: `reframer` → `perturber` / `math-constructor` →
   `obstructor` → `math-strategist` → `research-director` (one relational clause per agent).
+- **Lean formalization**: `Stage N of the Lean formalization pipeline` —
+  `lean-proof-frontier-analyzer` → `lean-proof-chain-validator` →
+  `lean-library-design-auditor`, rejoining the research workflow at phase 10.
+
+These clauses are **parsed**, not just read: `scripts/gen-graph.py` builds the
+README's [agent graph](README.md#the-agent-graph) from them, and CI fails when
+the two disagree. Keep the wording to the forms above — a stage written any
+other way silently drops the agent out of its pipeline and into the
+fires-on-a-condition list, which is a visible symptom rather than a silent one,
+but still a wrong graph.
 
 Two agents are deliberately *not* pipeline-positioned, and their descriptions say
 when they fire rather than what they follow: `manuscript-update-gate` (on every
