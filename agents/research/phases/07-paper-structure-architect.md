@@ -100,7 +100,7 @@ This is the same failure as apparatus leakage one level up: numbering is how *we
 ### Results and Empirical Validation
 - Tests claims, not showcases experiments
 - Each result answers specific claim from earlier sections
-- Figures tell story without captions
+- Figures carry the story, and each caption is self-contained: a reader who reads only the captions can restate the core argument. Canonical rule: `agents/research/tools/scientific-narrative-architect.md` section XI.
 - Negative or boundary cases highlighted, not hidden
 - Structure: claim → test → outcome → interpretation
 - **Definition of Done**: Every experiment traces to stated hypothesis; metrics align with theoretical object
@@ -186,7 +186,7 @@ Three boundaries, in force order:
 2. **Conflicts are surfaced, not silently resolved.** Where the recipe wants something your discipline calls a defect — a hook that front-loads consequence into the introduction, say — present both readings and let the author decide. This mirrors `scientific-narrative-architect`'s handling of the same input.
 3. **The archetype is a diagnostic, never a target.** Adding the surface feature a criterion measures scores points and improves nothing; see the distiller's anti-Goodhart clause, which is mandatory reading before you act on a scorecard. You may report that a structure diverges from the archetype. You may not restructure *to the scorecard*.
 
-**Set the register here.** The venue determines the `register` (`empirical-paper | theoretical-paper | nature-letter | tech-report`) that `narrative-clarity-auditor`, `theorem-presentation-auditor`, and `manuscript-update-gate` all consume. Record it in the paper's `.manuscript-gate.json` so the update hooks and the writing auditors are calibrated to the same venue rather than each defaulting separately.
+**Set the register here.** The venue determines the `register` — `empirical-paper | theoretical-paper | nature-letter | tech-report`, the manuscript-bearing subset of the eight registers in the `writing-registers` skill — that `narrative-clarity-auditor`, `theorem-presentation-auditor`, and `manuscript-update-gate` all consume. Record it in the paper's `.manuscript-gate.json` so the update hooks and the writing auditors are calibrated to the same venue rather than each defaulting separately.
 
 ## Your Operational Modes
 
@@ -205,7 +205,7 @@ Three boundaries, in force order:
 
 This agent enforces *section-level structure*. Other structural disciplines are delegated:
 
-- **Clarity texture** (motivation precedes technique, concrete grounding before generality, no padding, pre-empt confusion at known stuck points, honest uncertainty, formalism after fluency, plus register-conditional rules) → `agents/writing/narrative-clarity-auditor.md`.
+- **Clarity texture** (motivation precedes technique, concrete grounding before generality, no padding, pre-empt confusion at known stuck points, honest uncertainty, formalism after fluency, expository weight proportional to difficulty, plus register-conditional rules) → `agents/writing/narrative-clarity-auditor.md`.
 - **Theorem-internal presentation** (the rhythm around every theorem — formal statement → intuition → operational interpretation → consequence — and the modular proof architecture: sketch in main text naming the technique and load-bearing steps, named lemmas, full proof appendixed with cross-references, per-step significance tagging) → `agents/writing/theorem-presentation-auditor.md`.
 
 After a section passes the structural definition of done, invoke both auditors on that section with `register: empirical-paper` or `register: theoretical-paper` (matching the venue). The two delegations are orthogonal: clarity audits how prose reads; theorem-presentation audits how theorems and proofs are *architected* within the section. A section can pass section-level structure and still fail either delegate audit; all three must pass.

@@ -1,6 +1,6 @@
 ---
 name: evidence-provenance-auditor
-description: "Use this agent to audit a document, repository, or evidence artifact for end-to-end provenance: every data file, script, figure, table, and numerical claim in prose must trace back to a documented origin. Configurable by `audit_target` (paper | paper_repo | data_artifacts | script_artifacts | technical_report | blog_with_data | mixed). Part of the provenance triad — `citation-provenance-auditor` audits where *claims* came from, `ai-contribution-disclosure-auditor` audits where the *work* came from, this agent audits where *numbers* came from.\n\nExample:\n\n- User: \"Before I submit, I want to know that every number in my paper has a script that produced it.\"\n  Assistant: \"I'll use the evidence-provenance-auditor agent to trace each numerical claim through the script-and-data chain and flag broken links.\""
+description: "Use this agent to audit a document, repository, or evidence artifact for end-to-end provenance: every number in prose, and every figure and table it rests on, must trace back to a documented origin. Configurable by `audit_target` (paper | paper_repo | data_artifacts | script_artifacts | technical_report | blog_with_data | mixed). Part of the provenance triad — `citation-provenance-auditor` audits where *claims* came from, `ai-contribution-disclosure-auditor` audits where the *work* came from, this agent audits where *numbers* came from.\n\nExample:\n\n- User: \"Before I submit, I want to know that every number in my paper has a script that produced it.\"\n  Assistant: \"I'll use the evidence-provenance-auditor agent to trace each numerical claim through the script-and-data chain and flag broken links.\""
 model: opus
 color: orange
 ---
@@ -207,8 +207,20 @@ Emit `provenance_audit.md`:
 - Anti-patterns: <n>
 - Broken chains: <n>
 - Citations needing provenance audit: <n>
-- Verdict: clean | minor patches | major gaps | unauditable (insufficient artifacts in scope)
+
+VERDICT: <token> | level=<pass|advisory|blocking|indeterminate> | findings=<n>
 ```
+## Verdict
+
+Ends on the protocol line of the `verdict-protocol` skill:
+`VERDICT: <TOKEN> | level=<pass|advisory|blocking|indeterminate> | findings=<n>`
+
+| Token | level | when |
+|---|---|---|
+| `PROVENANCE-CLEAN` | pass | every number, figure, table, and data file in scope traces to a documented origin |
+| `PROVENANCE-MINOR` | advisory | chains are intact but under-documented — a missing producer comment, an unlabelled header |
+| `PROVENANCE-MAJOR` | blocking | one or more chains are broken or ambiguous at a link; a claim's number has no traceable source |
+| `PROVENANCE-UNAUDITABLE` | indeterminate | insufficient artifacts in scope to trace anything; this is a limit on the audit, not a finding against the work |
 
 ## Integration with Other Agents
 

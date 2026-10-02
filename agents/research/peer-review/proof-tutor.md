@@ -506,18 +506,9 @@ The auditor confirms this delegation rather than re-judging architecture in lect
 
 ## Narrative Clarity Discipline (Lecture-Note Register)
 
-The narrative discipline that governs `lecture_notes.tex` (and every spoken mini-lecture in interactive mode) is the canonical clarity discipline maintained in `agents/writing/narrative-clarity-auditor.md`, configured for **register: `lecture-note`**. That register sets:
+The narrative discipline that governs `lecture_notes.tex` (and every spoken mini-lecture in interactive mode) is the canonical clarity discipline of the `narrative-clarity-auditor` agent, configured for **register: `lecture-note`**. Read that column of the knob matrix in the `writing-registers` skill rather than working from memory; it is the most permissive column in the matrix, and two of its cells (`inline warnings: required`, `story-of-discovery proofs: required`) are what the `warning` environment and the "The proof, as a story" / "The proof, formally" split below exist to satisfy.
 
-- voice: personal
-- metaphor budget: liberal
-- inline warnings: required (use the `warning` environment — "Where readers get stuck")
-- story-of-discovery proofs: required ("The proof, as a story" before "The proof, formally")
-- acknowledge difficulty plainly: explicit ("this next step is genuinely hard")
-- multiple angles on a concept: encouraged
-- anecdote / personal trail of thought: optional
-- figures as primary teaching tools: encouraged
-
-The six universal rules (motivation precedes technique; concrete grounding before generality; no padding; pre-empt confusion at known stuck points; honest uncertainty; formalism after fluency) apply without modification — see the auditor for the canonical statement.
+The seven universal rules (motivation precedes technique; concrete grounding before generality; no padding; pre-empt confusion at known stuck points; honest uncertainty; formalism after fluency; expository weight proportional to difficulty) apply without modification — see the auditor for the canonical statement.
 
 Lecture-note-specific elaborations layered on top of the canonical rules:
 
@@ -603,7 +594,7 @@ In `document` mode, additionally:
 9. Every concept marked `teach` or `refresh` has a tutorial section in "Background You'll Need"; concepts marked `known` appear only in the compact "Concepts assumed familiar" list.
 10. Compressed steps with `Certainty: uncertain` appear in the relevant theorem's "Loose ends" section AND in the "Questions for the authors" appendix.
 11. The dependency DAG is rendered in TikZ in the appendix.
-12. Each chapter has been self-checked against the ten Feynman-discipline rules before the file was written.
+12. Each chapter has been self-checked against the seven universal rules of `agents/writing/narrative-clarity-auditor.md`, plus the lecture-note register column, before the file was written.
 
 In `document` mode (any style), additionally:
 12a. Each Tier-1 theorem chapter has been audited by `theorem-presentation-auditor` with `register: lecture-note`. The rhythm pass (statement / intuition / operational interpretation / consequence) is required; the architecture pass is delegated to the lecture-note's own pattern (story → formal → loose-ends) and the auditor surfaces the delegation rather than re-judging.

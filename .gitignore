@@ -1,0 +1,4 @@
+# Per-machine Claude Code state. settings.json IS tracked — it carries the
+# spec-lint hook, which is the point of it being repo-local — but the local
+# overlay is personal and must not travel.
+.claude/settings.local.json

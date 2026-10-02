@@ -22,11 +22,19 @@
 # Subcommands:
 #   notify — PostToolUse: if an edited file is manuscript source, name it and
 #            put the gate on the table for this turn.
-#   check  — Stop: compare the manuscript against writing_ledger.md's manifest;
-#            if the ledger is missing or stale, block the turn and say why.
+#   check  — Stop: compare the manuscript against writing_ledger.md's manifest,
+#            and (where the paper is on the macro chain) run the evidence-chain
+#            checker. If the ledger is stale or a number has lost its link to
+#            the data, block the turn and say why.
 #
 # .manuscript-gate.json (all keys optional):
-#   { "globs": ["*.tex"], "ledger": "writing_ledger.md", "register": "theoretical-paper" }
+#   { "globs": ["*.tex"], "ledger": "writing_ledger.md", "register": "theoretical-paper",
+#     "evidence_chain": true }
+#
+# `evidence_chain` opts the paper into scripts/check-evidence-chain.py on Stop.
+# `true` uses that script's defaults; an object overrides them (the same keys a
+# standalone .evidence-chain.json would carry). One marker per paper: the gate
+# and the chain checker read the same file rather than drifting apart.
 #
 # Env overrides (mostly for testing): MANUSCRIPT_ROOT, MANUSCRIPT_GLOBS,
 # WRITING_LEDGER, MANUSCRIPT_ARTIFACTS.
@@ -34,6 +42,12 @@
 set -uo pipefail
 
 MARKER_NAME=".manuscript-gate.json"
+
+# Resolve through any symlink: this hook is normally wired into
+# ~/.claude/settings.json by absolute path, but may also be reached via a link,
+# and it has to find its sibling scripts either way.
+SELF="$(python3 -c 'import os,sys; print(os.path.realpath(sys.argv[1]))' "${BASH_SOURCE[0]}" 2>/dev/null || printf '%s' "${BASH_SOURCE[0]}")"
+SCRIPTS_DIR="$(cd "$(dirname "$SELF")/.." && pwd -P)"
 
 # --- Locate the paper root: nearest ancestor holding the marker. -------------
 find_paper_root() {
@@ -131,6 +145,21 @@ Exposition does not survive editing the way correctness does. Before this turn e
     cat >/dev/null 2>&1 || true
     ledger="$ROOT/$LEDGER"
     changed=""
+    chain=""
+
+    # Evidence chain: opted into per paper, because a paper with no DoE chain
+    # has nothing to check and must not be blocked for it.
+    if python3 -c '
+import json,sys
+try: d = json.load(open(sys.argv[1]))
+except Exception: sys.exit(1)
+sys.exit(0 if d.get("evidence_chain") not in (None, False) else 1)
+' "$MARKER" 2>/dev/null || [[ -f "$ROOT/.evidence-chain.json" ]]; then
+      chain_out="$("$SCRIPTS_DIR/check-evidence-chain.py" "$ROOT" 2>&1)"
+      case "$chain_out" in
+        *"level=blocking"*) chain="$chain_out" ;;
+      esac
+    fi
 
     if [[ ! -f "$ledger" ]]; then
       [[ -z "$(manuscript_files)" ]] && exit 0
@@ -142,13 +171,26 @@ Exposition does not survive editing the way correctness does. Before this turn e
       done < <(manifest_now)
     fi
 
-    [[ -z "$changed" ]] && exit 0
+    [[ -z "$changed" && -z "$chain" ]] && exit 0
 
-    reason="The writing gate has not run against the current manuscript ($(basename "$ROOT")).
+    reason=""
+    [[ -n "$changed" ]] && reason+="The writing gate has not run against the current manuscript ($(basename "$ROOT")).
 
 Unreconciled:
 $changed
-Run the manuscript-update-gate agent (mode: delta, or full if there is no prior ledger) and let it write $LEDGER with a fresh manifest. It owns the so-what distribution contract, the notation ledger, spine/appendix/cut placement, and cross-section continuity."
+Run the manuscript-update-gate agent (mode: delta, or full if there is no prior ledger) and let it write $LEDGER with a fresh manifest. It owns the so-what distribution contract, the notation ledger, spine/appendix/cut placement, and cross-section continuity.
+"
+    [[ -n "$chain" ]] && reason+="
+The evidence chain is broken, so the manuscript states at least one number the
+committed data does not currently support:
+
+$chain
+
+Repair the chain before the turn ends — regenerate the scalars and macros from
+the data rather than editing the printed value. scripts/check-evidence-chain.py
+explains each check; the evidence-provenance-auditor agent consumes these
+findings if you want them triaged against the prose.
+"
     printf '{"decision":"block","reason":%s}\n' "$(printf '%s' "$reason" | json_escape)"
     exit 0
     ;;

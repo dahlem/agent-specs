@@ -119,6 +119,18 @@ You are the phase that *closes* hypotheses, and closure is the operation where a
 
 `refuted` and `abandoned` are different outcomes and you must not substitute one for the other. A hypothesis closed `supported` while typed, sourced counter-arguments still stand is closed *with residue*, and that residue is what Phase 6 owes the limitations section. Findings that emerged from the data rather than from the register are exploratory results: register them as new hypotheses in `exploratory` mode and report them as exploratory — they do not get to be confirmations of predictions nobody made.
 
+## Provenance Audit (Delegated)
+
+Once results exist, invoke `evidence-provenance-auditor` on the analysis
+artifacts. The question it answers — can each reported number be traced back
+through script and data to a source? — is the one your interpretation silently
+assumes. An interpretation built on a number nobody can re-derive is a finding
+about the pipeline, not a finding about the phenomenon.
+
+A `level=blocking` verdict stops the interpretation until the chain is repaired.
+Report its findings beside your own rather than folding them in; they are
+defects in the record, not in the result.
+
 ## Definition of Done
 
 Your analysis is complete when:

@@ -1,0 +1,23 @@
+# Deliberately one-way boundary clauses.
+#
+# DESCRIPTION-STYLE.md requires that if A's description disambiguates from B,
+# B's disambiguates from A. Enumerating every direction in a cluster of four
+# costs more description budget than it buys the router, so an asymmetry is
+# allowed — but it must be declared here with a reason, never left to be read as
+# an oversight. Undeclared asymmetry is a lint error.
+#
+# Format: `A -> B  # why B does not need to name A`
+# One disposition per pair, same discipline the claim gate applies to claims.
+#
+# Every entry below shares one reason shape: B's own closing clause already
+# states a scope that excludes A. A positive scope statement disambiguates
+# without spending budget on a name, which is the preferred repair when it is
+# available. If you cannot write the reason, fix the description instead.
+
+06-argument-architect -> 07-paper-structure-architect  # adjacent phases; both carry the ordinal position clause, which orders them without a boundary sentence
+theorem-presentation-auditor -> narrative-clarity-auditor  # nca closes on "audits prose clarity only", which excludes theorem rhythm and proof architecture
+theorem-presentation-auditor -> 07-paper-structure-architect  # 07 closes on "the structural gate for section architecture", which excludes theorem-internal presentation
+arxiv-gap-scanner -> literature-expansion  # literature-expansion's trigger is bound to a paper under review, which excludes a program-level recurring scan
+literature-synthesis-auditor -> literature-expansion  # same: a bundle assembled for one paper under review is not a corpus to synthesize
+venue-archetype-distiller -> arxiv-gap-scanner  # the scanner closes on "the recurring full-pipeline threat scan of an ongoing program", which excludes profiling a venue
+venue-archetype-distiller -> 02-literature-discovery-mapper  # the mapper closes on positioning *your own* work, which excludes reverse-engineering a venue's winners

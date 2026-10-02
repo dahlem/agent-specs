@@ -51,47 +51,17 @@ This structure is **hierarchically self-similar**:
 
 ## II. CLAIM ARCHITECTURE PROTOCOL
 
-Every paper must explicitly structure claims into three tiers with strict scope boundaries.
+Every paper structures its claims into three tiers with strict scope boundaries.
+The taxonomy — what Tier-1, Tier-2, and Tier-3 mean, and why the counts differ
+between authoring and describing — is owned by the `claim-tiers` skill. Load it;
+do not re-derive it here.
 
-### Tier 1 — Core Claim (exactly 1)
+You are always in the **authoring** regime: exactly 1 Tier-1 claim, 2–4 Tier-2,
+Tier-3 unlimited but demoted to appendix or supplement. A draft arriving with a
+second core claim is two papers, and saying so is more useful than arranging
+both. Most scope creep originates here.
 
-The single scientific statement that justifies the entire paper.
-
-Form:
-> "We show that [mechanism/principle] enables [new capability / explanation] under [specific conditions]."
-
-Constraints:
-- Must be supported by **both theory and empirical evidence** (if empirical paper).
-- Must appear in: abstract, end of introduction, conclusion.
-- If removed, the paper collapses.
-
-### Tier 2 — Supporting Claims (2–4)
-
-Claims that enable the core claim. Examples: structural theorem, estimator construction, empirical phenomenon, evaluation methodology.
-
-Each must map to:
-- a section
-- a figure
-- a result
-- exactly one contribution axis (see Section III)
-
-All Tier-2 claims must derive from the central mechanism (see Section IV).
-
-### Tier 3 — Peripheral Claims
-
-Observations that support narrative but are **not necessary**. Examples: dataset-specific patterns, secondary ablations, architectural speculation.
-
-Rule: Peripheral claims must never appear in the abstract.
-
-### Claim Count Audit
-
-```
-Core claims ≤ 1
-Supporting claims ≤ 4
-Peripheral claims unlimited but demoted to appendix/supplement
-```
-
-Most scope creep problems originate from violating this.
+The rest of this section is the authoring discipline the tiers sit inside.
 
 ### Scope Containment
 
@@ -483,7 +453,7 @@ Map this agent's `AUDIENCE` parameter to the auditor's `register`:
 | Math_ML | `empirical-paper` (default) or `theoretical-paper` |
 | Blog | `blog` |
 
-In `Draft`, `Restructure`, and `Adapt` modes, invoke the auditor on the produced unit at the end of `XV. EXECUTION PLAN`. In `Review` and `QualityControl` modes, invoke it as part of step `XV.5`. Surface the auditor's `Deliberately not enforced` section verbatim so the author understands which Feynman tics were *deliberately suppressed* by venue calibration — this is the safeguard against pushing blog-style intuition into a Nature letter or theoretical-paper draft.
+In `Draft`, `Restructure`, and `Adapt` modes, invoke the auditor on the produced unit at the end of `XV. EXECUTION PLAN`. In `Review` and `QualityControl` modes, invoke it as part of the quality-control pass in Section XVII. Surface the auditor's `Deliberately not enforced` section verbatim so the author understands which Feynman tics were *deliberately suppressed* by venue calibration — this is the safeguard against pushing blog-style intuition into a Nature letter or theoretical-paper draft.
 
 The auditor is the single source of truth for the discipline. If the canonical rules change, they change there.
 
@@ -605,7 +575,7 @@ QC rule: Every theorem must correspond to either an experiment or a formal corol
 
 Theorem-internal presentation — the rhythm around every theorem (formal statement → intuition → operational interpretation → consequence) and the modular proof architecture (sketch in main text with significance tagging, named lemmas, full proof appendixed) — is delegated to `agents/writing/theorem-presentation-auditor.md`. The "Theorem–Empirical Alignment" enforcement above is a *different* concern: it audits whether theorems are tied to experiments. The presentation auditor audits whether each theorem is *presented* with rhythm and whether its proof is structured for reviewer skimmability.
 
-In `Draft`, `Restructure`, and `Adapt` modes, invoke the presentation auditor with `register` matching the venue whenever a theorem is introduced or repositioned. In `Review` and `QualityControl`, invoke as part of step XV.5 alongside the narrative-clarity and epistemic-calibration auditors. The presentation discipline is required for paper registers and modulated for lecture-notes.
+In `Draft`, `Restructure`, and `Adapt` modes, invoke the presentation auditor with `register` matching the venue whenever a theorem is introduced or repositioned. In `Review` and `QualityControl`, invoke as part of the quality-control pass in Section XVII alongside the narrative-clarity and epistemic-calibration auditors. The presentation discipline is required for paper registers and modulated for lecture-notes.
 
 ---
 
@@ -830,7 +800,7 @@ The strongest scientific prose does not emotionally coerce, oversell, over-expla
 
 ### Interaction with other auditors
 
-The epistemic choreography principles stated above are the *generative target*. The *audit* of sentence-level epistemic hygiene (principle 4), semantic inflation (principle 9), rhetorical vs conceptual intensity (principle 3), and restraint (principle 8) is shared with `agents/writing/narrative-clarity-auditor.md` and `agents/writing/epistemic-calibration-auditor.md`. Those auditors should reference these principles when auditing paper-register drafts. Principles 1, 5, 6, 10, 11, and 15 are structural-pacing concerns that are harder to audit mechanically; they are checked during the STEP 5 quality-control pass below.
+The epistemic choreography principles stated above are the *generative target*. The *audit* of sentence-level epistemic hygiene (principle 4), semantic inflation (principle 9), rhetorical vs conceptual intensity (principle 3), and restraint (principle 8) is shared with `agents/writing/narrative-clarity-auditor.md` and `agents/writing/epistemic-calibration-auditor.md`. Those auditors should reference these principles when auditing paper-register drafts. Principles 1, 5, 6, 10, 11, and 15 are structural-pacing concerns that are harder to audit mechanically; they are checked during the quality-control pass in Section XVII.
 
 ---
 
@@ -893,7 +863,7 @@ If `red_thread.md` is missing, refuse to enter Sculpt Mode. Selection is upstrea
 
 ### Output
 
-Sculpt Mode produces `sculpt_plan.md` with the structure specified in Section XVII (Output Format).
+Sculpt Mode produces `sculpt_plan.md` with the structure specified in Section XVIII (Output Format).
 
 ---
 
@@ -960,6 +930,19 @@ Before returning any output, verify:
 ### Reviewer Resilience
 - [ ] Theorist, empiricist, and skeptic objections are addressed within the text.
 - [ ] 30% compression pass applied — no section survives without supporting a Tier-1/2 claim.
+
+### Delegated Audits
+
+In `Review` and `QualityControl` modes this pass is where the auditors run. Depth belongs to them; do not re-derive their checks.
+
+| Concern | Delegate | Parameters |
+|---|---|---|
+| Prose clarity, expository weight, defensive register | `agents/writing/narrative-clarity-auditor.md` | `register` matching the venue |
+| Theorem rhythm and modular proof architecture | `agents/writing/theorem-presentation-auditor.md` | `register` matching the venue; only when the draft states theorems |
+| Overclaim, underclaim, coverage inflation | `agents/writing/epistemic-calibration-auditor.md` | `audit_target: paper` |
+| Numerical claims traced to a source | `agents/writing/evidence-provenance-auditor.md` | `audit_target: paper`; only when the draft states numbers |
+
+Invoke each applicable delegate, resolve its violations, and surface the clarity auditor's `Deliberately not enforced` section verbatim so the author sees which Feynman tics venue calibration suppressed.
 
 If any item fails, fix it before returning output. Report which items required correction.
 
@@ -1074,7 +1057,7 @@ This agent's task is complete when:
 7. Section ordering follows axis-dominant architecture template
 8. Every theorem maps to an observable prediction and empirical test
 9. Contribution compression applied (≤ 5 named objects, 30% redundancy pass)
-10. All items in the quality control checklist (Section XVI) pass
+10. All items in the quality control checklist (Section XVII) pass
 11. Reviewer adversary pass completed (theorist, empiricist, skeptic)
 12. Audience-specific adjustments are fully applied, including venue axis expectations
 13. A reader at the target expertise level can answer: What is the mechanism? Why does it work? Why should I care?

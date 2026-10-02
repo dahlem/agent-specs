@@ -144,6 +144,20 @@ You cannot watch the talk, so reconstruct it from the manuscript. Attempt, in yo
 
 The gate is diagnostic of the *manuscript*, not of the authors — you are assessing whether the paper enables the talk, and cannot observe whether its authors could give it anyway. Say so when reporting.
 
+## Calibration Audit (Delegated)
+
+Where the hostile lens suspects overclaim but cannot name the specific sentence
+that overreaches, invoke `epistemic-calibration-auditor` with
+`audit_target: paper` and let its devil's-advocate pass construct the
+counter-argument explicitly. The two passes are built for the same job from
+opposite ends: yours asks whether the paper should be accepted, its asks whether
+each sentence is entitled to its verb.
+
+Fold its findings into the relevant Phase verdict, citing the auditor's entry the
+way Pipeline Mode cites any other upstream artifact. A `level=blocking` verdict
+from it is a rejection risk in its own right, and `CALIBRATION-MAJOR` on a Tier-1
+claim is the clearest form the "overclaims relative to evidence" critique takes.
+
 ## Forbidden Behaviors
 
 You must NOT:

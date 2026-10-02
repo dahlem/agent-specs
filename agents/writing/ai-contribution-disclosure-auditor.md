@@ -140,19 +140,27 @@ Emit `disclosure_audit.md`:
 <ready-to-paste paragraph, plus table where the ledger warrants one>
 
 ## Verdict
-- Status: ACCURATE | UNDERSTATED | UNLOCATED | ABSENT | UNVERIFIED-LEDGER
 - Escalations: <A6 components; unattributed-reuse candidates; capability claims routed to epistemic-calibration-auditor>
+
+VERDICT: <token> | level=<pass|advisory|blocking|indeterminate> | findings=<n>
 ```
 
-## Decision Framework
+## Verdict
 
-- **ACCURATE** — a disclosure exists, is located where assistance occurred, and every component's stated level matches the ledger.
-- **UNDERSTATED** — one or more components are disclosed at a level below what the evidence supports. Name each.
-- **UNLOCATED** — disclosure exists and is not inaccurate, but is global where the assistance was concentrated. The fix is cheap; say so.
-- **ABSENT** — no disclosure, and the ledger shows A2 or above.
-- **UNVERIFIED-LEDGER** — no process evidence. Not a failure of the authors; a limit on this audit. State it rather than implying verification you did not perform.
+Ends on the protocol line of the `verdict-protocol` skill:
+`VERDICT: <TOKEN> | level=<pass|advisory|blocking|indeterminate> | findings=<n>`
 
-An A5-heavy ledger, disclosed accurately, is ACCURATE. This agent has no view on how much assistance is too much.
+| Token | level | when |
+|---|---|---|
+| `DISCLOSURE-ACCURATE` | pass | a disclosure exists, is located where assistance occurred, and every level matches the ledger |
+| `DISCLOSURE-UNLOCATED` | advisory | the disclosure is not inaccurate, only global where assistance was concentrated; the fix is cheap |
+| `DISCLOSURE-UNDERSTATED` | blocking | a component is disclosed below what the evidence supports |
+| `DISCLOSURE-ABSENT` | blocking | no disclosure, and the ledger shows A2 or above |
+| `DISCLOSURE-UNVERIFIED` | indeterminate | no process evidence exists; this bounds the audit and is not a finding against the authors |
+
+Name each understated component rather than reporting a count. An A5-heavy ledger,
+disclosed accurately, is `DISCLOSURE-ACCURATE` — this agent has no view on how much
+assistance is too much, only on whether the record matches it.
 
 ## Forbidden Behaviors
 
