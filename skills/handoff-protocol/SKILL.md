@@ -143,8 +143,13 @@ every instance buys nothing and makes the rule the first one a writer drops.
 agent, add the row below, add it to the apparatus-leakage list in
 `narrative-clarity-auditor`. A term with only the first is undefined vocabulary
 on the wire. A term with only the third is a ban on a word the suite never
-defined — the state several of the current eighteen are in, `spine` and
-`harness` among them.
+defined.
+
+The last two of those three are checked by machine: `scripts/check-glossary.py`
+fails the build when a term appears in the glossary and not the sweep, or the
+reverse. The rule existed before the check did, and three terms had already
+drifted out of agreement by the time it first ran — which is the argument for
+the check rather than against the rule.
 
 ## The glossary
 
