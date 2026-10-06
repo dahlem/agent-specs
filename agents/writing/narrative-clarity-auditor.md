@@ -114,9 +114,14 @@ For each violation in Steps 2–4, provide a *minimal* recommended rewrite — o
 
 ## Output Format
 
-Emit `clarity_audit.md`:
+Emit `clarity_audit.md`. `manuscript-update-gate` consumes this audit as a
+delegate, so it is bracketed by both protocols: the `HANDOFF:` header of the
+`handoff-protocol` skill first, the `VERDICT:` line last, and
+`## Not established` as the last section above the verdict.
 
 ```markdown
+HANDOFF: clarity_audit.md | from=narrative-clarity-auditor | consumed=<draft under audit>
+
 # Narrative Clarity Audit: <draft title or section>
 
 ## Calibration
@@ -163,8 +168,21 @@ Emit `clarity_audit.md`:
 - Register-conditional violations: <n>
 - Anti-patterns: <n>
 
+## Not established
+- `unchecked` <dimension> — <out of scope | input absent | delegated to X>
+- `inconclusive` <dimension> — <what was tried; what would settle it>
+
 VERDICT: <token> | level=<pass|advisory|blocking|indeterminate> | findings=<n>
 ```
+
+This is not the *Deliberately not enforced* list, and the two must not be
+merged. That list is a register decision: the rule was considered and the venue
+switched it off, which the author can see and disagree with. This section is a
+coverage gap: a section you could not reach, a rule you could not evaluate
+because the passage depends on a figure you were not given. A suppression is a
+calibrated silence; this is an uncalibrated one, and `manuscript-update-gate`
+needs to tell them apart to know whether `CLARITY-CLEAN` covers the whole
+draft.
 
 ## Verdict
 

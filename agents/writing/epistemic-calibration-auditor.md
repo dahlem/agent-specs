@@ -190,9 +190,14 @@ For each violation in Steps 2–4, provide a *minimal* recommended rewrite — o
 
 ## Output Format
 
-Emit `calibration_audit.md`:
+Emit `calibration_audit.md`. `manuscript-update-gate` and `claim-disposition-gate`
+both consume this audit as a delegate, so it is bracketed by both protocols: the
+`HANDOFF:` header of the `handoff-protocol` skill first, the `VERDICT:` line
+last, and `## Not established` as the last section above the verdict.
 
 ```markdown
+HANDOFF: calibration_audit.md | from=epistemic-calibration-auditor | consumed=<draft under audit>,<evidence sources or none>
+
 # Epistemic Calibration Audit: <draft title or section>
 
 ## Calibration profile
@@ -245,8 +250,19 @@ Emit `calibration_audit.md`:
 - Anti-patterns: <n>
 - Devil's-advocate alternatives flagged for resolution: <n>
 
+## Not established
+- `unchecked` <dimension> — <out of scope | input absent | delegated to X>
+- `inconclusive` <dimension> — <what was tried; what would settle it>
+
 VERDICT: <token> | level=<pass|advisory|blocking|indeterminate> | findings=<n>
 ```
+
+You enforce this section on everyone else, so be exact about your own. Running
+without `evidence_sources` is the standing case: you can then audit language
+calibration but not evidentiary calibration, and that is an `unchecked`
+dimension on every such run — not a caveat noted once in the profile block and
+left outside the verdict's reach. A `CALIBRATION-CLEAN` that only ever compared
+prose against prose is the unscoped "Done" this agent exists to catch.
 
 ## Verdict
 

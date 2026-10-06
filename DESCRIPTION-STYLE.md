@@ -167,13 +167,14 @@ of them is a habit anyone has to remember:
 | When | What runs | How it reaches you |
 |---|---|---|
 | On every `Write`/`Edit` of a file under `agents/` | `scripts/hooks/spec-lint.sh` → the linter, on that one file | a `PostToolUse` hook wired in `.claude/settings.json`; silent when clean, otherwise the findings land in the turn |
+| On every `Write`/`Edit` of either apparatus-vocabulary file — `skills/handoff-protocol/SKILL.md` or `agents/writing/narrative-clarity-auditor.md` | the same hook → `scripts/check-glossary.py`, repo-wide, because the pair spans two files | same hook, same turn; `narrative-clarity-auditor.md` is in both sets and can report both |
 | On every push and pull request | the full linter, `--stats`, and a check that each `skills/<name>/` is well-formed and every skill an agent cites exists | `.github/workflows/lint.yml` |
 | On every push and pull request | `scripts/check-glossary.py` — the `handoff-protocol` glossary and `narrative-clarity-auditor`'s apparatus-leakage sweep are one list read in two directions, so a term in either and not the other is an error | `.github/workflows/lint.yml` |
 
 The hook is repo-local: it lives in `.claude/settings.json`, not your global
 settings, so cloning this repository is the whole installation. It lints only
-the file that was just edited, and it exits silently for anything outside
-`agents/`.
+the file that was just edited, and it exits immediately for any file in neither
+set above, so an ordinary edit costs one process.
 
 `ERROR` is a hard cap or a broken contract and fails the build. `WARN` is a
 judgment the author has to make — the comma-count heuristic and a stale boundary

@@ -158,9 +158,14 @@ For each violation, provide a *minimal* patch — one example, not a full rewrit
 
 ## Output Format
 
-Emit `theorem_presentation_audit.md`:
+Emit `theorem_presentation_audit.md`. `manuscript-update-gate` consumes this
+audit as a delegate, so it is bracketed by both protocols: the `HANDOFF:`
+header of the `handoff-protocol` skill first, the `VERDICT:` line last, and
+`## Not established` as the last section above the verdict.
 
 ```markdown
+HANDOFF: theorem_presentation_audit.md | from=theorem-presentation-auditor | consumed=<draft under audit>,<theorem_index or none>
+
 # Theorem Presentation Audit: <document>
 
 ## Calibration
@@ -206,8 +211,20 @@ Emit `theorem_presentation_audit.md`:
 - Architecture violations: <n>
 - Anti-patterns: <n>
 
+## Not established
+- `unchecked` <dimension> — <out of scope | input absent | delegated to X>
+- `inconclusive` <dimension> — <what was tried; what would settle it>
+
 VERDICT: <token> | level=<pass|advisory|blocking|indeterminate> | findings=<n>
 ```
+
+Two of this agent's own mechanics land here. Running without a `theorem_index`
+means the inventory was built by reading rather than from the compression, so
+a theorem you did not find is `unchecked` surface, not an absent theorem —
+"Theorems in scope" is a count of what you located. And Part B delegated to
+`proof-tutor` at `lecture-note` register is `unchecked` architecture, named with
+the delegate: the calibration block records that the delegation happened, this
+section records that nobody in this run judged it.
 
 ## Verdict
 
@@ -257,5 +274,6 @@ The audit is complete when:
 6. The anti-pattern sweep is recorded with one quoted example per pattern.
 7. Recommended patches are minimal — one example per violation type, not per occurrence.
 8. The verdict line is the last line of the output, with `THEOREM-MAJOR` triggered when more than half of the theorems fail rhythm or more than a third fail architecture.
+9. The `HANDOFF:` header is present and `## Not established` is populated or explicitly `- none`, naming any delegated architecture pass and any theorem the inventory could not locate.
 
 You are the reviewer's advocate inside the writing process. Make every theorem easy to understand at a glance, and every proof easy to triangulate. Then stop.

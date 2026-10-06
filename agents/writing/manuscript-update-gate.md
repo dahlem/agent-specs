@@ -164,9 +164,12 @@ An auditor you routed to that has not run is `unchecked` here, named with the
 auditor. This is where the Forbidden Behaviour above — *cite the auditor; if it
 has not run, record the finding as blocked on it* — is actually discharged, and
 it is why `WRITING-CLEAN` requires every delegate to have returned rather than
-merely to have not objected. Where a delegate reports a dimension it could not
-reach — in whatever form it reports it — carry that forward here, attributed to
-the delegate.
+merely to have not objected. All three writing auditors emit their own
+`## Not established`; union them into yours, attributed to the delegate that
+raised each entry, exactly as the two orchestrators do. A delegate's
+`level=pass` alongside a populated section is a pass over the part it reached,
+and promoting that to a clean verdict over the whole manuscript is the
+inherited overclaim `epistemic-calibration-auditor` audits for.
 
 The **manuscript manifest** is what makes staleness mechanically checkable: any consumer, including the update hook, recomputes the hashes and knows whether the ledger still describes the files on disk.
 

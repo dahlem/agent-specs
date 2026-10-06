@@ -522,7 +522,7 @@ These declare no pipeline stage, deliberately: a gate that fires on every manusc
 | Skill | Cited by |
 |---|---|
 | [`claim-tiers`](skills/claim-tiers/SKILL.md) | `06-argument-architect`, `domain-historian`, `paper-compressor`, `scientific-narrative-architect` |
-| [`handoff-protocol`](skills/handoff-protocol/SKILL.md) | `ai-paper-reviewer`, `baseline-scout`, `claim-disposition-gate`, `claim-interrogator`, `domain-historian`, `epistemic-calibration-auditor`, `literature-expansion`, `manuscript-update-gate`, `math-review-router`, `narrative-clarity-auditor`, `paper-compressor`, `proof-chain-cartographer`, `proof-dissection-orchestrator`, `proof-tutor`, `research-director`, `research-shaping-orchestrator` |
+| [`handoff-protocol`](skills/handoff-protocol/SKILL.md) | `ai-paper-reviewer`, `baseline-scout`, `claim-disposition-gate`, `claim-interrogator`, `domain-historian`, `epistemic-calibration-auditor`, `literature-expansion`, `manuscript-update-gate`, `math-review-router`, `narrative-clarity-auditor`, `paper-compressor`, `proof-chain-cartographer`, `proof-dissection-orchestrator`, `proof-tutor`, `research-director`, `research-shaping-orchestrator`, `theorem-presentation-auditor` |
 | [`verdict-protocol`](skills/verdict-protocol/SKILL.md) | `ai-contribution-disclosure-auditor`, `claim-disposition-gate`, `epistemic-calibration-auditor`, `evidence-provenance-auditor`, `hypothesis-register-keeper`, `lean-library-design-auditor`, `lean-proof-chain-validator`, `manuscript-update-gate`, `narrative-clarity-auditor`, `theorem-presentation-auditor` |
 | [`writing-registers`](skills/writing-registers/SKILL.md) | `07-paper-structure-architect`, `manuscript-update-gate`, `narrative-clarity-auditor`, `proof-tutor`, `theorem-presentation-auditor` |
 
