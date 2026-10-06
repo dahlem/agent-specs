@@ -136,7 +136,6 @@ every instance buys nothing and makes the rule the first one a writer drops.
 | `ledger` | the claim ledger (`claim-disposition-gate`); the notation ledger (`manuscript-update-gate`) | qualify |
 | `seam` | the join between two manuscript sections; the boundary between two agents' jurisdictions | `seam` is the manuscript join only. Agent jurisdiction is a **boundary** — the word `DESCRIPTION-STYLE.md` and `check-boundaries.py` already use. |
 | `load-bearing` | the ordinary adjective (a load-bearing claim, term, assumption); the proof-step significance tag of `theorem-presentation-auditor` | as a tag, backticked and inside an explicit significance-tagging context, alongside `technical` and `bookkeeping`; unbackticked prose use stays adjectival |
-| `harness` | noun: the scaffold that produced an artifact; verb: on `epistemic-calibration-auditor`'s salesy-verb list | noun only. One part of speech per term, and this term's is taken. |
 | `Tier-1` | claim load; contribution significance | owned by the `claim-tiers` skill — write `Tier-1 contribution` in full. Cite it; do not restate it here. |
 | `satellite claim` | reads as a kind of claim; names a failure mode | `Satellite-claim instance`, never a bare noun phrase |
 
@@ -158,10 +157,12 @@ its meaning starts.
 | `carrier` | n. | a figure, table, theorem, or script that carries or supports a dispositioned claim | `claim-disposition-gate` |
 | `claim ledger` | n. | the enumerated claim surface, one disposition per claim, with the bipartite carrier map | `claim-disposition-gate` |
 | `delta mode` | n. | a re-run scoped to what changed since the last run rather than to the full surface | `claim-disposition-gate`, `manuscript-update-gate` |
-| `disposition` | n., v. | the assignment of exactly one of PROVED / MEASURED / TESTED / HEDGED / CUT to a claim | `claim-disposition-gate` |
+| `disposition` | n., v. (`dispositioned`) | the assignment of exactly one of PROVED / MEASURED / TESTED / HEDGED / CUT to a claim | `claim-disposition-gate` |
 | `enumeration failure` | n. | a claim present in the paper and absent from the claim ledger; a finding against the gate, not against the paper | `claim-disposition-gate` |
 | `gate` | n. | an agent that can return `level=blocking`; an agent with no blocking token is not one | `verdict-protocol` skill |
 | `harness` | n. | the scaffold, tooling, and model version that produced an artifact, recorded for reproducibility | `lean-proof-chain-validator` |
+| `ledger` | n. | an append-only record with one row per enumerated item; qualified wherever both senses are in scope — see `claim ledger` and `notation ledger` | `claim-disposition-gate` |
+| `load-bearing` | adj. | of a claim, term, assumption, or proof step: the argument fails without it. As a backticked significance tag, the level above `technical` and `bookkeeping` | `theorem-presentation-auditor` |
 | `notation ledger` | n. | the manuscript's symbol inventory, checked for drift on every edit | `manuscript-update-gate` |
 | `orphan` | n. | either end of a broken carrier edge: an artifact carrying no dispositioned claim, or a claim with no carrier. Both directions are findings. | `claim-disposition-gate` |
 | `red thread` | n. | a candidate paper latent in a body of work: one core claim with its evidence map and risk profile | `research-divergence-cartographer` |
@@ -170,8 +171,8 @@ its meaning starts.
 | `satellite claim` | n. | a failure mode: a value in the paper that does not derive from the pipeline — a remark formula never formalized, a prose number not generated, a constant hand-copied into code | `claim-disposition-gate` |
 | `seam` | n. | the join between two manuscript sections, where notation, scope, or voice drifts | `manuscript-update-gate` |
 | `shadow statement` | n. | the S⁺/S⁻ pair making a narrative claim falsifiable: the strongest statement the prose commits to, and the weakest the argument needs. Audit apparatus; never displayed. | `claim-disposition-gate` |
-| `so-what` | n. | the fourth narrative question — what follows from the result — subject to a distribution contract across abstract, introduction, and conclusion | `manuscript-update-gate`, `07-paper-structure-architect` |
-| `spine` | n. | the main line of the paper: the definitions, theorems, and claims the argument depends on, as against what hangs off it in appendices | `07-paper-structure-architect` |
+| `so-what` | n. | the fourth narrative question — what follows from the result — distributed unevenly across title, abstract, introduction, body, and conclusion by a contract this agent owns | `manuscript-update-gate` |
+| `spine` | n. | the main line of a paper, or of a candidate thread before a paper exists: the definitions, theorems, and claims the argument depends on, as against what hangs off it in appendices | `07-paper-structure-architect` |
 
 ## Adopted from ASD-STE100, and not
 
