@@ -522,6 +522,7 @@ These declare no pipeline stage, deliberately: a gate that fires on every manusc
 | Skill | Cited by |
 |---|---|
 | [`claim-tiers`](skills/claim-tiers/SKILL.md) | `06-argument-architect`, `domain-historian`, `paper-compressor`, `scientific-narrative-architect` |
+| [`handoff-protocol`](skills/handoff-protocol/SKILL.md) | `ai-paper-reviewer`, `baseline-scout`, `claim-disposition-gate`, `claim-interrogator`, `domain-historian`, `epistemic-calibration-auditor`, `literature-expansion`, `manuscript-update-gate`, `math-review-router`, `narrative-clarity-auditor`, `paper-compressor`, `proof-chain-cartographer`, `proof-dissection-orchestrator`, `proof-tutor`, `research-director`, `research-shaping-orchestrator` |
 | [`verdict-protocol`](skills/verdict-protocol/SKILL.md) | `ai-contribution-disclosure-auditor`, `claim-disposition-gate`, `epistemic-calibration-auditor`, `evidence-provenance-auditor`, `hypothesis-register-keeper`, `lean-library-design-auditor`, `lean-proof-chain-validator`, `manuscript-update-gate`, `narrative-clarity-auditor`, `theorem-presentation-auditor` |
 | [`writing-registers`](skills/writing-registers/SKILL.md) | `07-paper-structure-architect`, `manuscript-update-gate`, `narrative-clarity-auditor`, `proof-tutor`, `theorem-presentation-auditor` |
 
@@ -535,6 +536,7 @@ agent-specs/
 ├── DESCRIPTION-STYLE.md
 ├── skills/                                      # Doctrine several agents share
 │   ├── claim-tiers/SKILL.md
+│   ├── handoff-protocol/SKILL.md
 │   ├── verdict-protocol/SKILL.md
 │   └── writing-registers/SKILL.md
 ├── agents/
@@ -1270,7 +1272,7 @@ Audits a *compiled, sorry-free* Lean development for reusability rather than cor
 
 ## Shared Doctrine (Skills)
 
-Three vocabularies are used by enough agents that keeping a copy in each one
+Four vocabularies are used by enough agents that keeping a copy in each one
 guarantees drift. They live in `skills/` and are symlinked into
 `~/.claude/skills/`, which makes them addressable by name from any working
 directory — a repo-relative path stops resolving the moment a spec is symlinked
@@ -1281,6 +1283,7 @@ into `~/.claude/agents/` and run inside somebody else's project.
 | `writing-registers` | the eight venue registers, the knob matrix, the rule for declaring a subset | five agents take a `register`; before extraction, `proof-tutor` carried a verbatim copy of the `lecture-note` column and three agents listed four values each without saying they were subsets |
 | `claim-tiers` | Tier-1/2/3, the authoring (exactly 1 / 2–4) vs. describing (1–3 / 3–8) cardinalities, and the separate significance-tier axis | twenty-one agents use the vocabulary; `domain-historian`'s "Tier-1 contribution" is a *different axis* from everyone else's "Tier-1 claim", and conflating them is the inference a paper's framing invites |
 | `verdict-protocol` | the terminal `VERDICT: <TOKEN> \| level=… \| findings=…` line and its four levels | ten agents end on a verdict; they previously used three mutually unparseable shapes, so no agent could branch on another's result |
+| `handoff-protocol` | the opening `HANDOFF:` header, the `wire` / `report` channel split, the required `## Not established` section, and the one-meaning-per-term glossary | sixteen agents pass artifacts to each other; the suite governed the last line of a handoff and nothing above it, so a consumer could not distinguish "checked and clean" from "never looked" — and `narrative-clarity-auditor` banned eighteen apparatus terms from manuscripts that were defined in no single place |
 
 An agent **cites** a skill rather than restating it. Where an agent needs a
 variant — a register subset, a wider claim cardinality — it declares the variant

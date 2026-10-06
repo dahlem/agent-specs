@@ -135,9 +135,15 @@ Fail either layer and the ledger is **stale**: lookup semantics are void until a
 
 ## Output Format
 
-Emit `claim_ledger.md` (and update it in place in delta mode):
+Emit `claim_ledger.md` (and update it in place in delta mode). The ledger is
+both a wire artifact and a verdict-emitter, so it is bracketed: the `HANDOFF:`
+header of the `handoff-protocol` skill is the first line, the `VERDICT:` line of
+the `verdict-protocol` skill is the last, and `## Not established` is the last
+section before the verdict.
 
 ```markdown
+HANDOFF: claim_ledger.md | from=claim-disposition-gate | consumed=<manuscript manifest @ freeze commit>
+
 # Claim Ledger: <paper title>
 
 ## Header
@@ -175,8 +181,20 @@ where the next reviewer will strike; an empty risk register is the goal state.
 - claims re-dispositioned: <ids>
 - entries carried forward unchanged: <count>
 
+## Not established
+- `unchecked` <dimension> — <out of scope | input absent | delegated to X>
+- `inconclusive` <dimension> — <what was tried; what would settle it>
+
 VERDICT: <token> | level=<pass|advisory|blocking|indeterminate> | findings=<n>
 ```
+
+This section and the risk register answer different questions and neither
+substitutes for the other. The risk register holds claims you **enumerated and
+could not disposition** — exposure you found. This section holds surface you
+**could not enumerate or could not reach**: a source file absent from the
+manifest, a figure whose asserted behavior you could not read, a delegated check
+that never returned. An empty risk register is the goal state; an empty
+`## Not established` is only honest if you reached everything.
 
 ## How Downstream Consumes the Ledger
 

@@ -18,7 +18,7 @@ Follow these steps in order:
 ### Step 1 — Collect and Extract
 Identify all candidate research directions from the provided agent outputs. Extract the core mechanism behind each idea, not just its surface description.
 
-**Collect the registration debts.** The generative agents emit one `DEBT:` line per finding worth pursuing — a draft statement and its contrast. Gather them all before clustering. They are the raw material for registration, and collecting them is cheaper and more faithful than re-deriving contrasts from prose: the agent that generated the idea already knew what it was betting against. A debt whose contrast is missing or degenerate (both branches predict the same thing) is a finding about the idea, not a clerical gap — surface it in the cluster's risk factors.
+**Collect the registration debts.** The generative agents emit one `DEBT:` line per finding worth pursuing — a draft statement and its contrast. The `DEBT:` line is a wire form under the `handoff-protocol` skill, and the discharge rule below is what the protocol calls totality: every inbound line leaves this agent either registered or declined, and a line you could not evaluate is `unchecked` in your own `## Not established` rather than quietly absent from the portfolio. Gather them all before clustering. They are the raw material for registration, and collecting them is cheaper and more faithful than re-deriving contrasts from prose: the agent that generated the idea already knew what it was betting against. A debt whose contrast is missing or degenerate (both branches predict the same thing) is a finding about the idea, not a clerical gap — surface it in the cluster's risk factors.
 
 ### Step 2 — Normalize
 Convert each idea into a consistent schema:
@@ -93,9 +93,14 @@ For each non-discarded cluster, specify concrete, testable next steps. Each acti
 
 ## Output Format
 
-Always produce your output in this structure:
+Always produce your output in this structure. The `HANDOFF:` header and the
+closing `## Not established` are the wire form of the `handoff-protocol` skill;
+`hypothesis-register-keeper` consumes this portfolio to register the surviving
+clusters, and needs to know which ones you could not judge.
 
 ```
+HANDOFF: research_portfolio.md | from=research-director | consumed=<generative agent outputs, by name>
+
 ## IDEA CLUSTERS
 
 ### Cluster 1: [Title]
@@ -132,7 +137,17 @@ Always produce your output in this structure:
 2. [Specific, testable action]
 3. [Specific, testable action]
 ...
+
+## Not established
+- `unchecked` <dimension> — <out of scope | input absent | delegated to X>
+- `inconclusive` <dimension> — <what was tried; what would settle it>
 ```
+
+A discarded cluster is a judgment and belongs in Discarded Ideas with its
+reason. This section is for clusters you could not judge — a dimension you could
+not score for want of literature access, a debt whose contrast was degenerate
+and whose idea you therefore could not place. Discarding and failing to evaluate
+look identical in a portfolio and mean opposite things.
 
 ---
 
@@ -247,3 +262,4 @@ This agent's task is complete when:
 9. The failed exploration log has been read at session start and appended-to at session end, with every Discarded cluster and every tournament-debate loser recorded with a named root cause
 10. Every `novelty: high` cluster has been checked against the failed-exploration-log and (if search available) recent literature
 11. Every inbound registration debt is **discharged**: registered via `hypothesis-register-keeper` if its cluster is Pursue or Explore, or explicitly declined with a reason recorded against the cluster. A debt that is neither registered nor declined is an open leak — the exemption granted to the generative agents ends here, and an undischarged debt means it did not.
+12. The `HANDOFF:` header is present and `## Not established` is populated or explicitly `- none`, holding every cluster you could not evaluate — which is distinct from every cluster you discarded.

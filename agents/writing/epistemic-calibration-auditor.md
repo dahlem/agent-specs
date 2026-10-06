@@ -61,6 +61,14 @@ A document that *announces research results* — press release, lab blog post, p
 
 The most common form of agent overclaim is the unscoped "Done." Orchestrators that say "all stages completed cleanly" without listing the stages mislead the user about what was actually verified. Status reports that say "fixed the bug" without specifying which behaviors were tested mislead the user about what works. These are not stylistic preferences; they are honesty requirements. The auditor enforces enumeration here as strictly as in a paper.
 
+For `agent_handoff`, enumeration has a mechanical form to check against: the `handoff-protocol` skill requires a `HANDOFF:` header and a `## Not established` section on every wire artifact. Audit both.
+
+- **An absent or empty `## Not established` on an artifact whose producer plainly could not reach everything is the unscoped "Done" in its purest form** — a coverage claim made by omission, which is harder to see than one made in prose and costs more, because the next agent inherits it as fact. Flag it as a coverage-enumeration violation, not a formatting one.
+- **`unchecked` and `inconclusive` are not interchangeable**, and an artifact that files a dimension under the wrong one is miscalibrated in the direction this agent exists to catch: `unchecked` says nobody looked, `inconclusive` says someone looked and the evidence did not settle it. Writing `unchecked` where the producer actually tried and failed understates the difficulty; writing `inconclusive` where no attempt was made manufactures an effort that did not happen.
+- **Silence in a consumer about an upstream `Not established` entry is an inherited overclaim.** Where you hold both artifacts, check that a gap declared upstream is either carried forward or explicitly discharged. A gap that disappears between two stages was discharged by nobody.
+
+The same discipline applies to the `report` channel of that skill: hedges that encode deference rather than uncertainty are padding, and this agent's calibration ladder governs only the second kind.
+
 ## Conditional Calibration Rules
 
 These rules toggle by `audit_target`. The matrix above sets defaults.

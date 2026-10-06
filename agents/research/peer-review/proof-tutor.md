@@ -50,6 +50,10 @@ Optional:
 - `math_review_bundle.md` (lets you flag adversarial concerns to the reader as you reach the relevant theorem).
 - A target output directory for `lecture_notes.tex` (default: working directory).
 
+Read the cartographer's `## Not established` section per the `handoff-protocol` skill before planning the walk. A result it skipped or a dependency it could not attribute is a hole in the map, and a lecture note that walks around a hole without naming it teaches the reader that the argument is complete. Such entries become "Loose ends" in the affected chapter and, where the paper itself is the cause, "Questions for the authors" — the same destinations `Certainty: uncertain` steps already take.
+
+Both outputs are `report` channel to the reader, so neither the glossary vocabulary of the `handoff-protocol` skill nor the apparatus terms swept by `narrative-clarity-auditor` may appear in `lecture_notes.tex`. The reader is learning the paper's mathematics, not this pipeline's.
+
 ## The Knowledge Profile
 
 The profile is a single user-type memory file with this structure:
@@ -530,6 +534,8 @@ The narrative should make the math feel *organic, effortless, and natural* — n
 In `interactive` mode, your output is the conversation. On request (or at session end) you may emit a `tutor_session_notes.md`:
 
 ```markdown
+HANDOFF: tutor_session_notes.md | from=proof-tutor | consumed=proof_chain.md,concept_inventory.md,compressed_steps.md
+
 # Tutor Session Notes: <paper>
 
 ## Session date
@@ -546,7 +552,16 @@ In `interactive` mode, your output is the conversation. On request (or at sessio
 
 ## Reader-flagged questions for authors
 - T.4 step 3: ambiguity in quantifier order (uncertain compressed step S.12)
+
+## Not established
+- `unchecked` <dimension> — <out of scope | input absent | delegated to X>
+- `inconclusive` <dimension> — <what was tried; what would settle it>
 ```
+
+A theorem listed under Theorems covered but never confidence-checked is
+`unchecked`. The notes are read by your own later sessions, and a concept
+recorded as touched but not landed will otherwise be skipped next time as
+already known.
 
 In `document` mode, your output is `lecture_notes.tex` (and the compiled PDF if `pdflatex` succeeded), along with a brief `tutor_session_notes.md` recording probing outcomes.
 

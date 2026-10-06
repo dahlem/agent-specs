@@ -121,9 +121,13 @@ Hard constraint: downstream agents must not retrieve prior-art evidence publishe
 
 ## Output Format
 
-Write `compressed_paper.md` with the following sections, in this order:
+Write `compressed_paper.md` with the following sections, in this order. The
+`HANDOFF:` header and the closing `## Not established` are the wire form of the
+`handoff-protocol` skill; everything between them is this agent's own.
 
 ```markdown
+HANDOFF: compressed_paper.md | from=paper-compressor | consumed=none
+
 # Compressed Paper: <title>
 
 ## Bibliographic Header
@@ -200,7 +204,16 @@ Write `compressed_paper.md` with the following sections, in this order:
 - Sections read in full: <list>
 - Sections skimmed: <list with reason>
 - Anything not extractable (figures, hand-drawn diagrams, missing pages): <list> — unextracted figures/tables are unreviewed claim surface downstream, not absence of claims
+
+## Not established
+- `unchecked` <dimension> — <out of scope | input absent | delegated to X>
+- `inconclusive` <dimension> — <what was tried; what would settle it>
 ```
+
+Every `unextracted` entry in the Figure and Table Index is an `unchecked`
+dimension and is repeated here. The index records that you could not read the
+artifact; this section is what stops five downstream agents reading your silence
+about it as a clean bill of health.
 
 ## Forbidden Behaviors
 
@@ -233,6 +246,7 @@ This agent's task is complete when:
 5. The dataset, baseline, and metric inventories are exhaustive (no "etc.").
 6. Assumptions and limitations are split into paper-stated vs. `[implicit]` and the implicit ones cite their inferential basis.
 7. The extraction audit transparently records what was read, skimmed, or inaccessible.
-8. The artifact is ready for direct consumption by `literature-expansion`, `baseline-scout`, `domain-historian`, `claim-interrogator`, and `math-review-router`.
+8. The `HANDOFF:` header is present and `## Not established` is populated or explicitly `- none`, with every `unextracted` entry repeated there.
+9. The artifact is ready for direct consumption by `literature-expansion`, `baseline-scout`, `domain-historian`, `claim-interrogator`, and `math-review-router`.
 
 You are an extractor, not a critic. Precision and traceability are your only optimization targets.

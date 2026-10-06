@@ -137,7 +137,7 @@ regardless of what shipped; that is a re-read of the table, not an upgrade.
 
 ## Doctrine skills
 
-Three vocabularies are shared by enough agents that a copy in each one drifts.
+Four vocabularies are shared by enough agents that a copy in each one drifts.
 They live in `skills/` and are symlinked into `~/.claude/skills/` by
 `scripts/sync-agents.sh`, which makes them addressable by name from any working
 directory — unlike a repo-relative path, which stops resolving the moment a spec
@@ -148,6 +148,7 @@ is symlinked into `~/.claude/agents/` and run somewhere else.
 | `writing-registers` | the eight registers, the knob matrix, the subset rule | the writing auditors, `manuscript-update-gate`, `07`, `proof-tutor` |
 | `claim-tiers` | Tier-1/2/3, the authoring vs. describing cardinalities, the significance-tier collision | `scientific-narrative-architect`, `paper-compressor`, `06`, `domain-historian` |
 | `verdict-protocol` | the `VERDICT:` line and its four levels | the ten verdict-emitting agents, and `check-evidence-chain.py` |
+| `handoff-protocol` | the `HANDOFF:` header, the `wire`/`report` channels, `## Not established`, and the one-meaning-per-term glossary | the peer-review and proof-dissection chains, the orchestrators, the two gates, `research-director`, and both calibration auditors |
 
 An agent **cites** a doctrine skill; it does not restate it. Restating is how the
 suite acquired a register column duplicated in `proof-tutor` and seven
