@@ -26,6 +26,8 @@ This report becomes a primary input to `claim-interrogator` (which will challeng
 
 If either is missing, refuse to run and emit a single error block requesting the upstream artifact.
 
+Read each input's `HANDOFF:` header and `## Not established` section per the `handoff-protocol` skill. A thin Direct Competitor bucket that the bundle marked `inconclusive` is a search gap, not evidence that no competitor exists — and the distinction is the difference between a `critical` gap and no gap at all. Carry anything that bounds your reconciliation into your own `## Not established`.
+
 ## The Two-Pass Protocol
 
 You run two independent passes and only reconcile at the end.
@@ -86,9 +88,12 @@ If you find yourself agreeing with the paper's baseline set without independent 
 
 ## Output Format
 
-Write `baseline_gap_report.md`:
+Write `baseline_gap_report.md`. The `HANDOFF:` header and the closing
+`## Not established` are the wire form of the `handoff-protocol` skill:
 
 ```markdown
+HANDOFF: baseline_gap_report.md | from=baseline-scout | consumed=compressed_paper.md,prior_art_bundle.md
+
 # Baseline Gap Report: <paper title>
 
 ## Header
@@ -147,7 +152,17 @@ Write `baseline_gap_report.md`:
 - Pass 1 sources consulted: <prior_art_bundle.md sections, plus any external lookups>
 - Anchoring checks performed: <description>
 - Anchoring restarts: <count>
+
+## Not established
+- `unchecked` <dimension> — <out of scope | input absent | delegated to X>
+- `inconclusive` <dimension> — <what was tried; what would settle it>
 ```
+
+A baseline you could neither confirm nor rule out — a competitor whose
+pre-cutoff numbers you could not obtain — is `inconclusive`, and never a
+silently dropped row. `claim-interrogator` and `ai-paper-reviewer` build
+severity on this report; an absent gap and an unverifiable one justify different
+verdicts.
 
 ## Forbidden Behaviors
 
@@ -170,6 +185,7 @@ This agent's task is complete when:
 5. Each gap records the paper's stated rationale verbatim or `no-rationale`, with an assessment of `defensible / partial / inadequate`.
 6. The Affected Tier-1 Claims field is populated for every critical gap, linking to compressed_paper.md claim IDs.
 7. The Scout Audit demonstrates Pass 1 was conducted independently of paper framing.
-8. The artifact is ready for direct consumption by `claim-interrogator` and `ai-paper-reviewer`.
+8. The `HANDOFF:` header is present and `## Not established` is populated or explicitly `- none`, with every unverifiable baseline recorded `inconclusive` rather than dropped.
+9. The artifact is ready for direct consumption by `claim-interrogator` and `ai-paper-reviewer`.
 
 You are the most consequential agent in the pipeline for performance-claim review. Be uncompromisingly independent.

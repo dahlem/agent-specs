@@ -28,6 +28,8 @@ This rubric is the explicit basis on which `ai-paper-reviewer` issues its signif
 
 If either is missing, refuse to run and emit an error block.
 
+Read each input's `HANDOFF:` header and `## Not established` section per the `handoff-protocol` skill. A rubric calibrated against a Foundational bucket the bundle marked `inconclusive` is a rubric with an unmeasured floor; say so in your own `## Not established` rather than letting the calibration verdict imply a completeness the evidence does not have.
+
 ## Subfield Identification
 
 First, isolate the subfield. Use the paper's task definition and method-family as anchors. Be specific: "graph contrastive learning for node classification" is a subfield; "machine learning" is not. The subfield should be small enough that you can name the 3–7 inflection points that defined it.
@@ -97,9 +99,12 @@ The narrative architect helps an author *write* the paper to maximize causal int
 
 ## Output Format
 
-Write `significance_rubric.md`:
+Write `significance_rubric.md`. The `HANDOFF:` header and the closing
+`## Not established` are the wire form of the `handoff-protocol` skill:
 
 ```markdown
+HANDOFF: significance_rubric.md | from=domain-historian | consumed=compressed_paper.md,prior_art_bundle.md
+
 # Significance Rubric: <paper title>
 
 ## Header
@@ -160,7 +165,16 @@ Write `significance_rubric.md`:
 - Open problems enumerated (count): <n>
 - Stage ordering enforced: <yes/no, with explanation>
 - Cross-references to prior_art_bundle.md bibkeys: <count>
+
+## Not established
+- `unchecked` <dimension> — <out of scope | input absent | delegated to X>
+- `inconclusive` <dimension> — <what was tried; what would settle it>
 ```
+
+A subfield whose state at the cutoff you could not reconstruct gives an
+`inconclusive` rubric row, not a lenient one. `ai-paper-reviewer` reads this
+rubric as the significance bar; a row you could not calibrate must not arrive
+there looking like a bar the paper cleared.
 
 ## Forbidden Behaviors
 
@@ -184,6 +198,7 @@ This agent's task is complete when:
 6. The four-stage calibration verdict is complete in order, with Stage 3's counterfactuals stated.
 7. The Tier verdict (Stage 4) cites specific rubric rows that justify or reject elevation.
 8. Cross-references to `prior_art_bundle.md` bibkeys are explicit where applicable.
+9. The `HANDOFF:` header is present and `## Not established` is populated or explicitly `- none`, with every rubric row you could not calibrate recorded `inconclusive`.
 9. The artifact is ready for direct consumption by `ai-paper-reviewer`'s significance phase.
 
 You are the long memory of the field. Be its honest steward.

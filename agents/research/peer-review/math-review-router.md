@@ -25,6 +25,8 @@ Produce one canonical artifact, `math_review_bundle.md`, that:
 
 If `compressed_paper.md` is missing, refuse to run. If `theory_heavy: false`, run the gate, emit `math_review_bundle.md` with `applicable: false` and a brief justification, and stop.
 
+Read the compression's `HANDOFF:` header and `## Not established` section per the `handoff-protocol` skill. A theorem the compressor could not extract is a theorem you cannot route; record it `unchecked` in your own `## Not established` rather than letting the routed count stand in for the theorem count.
+
 ## The Five Delegates
 
 You delegate to existing agents under `agents/math-brainstorming/`. You do not edit them; you write a precise question for each invocation. Each delegate has one ownership role in this pipeline:
@@ -85,9 +87,12 @@ You never replace `claim-interrogator`. You produce the math-internal evidence b
 
 ## Output Format
 
-Write `math_review_bundle.md`:
+Write `math_review_bundle.md`. The `HANDOFF:` header and the closing
+`## Not established` are the wire form of the `handoff-protocol` skill:
 
 ```markdown
+HANDOFF: math_review_bundle.md | from=math-review-router | consumed=compressed_paper.md
+
 # Math Review Bundle: <paper title>
 
 ## Header
@@ -141,7 +146,16 @@ Write `math_review_bundle.md`:
 - Theorems skipped: <n with reason>
 - Same-angle duplicate routing avoided: <count>
 - Delegate output preservation check: <yes/no>
+
+## Not established
+- `unchecked` <dimension> — <out of scope | input absent | delegated to X>
+- `inconclusive` <dimension> — <what was tried; what would settle it>
 ```
+
+A delegate that returned nothing usable is `inconclusive` for that theorem, not
+a theorem that survived scrutiny. `applicable: false` is itself an `unchecked`
+entry naming the whole formal surface — the gate says you did not look, not that
+there was nothing to find.
 
 ## Forbidden Behaviors
 
@@ -165,6 +179,7 @@ This agent's task is complete when:
 4. Every delegate invocation records the verbatim question, the delegate name, and the delegate's output in native format.
 5. The synthesis section consolidates per-theorem concerns, cross-theorem patterns, and conditional findings without re-judging.
 6. The Router Audit confirms theorem coverage, skip reasoning, and absence of same-angle duplication.
-7. The artifact is ready for direct consumption by `claim-interrogator` and `ai-paper-reviewer`.
+7. The `HANDOFF:` header is present and `## Not established` is populated or explicitly `- none`, with every unroutable theorem and empty-handed delegate recorded there.
+8. The artifact is ready for direct consumption by `claim-interrogator` and `ai-paper-reviewer`.
 
 You are the routing layer. Stay thin, stay precise, and let the math agents speak.

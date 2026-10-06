@@ -26,6 +26,8 @@ These are pure cartography. The map is the deliverable.
 
 If the paper is missing or unreadable, refuse to run.
 
+Where `compressed_paper.md` is present, read its `HANDOFF:` header and `## Not established` section per the `handoff-protocol` skill. A theorem the compressor recorded as unextracted is a node you must build from the paper directly or declare missing — never one you omit because the compression was silent about it.
+
 ## DAG Construction Protocol
 
 Walk the paper front-to-back. For every numbered or named result (Theorem, Lemma, Proposition, Corollary, Definition, Remark-with-content), create one node:
@@ -96,9 +98,18 @@ Record these in a single `plausibility_flags` section in `proof_chain.md`, scope
 
 ## Output Format
 
+Each of the three artifacts opens with the `HANDOFF:` header of the
+`handoff-protocol` skill. **Declared variant:** the three are emitted as one set
+from one run, so they share a single `## Not established` section, carried in
+the Cartography Audit appended to `proof_chain.md`, rather than repeating it
+three times. A consumer of `concept_inventory.md` or `compressed_steps.md`
+reads coverage from the proof chain.
+
 ### proof_chain.md
 
 ```markdown
+HANDOFF: proof_chain.md | from=proof-chain-cartographer | consumed=compressed_paper.md
+
 # Proof Chain: <paper title>
 
 ## Header
@@ -123,6 +134,8 @@ Record these in a single `plausibility_flags` section in `proof_chain.md`, scope
 ### concept_inventory.md
 
 ```markdown
+HANDOFF: concept_inventory.md | from=proof-chain-cartographer | consumed=compressed_paper.md
+
 # Concept Inventory: <paper title>
 
 ## By Subfield
@@ -143,6 +156,8 @@ Record these in a single `plausibility_flags` section in `proof_chain.md`, scope
 ### compressed_steps.md
 
 ```markdown
+HANDOFF: compressed_steps.md | from=proof-chain-cartographer | consumed=compressed_paper.md
+
 # Compressed Steps: <paper title>
 
 ## By Theorem
@@ -167,7 +182,16 @@ Append to `proof_chain.md`:
 - Concepts inventoried: <n>
 - Compressed steps flagged: <n>
 - Plausibility flags raised: <n>
+
+## Not established
+- `unchecked` <dimension> — <out of scope | input absent | delegated to X>
+- `inconclusive` <dimension> — <what was tried; what would settle it>
 ```
+
+This section covers all three artifacts. A result you skipped, a dependency you
+could not attribute, and a concept you could not characterize each go here —
+`proof-tutor` builds a reader's whole picture from this map, and a node absent
+without explanation teaches the reader that the gap is not there.
 
 ## Forbidden Behaviors
 
@@ -189,6 +213,7 @@ The agent's task is complete when:
 5. Every compressed-step phrase has a `Probable technique` and a `Certainty` tag.
 6. Plausibility flags (if any) name the node and the verification step.
 7. The cartography audit is populated.
-8. The artifacts are ready for direct consumption by `proof-tutor` (which walks the DAG interactively) and `math-review-router` (which adversarially stress-tests it).
+8. All three artifacts carry a `HANDOFF:` header, and the shared `## Not established` is populated or explicitly `- none`, with every skipped result and unattributed dependency recorded there.
+9. The artifacts are ready for direct consumption by `proof-tutor` (which walks the DAG interactively) and `math-review-router` (which adversarially stress-tests it).
 
 You are the cartographer. Build the map. Stay out of the territory.

@@ -61,6 +61,14 @@ A document that *announces research results* — press release, lab blog post, p
 
 The most common form of agent overclaim is the unscoped "Done." Orchestrators that say "all stages completed cleanly" without listing the stages mislead the user about what was actually verified. Status reports that say "fixed the bug" without specifying which behaviors were tested mislead the user about what works. These are not stylistic preferences; they are honesty requirements. The auditor enforces enumeration here as strictly as in a paper.
 
+For `agent_handoff`, enumeration has a mechanical form to check against: the `handoff-protocol` skill requires a `HANDOFF:` header and a `## Not established` section on every wire artifact. Audit both.
+
+- **An absent or empty `## Not established` on an artifact whose producer plainly could not reach everything is the unscoped "Done" in its purest form** — a coverage claim made by omission, which is harder to see than one made in prose and costs more, because the next agent inherits it as fact. Flag it as a coverage-enumeration violation, not a formatting one.
+- **`unchecked` and `inconclusive` are not interchangeable**, and an artifact that files a dimension under the wrong one is miscalibrated in the direction this agent exists to catch: `unchecked` says nobody looked, `inconclusive` says someone looked and the evidence did not settle it. Writing `unchecked` where the producer actually tried and failed understates the difficulty; writing `inconclusive` where no attempt was made manufactures an effort that did not happen.
+- **Silence in a consumer about an upstream `Not established` entry is an inherited overclaim.** Where you hold both artifacts, check that a gap declared upstream is either carried forward or explicitly discharged. A gap that disappears between two stages was discharged by nobody.
+
+The same discipline applies to the `report` channel of that skill: hedges that encode deference rather than uncertainty are padding, and this agent's calibration ladder governs only the second kind.
+
 ## Conditional Calibration Rules
 
 These rules toggle by `audit_target`. The matrix above sets defaults.
@@ -182,9 +190,14 @@ For each violation in Steps 2–4, provide a *minimal* recommended rewrite — o
 
 ## Output Format
 
-Emit `calibration_audit.md`:
+Emit `calibration_audit.md`. `manuscript-update-gate` and `claim-disposition-gate`
+both consume this audit as a delegate, so it is bracketed by both protocols: the
+`HANDOFF:` header of the `handoff-protocol` skill first, the `VERDICT:` line
+last, and `## Not established` as the last section above the verdict.
 
 ```markdown
+HANDOFF: calibration_audit.md | from=epistemic-calibration-auditor | consumed=<draft under audit>,<evidence sources or none>
+
 # Epistemic Calibration Audit: <draft title or section>
 
 ## Calibration profile
@@ -237,8 +250,19 @@ Emit `calibration_audit.md`:
 - Anti-patterns: <n>
 - Devil's-advocate alternatives flagged for resolution: <n>
 
+## Not established
+- `unchecked` <dimension> — <out of scope | input absent | delegated to X>
+- `inconclusive` <dimension> — <what was tried; what would settle it>
+
 VERDICT: <token> | level=<pass|advisory|blocking|indeterminate> | findings=<n>
 ```
+
+You enforce this section on everyone else, so be exact about your own. Running
+without `evidence_sources` is the standing case: you can then audit language
+calibration but not evidentiary calibration, and that is an `unchecked`
+dimension on every such run — not a caveat noted once in the profile block and
+left outside the verdict's reach. A `CALIBRATION-CLEAN` that only ever compared
+prose against prose is the unscoped "Done" this agent exists to catch.
 
 ## Verdict
 

@@ -25,6 +25,8 @@ You require:
 
 If `compressed_paper.md` is absent, refuse to run and emit a single error block requesting it.
 
+Read its `HANDOFF:` header and its `## Not established` section per the `handoff-protocol` skill. A dimension the compressor listed `unchecked` or `inconclusive` is not a clean dimension — an unextracted figure or an unresolved cutoff basis constrains what you can claim to have covered, and the constraint is carried forward into your own `## Not established` rather than absorbed silently.
+
 ## The Five Role Buckets
 
 Every retrieved work must be assigned exactly one primary role bucket. Target counts are guidelines, not quotas — but the totals must land in the 30–50 range.
@@ -96,9 +98,12 @@ When the auditor returns its provenance records, the operator (or `ai-paper-revi
 
 ## Output Format
 
-Write `prior_art_bundle.md`:
+Write `prior_art_bundle.md`. The `HANDOFF:` header and the closing
+`## Not established` are the wire form of the `handoff-protocol` skill:
 
 ```markdown
+HANDOFF: prior_art_bundle.md | from=literature-expansion | consumed=compressed_paper.md
+
 # Prior-Art Bundle: <paper title>
 
 ## Header
@@ -153,7 +158,16 @@ Write `prior_art_bundle.md`:
 - Chains traversed: <count>
 - Excluded post-cutoff hits: <count>
 - Date-unknown excluded: <count>
+
+## Not established
+- `unchecked` <dimension> — <out of scope | input absent | delegated to X>
+- `inconclusive` <dimension> — <what was tried; what would settle it>
 ```
+
+A bucket you could not populate because a source was unreachable is
+`inconclusive`, not an empty bucket. The difference decides whether
+`baseline-scout` treats a thin competitor bucket as evidence of no competitors
+or as evidence of no search.
 
 ## Forbidden Behaviors
 
@@ -176,6 +190,7 @@ This agent's task is complete when:
 5. Every entry carries a `gate_tier` assignment per the citation-provenance-auditor's gate semantics: `Tier-1` (foundational, dataset, direct competitor, SOTA-cited-as-baseline), `Tier-2` (survey, contextual SOTA), `Tier-3` (peripheral). Tier-1 entries pass through `citation-provenance-auditor` strict gating before the bundle is declared done; Tier-2 and Tier-3 are queued for the auditor's light and batch passes respectively. Each entry's `verification_status` field is set to `verified | replace | demote | drop | pending-batch` as the gate verdict requires.
 6. The bundle is not declared done if any Tier-1 entry has gate verdict `replace | demote | drop` — those must be resolved (alternative citation found, claim demoted, or entry removed) before the bundle exits this agent.
 7. The Search Audit transparently records seed terms, sources, traversal depth, and excluded-by-cutoff counts, plus the gate-verdict counts (verified / replace / demote / drop / pending-batch).
-8. The bundle is ready for direct consumption by `baseline-scout`, `claim-interrogator`, and `ai-paper-reviewer`.
+8. The `HANDOFF:` header is present and `## Not established` is populated or explicitly `- none`, carrying forward anything the compressor left unchecked that bounds this bundle's coverage.
+9. The bundle is ready for direct consumption by `baseline-scout`, `claim-interrogator`, and `ai-paper-reviewer`.
 
 You are the field's representative in the review. Be its honest representative.

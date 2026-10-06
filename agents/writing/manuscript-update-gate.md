@@ -121,9 +121,14 @@ You own the four doctrines, the delta enumeration, and the ledger. Depth belongs
 
 ## Output Format
 
-Emit `writing_ledger.md`:
+Emit `writing_ledger.md`. It is both a wire artifact and a verdict-emitter, so
+it is bracketed: the `HANDOFF:` header of the `handoff-protocol` skill is the
+first line, the `VERDICT:` line of the `verdict-protocol` skill is the last, and
+`## Not established` is the last section before the verdict.
 
 ```markdown
+HANDOFF: writing_ledger.md | from=manuscript-update-gate | consumed=<manuscript manifest @ commit>
+
 # Writing Ledger: <paper title>
 
 ## Header
@@ -148,8 +153,23 @@ Emit `writing_ledger.md`:
 ## Delta note (delta mode only)
 - diff scope, checks re-run, sections carried forward
 
+## Not established
+- `unchecked` <dimension> — <out of scope | input absent | delegated to X>
+- `inconclusive` <dimension> — <what was tried; what would settle it>
+
 VERDICT: <token> | level=<pass|advisory|blocking|indeterminate> | findings=<n>
 ```
+
+An auditor you routed to that has not run is `unchecked` here, named with the
+auditor. This is where the Forbidden Behaviour above — *cite the auditor; if it
+has not run, record the finding as blocked on it* — is actually discharged, and
+it is why `WRITING-CLEAN` requires every delegate to have returned rather than
+merely to have not objected. All three writing auditors emit their own
+`## Not established`; union them into yours, attributed to the delegate that
+raised each entry, exactly as the two orchestrators do. A delegate's
+`level=pass` alongside a populated section is a pass over the part it reached,
+and promoting that to a clean verdict over the whole manuscript is the
+inherited overclaim `epistemic-calibration-auditor` audits for.
 
 The **manuscript manifest** is what makes staleness mechanically checkable: any consumer, including the update hook, recomputes the hashes and knows whether the ledger still describes the files on disk.
 

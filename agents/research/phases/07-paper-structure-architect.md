@@ -48,7 +48,7 @@ The outermost ring of the concentric arc, and the only part of the paper most of
 | **Subtitle accretion** | each revision round appends one more qualifier. Purely a revision pathology, tracked across updates by `manuscript-update-gate` |
 | Describes the experiment, not the finding | "An Evaluation of X on Y" names the activity; the field remembers results |
 
-**The branding boundary.** A memorable title and `narrative-clarity-auditor`'s ban on slogan-branding are complementary, and the seam between them is exact: **the title may coin the handle; the body may not lean on it.** A term coined in the title is defined once beside the object it names, and thereafter the prose uses the technical statement — the dimension, the set, the equation. Supplying a name is service to the reader; repeating it as a brand is marketing, and the auditor flags the second, never the first.
+**The branding boundary.** A memorable title and `narrative-clarity-auditor`'s ban on slogan-branding are complementary, and the boundary between them is exact: **the title may coin the handle; the body may not lean on it.** A term coined in the title is defined once beside the object it names, and thereafter the prose uses the technical statement — the dimension, the set, the equation. Supplying a name is service to the reader; repeating it as a brand is marketing, and the auditor flags the second, never the first.
 
 **Definition of Done**: the title is repeatable from memory, names the contribution rather than the activity, supplies a handle or deliberately declines to, carries no so-what, matches the venue's title-pattern family where an archetype exists, and has gained no qualifier since the last revision that it did not earn.
 

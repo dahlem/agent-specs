@@ -106,9 +106,16 @@ In every stop-early case, write `dissection_handoff.md` (see below) so the pipel
 
 ## Output Format
 
-Write `dissection_handoff.md` at the end of every run, regardless of stop point:
+Write `dissection_handoff.md` at the end of every run, regardless of stop point.
+It is a wire artifact under the `handoff-protocol` skill, and its
+`## Not established` section is the **union** of every stage's: an orchestrator
+that forwards delegates' findings while dropping their gaps converts four honest
+partial results into one confident-looking whole. Aggregate, attributing each
+entry to the stage that raised it; never adjudicate or discharge one.
 
 ```markdown
+HANDOFF: dissection_handoff.md | from=proof-dissection-orchestrator | consumed=compressed_paper.md,proof_chain.md,concept_inventory.md,compressed_steps.md
+
 # Proof Dissection Handoff
 
 ## Paper
@@ -153,7 +160,16 @@ Write `dissection_handoff.md` at the end of every run, regardless of stop point:
 - tutor_style chosen (if applicable): explainer | classic
 - handdrawn applied: yes | no
 - Handoff state: clean | blocked
+
+## Not established
+- `unchecked` <dimension> — <stage that raised it> — <out of scope | input absent | stage skipped>
+- `inconclusive` <dimension> — <stage that raised it> — <what was tried; what would settle it>
 ```
+
+A skipped stage is an `unchecked` entry naming everything that stage would have
+covered. `Adversarial — skipped` in the Stages-run checklist records the
+decision; this section records its consequence, which is the part a reader
+resuming the pipeline three weeks later actually needs.
 
 ## Distinction from Adjacent Agents
 

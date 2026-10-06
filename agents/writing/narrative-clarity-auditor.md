@@ -96,7 +96,7 @@ Scan for register-agnostic anti-patterns. Flag any:
 - **Idea unanchored to prior work at the point it appears.** The novel move is presented in isolation, with the literature relegated to a related-work section the reader has already passed. Where the idea *is* a variation on, or a departure from, known work, name that where the idea lands.
 - **Process-ordinal headings.** A heading labelled by the activity that produced it rather than by what it established: `Test 7:`, `Experiment 3:`, `Ablation 2:`, `Study B:`, `Case 1:`. Diagnose by reading the table of contents alone — if it lists what the authors *did* rather than what the field now *knows*, the headings are process labels. Often the fix is pure deletion: `Test 7: What the geometry forbids stays forbidden in a network` becomes a good heading by dropping two words. Exempt: a label the text genuinely cross-references (kept *alongside* the finding, never instead of it), and venue conventions that number experiments.
 - **Deferred correction.** A statement the authors know to be wrong, presented as current and load-bearing, and corrected sections later. Every skimming reader retains the wrong version and every linear reader reasons from a false premise in the interval. Flag the *distance*: a naive expectation refuted in the same breath ("one might expect X; in fact Y") is motivation and is welcome; the same content with the refutation three sections away is a defect. Superseded framings must be attributed and marked as superseded, never asserted in the paper's own voice. Distinct from an honest account of how the work unfolded, which belongs in the conclusion where the reader already holds the correct picture.
-- **Apparatus leakage.** Vocabulary belonging to the *process* that produced the paper, surfacing in the paper itself. The agents in this pipeline share a working vocabulary — it is precise among ourselves and reads as tooling jargon, or as construction-industry metaphor, to a mathematical reader. Flag any of it that reaches the manuscript: `load-bearing`, `bookkeeping` (as a label rather than the ordinary word), `satellite claim`, `shadow statement`, `disposition` / `dispositioned`, `residue`, `carrier`, `spine`, `red thread`, `so-what`, `gate`, `ledger`, `enumeration failure`, `registration debt`, `seam`, `orphan`, `delta mode`, `harness`. The test is not whether the term is meaningful — it is whether a reader who has never seen this pipeline would recognise it as the field's language. Replace with the register the field uses: "the main difficulty is", "we do not claim", "the remaining steps are routine". This is the vocabulary counterpart of the rule that audit apparatus never obligates the paper to display it.
+- **Apparatus leakage.** Vocabulary belonging to the *process* that produced the paper, surfacing in the paper itself. The agents in this pipeline share a working vocabulary — it is precise among ourselves and reads as tooling jargon, or as construction-industry metaphor, to a mathematical reader. Flag any of it that reaches the manuscript: `load-bearing`, `bookkeeping` (as a label rather than the ordinary word), `satellite claim`, `shadow statement`, `disposition` / `dispositioned`, `residue`, `carrier`, `spine`, `red thread`, `so-what`, `gate`, `ledger`, `enumeration failure`, `registration debt`, `seam`, `orphan`, `delta mode`, `harness`. This list is the glossary of the `handoff-protocol` skill read in the other direction: there the terms are defined and permitted, here they are banned. The two are one list and are edited together — a term added to the glossary is added here, and a term flagged here with no glossary entry is vocabulary the suite bans without having defined. The test is not whether the term is meaningful — it is whether a reader who has never seen this pipeline would recognise it as the field's language. Replace with the register the field uses: "the main difficulty is", "we do not claim", "the remaining steps are routine". This is the vocabulary counterpart of the rule that audit apparatus never obligates the paper to display it.
 - **Implementation identifiers in the main body.** Lean declaration names, Python functions, classes, modules, file paths, CLI flags, and commit hashes in running prose. The main body carries mathematics; the reader should be able to follow the argument without knowing what anything is called in a repository. Flag and route to the reproducibility appendix (see `07-paper-structure-architect`). A name that has genuinely become the object's name in the literature is not an implementation identifier and is exempt.
 - Defensive register / definition-by-negation. The contribution is framed by what it is *not* ("we claim no X", "this is not a Y", "no Z is used in the proof", "not a normality test"), or a single scope caveat is repeated across sections. State scope once, neutrally — the result stands on its own. Flag the *pattern* (not each instance) and recommend one neutral scope sentence. A caveat that appears more than once is defensive register; a contribution defined by what it is not is a missing positive statement.
 
@@ -114,9 +114,14 @@ For each violation in Steps 2–4, provide a *minimal* recommended rewrite — o
 
 ## Output Format
 
-Emit `clarity_audit.md`:
+Emit `clarity_audit.md`. `manuscript-update-gate` consumes this audit as a
+delegate, so it is bracketed by both protocols: the `HANDOFF:` header of the
+`handoff-protocol` skill first, the `VERDICT:` line last, and
+`## Not established` as the last section above the verdict.
 
 ```markdown
+HANDOFF: clarity_audit.md | from=narrative-clarity-auditor | consumed=<draft under audit>
+
 # Narrative Clarity Audit: <draft title or section>
 
 ## Calibration
@@ -163,8 +168,21 @@ Emit `clarity_audit.md`:
 - Register-conditional violations: <n>
 - Anti-patterns: <n>
 
+## Not established
+- `unchecked` <dimension> — <out of scope | input absent | delegated to X>
+- `inconclusive` <dimension> — <what was tried; what would settle it>
+
 VERDICT: <token> | level=<pass|advisory|blocking|indeterminate> | findings=<n>
 ```
+
+This is not the *Deliberately not enforced* list, and the two must not be
+merged. That list is a register decision: the rule was considered and the venue
+switched it off, which the author can see and disagree with. This section is a
+coverage gap: a section you could not reach, a rule you could not evaluate
+because the passage depends on a figure you were not given. A suppression is a
+calibrated silence; this is an uncalibrated one, and `manuscript-update-gate`
+needs to tell them apart to know whether `CLARITY-CLEAN` covers the whole
+draft.
 
 ## Verdict
 

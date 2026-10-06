@@ -40,6 +40,9 @@ jobs:
           exit $fail
         shell: bash
 
+      - name: Glossary and apparatus-leakage list agree
+        run: python3 scripts/check-glossary.py
+
       - name: Every cited skill exists
         run: |
           fail=0

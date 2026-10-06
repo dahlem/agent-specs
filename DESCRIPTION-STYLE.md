@@ -137,7 +137,7 @@ regardless of what shipped; that is a re-read of the table, not an upgrade.
 
 ## Doctrine skills
 
-Three vocabularies are shared by enough agents that a copy in each one drifts.
+Four vocabularies are shared by enough agents that a copy in each one drifts.
 They live in `skills/` and are symlinked into `~/.claude/skills/` by
 `scripts/sync-agents.sh`, which makes them addressable by name from any working
 directory — unlike a repo-relative path, which stops resolving the moment a spec
@@ -148,6 +148,7 @@ is symlinked into `~/.claude/agents/` and run somewhere else.
 | `writing-registers` | the eight registers, the knob matrix, the subset rule | the writing auditors, `manuscript-update-gate`, `07`, `proof-tutor` |
 | `claim-tiers` | Tier-1/2/3, the authoring vs. describing cardinalities, the significance-tier collision | `scientific-narrative-architect`, `paper-compressor`, `06`, `domain-historian` |
 | `verdict-protocol` | the `VERDICT:` line and its four levels | the ten verdict-emitting agents, and `check-evidence-chain.py` |
+| `handoff-protocol` | the `HANDOFF:` header, the `wire`/`report` channels, `## Not established`, and the one-meaning-per-term glossary | the peer-review and proof-dissection chains, the orchestrators, the two gates, `research-director`, and both calibration auditors |
 
 An agent **cites** a doctrine skill; it does not restate it. Restating is how the
 suite acquired a register column duplicated in `proof-tutor` and seven
@@ -166,12 +167,14 @@ of them is a habit anyone has to remember:
 | When | What runs | How it reaches you |
 |---|---|---|
 | On every `Write`/`Edit` of a file under `agents/` | `scripts/hooks/spec-lint.sh` → the linter, on that one file | a `PostToolUse` hook wired in `.claude/settings.json`; silent when clean, otherwise the findings land in the turn |
+| On every `Write`/`Edit` of either apparatus-vocabulary file — `skills/handoff-protocol/SKILL.md` or `agents/writing/narrative-clarity-auditor.md` | the same hook → `scripts/check-glossary.py`, repo-wide, because the pair spans two files | same hook, same turn; `narrative-clarity-auditor.md` is in both sets and can report both |
 | On every push and pull request | the full linter, `--stats`, and a check that each `skills/<name>/` is well-formed and every skill an agent cites exists | `.github/workflows/lint.yml` |
+| On every push and pull request | `scripts/check-glossary.py` — the `handoff-protocol` glossary and `narrative-clarity-auditor`'s apparatus-leakage sweep are one list read in two directions, so a term in either and not the other is an error | `.github/workflows/lint.yml` |
 
 The hook is repo-local: it lives in `.claude/settings.json`, not your global
 settings, so cloning this repository is the whole installation. It lints only
-the file that was just edited, and it exits silently for anything outside
-`agents/`.
+the file that was just edited, and it exits immediately for any file in neither
+set above, so an ordinary edit costs one process.
 
 `ERROR` is a hard cap or a broken contract and fails the build. `WARN` is a
 judgment the author has to make — the comma-count heuristic and a stale boundary

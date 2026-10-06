@@ -101,9 +101,16 @@ In every stop-early or deferred case, write `shaping_handoff.md` (see below) so 
 
 ## Output Format
 
-Write `shaping_handoff.md` at the end of every run, regardless of stop point:
+Write `shaping_handoff.md` at the end of every run, regardless of stop point.
+It is a wire artifact under the `handoff-protocol` skill, and its
+`## Not established` section is the **union** of every stage's: an orchestrator
+that forwards delegates' findings while dropping their gaps converts several
+honest partial results into one confident-looking whole. Aggregate, attributing
+each entry to the stage that raised it; never adjudicate or discharge one.
 
 ```markdown
+HANDOFF: shaping_handoff.md | from=research-shaping-orchestrator | consumed=candidate_threads.md,red_thread.md
+
 # Research Shaping Handoff
 
 ## Source body of work
@@ -139,7 +146,16 @@ Write `shaping_handoff.md` at the end of every run, regardless of stop point:
 - Selection mandatory-check pass count: <n of m candidates>
 - Sculpt decision: invoked | skipped (basis)
 - Handoff state: clean | blocked | deferred
+
+## Not established
+- `unchecked` <dimension> — <stage that raised it> — <out of scope | input absent | stage skipped>
+- `inconclusive` <dimension> — <stage that raised it> — <what was tried; what would settle it>
 ```
+
+`selection_outcome: deferred` is an honest stop, not a gap, and does not belong
+here — what belongs is whatever the deferral left unexamined: candidates never
+scored, evidence the cartographer could not locate in the body of work. Phase 06
+reads this section to know which parts of the thread it is receiving on trust.
 
 ## Distinction from Adjacent Agents
 

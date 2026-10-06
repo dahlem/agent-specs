@@ -230,7 +230,7 @@ Ends on the protocol line of the `verdict-protocol` skill:
 - **`09-research-validation-qa`** — invoke as part of the reproducibility audit. The chain-integrity check directly answers "could a third party re-derive these numbers?"
 - **`citation-provenance-auditor`** — sibling. You handle data/computational; it handles bibliographic. Each runs in its own scope and the outputs cross-reference. Do not duplicate citation work.
 - **`epistemic-calibration-auditor`** — orthogonal. Calibration audits whether the prose claim is calibrated to evidence; this auditor audits whether the evidence chain exists. Both can run on the same paper.
-- **`claim-disposition-gate`** — invokes this auditor for every claim dispositioned MEASURED: the chain integrity record (claim → script → data → source) is the artifact behind the disposition. A hand-transcribed value cannot be MEASURED; flag it back to the gate as a satellite claim.
+- **`claim-disposition-gate`** — invokes this auditor for every claim dispositioned MEASURED: the chain integrity record (claim → script → data → source) is the artifact behind the disposition. A hand-transcribed value cannot be MEASURED; flag it back to the gate as a Satellite-claim instance.
 
 ## The Macro Chain (Mechanical Mode)
 

@@ -37,7 +37,7 @@ The undispositioned residue **is** the risk register — reviewers strike exactl
 Enumeration is **total, not sampled**. Sweep every place a claim can hide, by clothing:
 
 - theorem/lemma/proposition statements and their stated scopes
-- **remarks, footnotes, and asides** (satellite formulas that were never formalized)
+- **remarks, footnotes, and asides** (peripheral formulas that were never formalized)
 - abstract and introduction numbers, counts, and quantifiers
 - figures and tables as claim carriers: the behaviors empirical figures visually assert (trends, orderings, gaps), the superiority claims table conventions encode (bold-best, ranking), and the structure or mechanism schematics commit the method to (components, arrows, causal flow) — the last are narrative claims in graphical clothing and get shadow pairs; captions on all of them
 - complexity, conditioning, runtime, and scaling assertions
@@ -48,7 +48,7 @@ Then verify coverage against the failure-mode grid. Each cell is a **search patt
 
 | Failure mode | Theory face | Empirical face | Interface face |
 |---|---|---|---|
-| **Satellite claim** | remark formula never formalized | prose number not pipeline-generated | theory constant hand-copied into code |
+| **Satellite-claim** | remark formula never formalized | prose number not pipeline-generated | theory constant hand-copied into code |
 | **Constant drift** | abstract count from an earlier version | stale figure/table/PDF | normalization changed on one side only |
 | **Statement drift** | proved over ℝ, stated over ℂ | prose says raw metric, script computes corrected | experiment "confirms" a weaker proxy |
 | **Vacuity** | hypothesis with no instances | baseline that cannot lose | theorem applied off its hypotheses |
@@ -135,9 +135,15 @@ Fail either layer and the ledger is **stale**: lookup semantics are void until a
 
 ## Output Format
 
-Emit `claim_ledger.md` (and update it in place in delta mode):
+Emit `claim_ledger.md` (and update it in place in delta mode). The ledger is
+both a wire artifact and a verdict-emitter, so it is bracketed: the `HANDOFF:`
+header of the `handoff-protocol` skill is the first line, the `VERDICT:` line of
+the `verdict-protocol` skill is the last, and `## Not established` is the last
+section before the verdict.
 
 ```markdown
+HANDOFF: claim_ledger.md | from=claim-disposition-gate | consumed=<manuscript manifest @ freeze commit>
+
 # Claim Ledger: <paper title>
 
 ## Header
@@ -175,8 +181,20 @@ where the next reviewer will strike; an empty risk register is the goal state.
 - claims re-dispositioned: <ids>
 - entries carried forward unchanged: <count>
 
+## Not established
+- `unchecked` <dimension> — <out of scope | input absent | delegated to X>
+- `inconclusive` <dimension> — <what was tried; what would settle it>
+
 VERDICT: <token> | level=<pass|advisory|blocking|indeterminate> | findings=<n>
 ```
+
+This section and the risk register answer different questions and neither
+substitutes for the other. The risk register holds claims you **enumerated and
+could not disposition** — exposure you found. This section holds surface you
+**could not enumerate or could not reach**: a source file absent from the
+manifest, a figure whose asserted behavior you could not read, a delegated check
+that never returned. An empty risk register is the goal state; an empty
+`## Not established` is only honest if you reached everything.
 
 ## How Downstream Consumes the Ledger
 
