@@ -135,7 +135,7 @@ every instance buys nothing and makes the rule the first one a writer drops.
 | `register` | the venue (`writing-registers`); the append-only hypothesis log; the risk register of `claim-disposition-gate` | qualify — `venue register`, `hypothesis register`, `risk register`. Bare `register` is also the parameter name, where the type disambiguates. |
 | `ledger` | the claim ledger (`claim-disposition-gate`); the notation ledger (`manuscript-update-gate`) | qualify |
 | `seam` | the join between two manuscript sections; the boundary between two agents' jurisdictions | `seam` is the manuscript join only. Agent jurisdiction is a **boundary** — the word `DESCRIPTION-STYLE.md` and `check-boundaries.py` already use. |
-| `load-bearing` | the ordinary adjective (a load-bearing claim, term, assumption); the proof-step significance tag of `theorem-presentation-auditor` | the tag is written `significance: load-bearing`; unqualified use stays adjectival |
+| `load-bearing` | the ordinary adjective (a load-bearing claim, term, assumption); the proof-step significance tag of `theorem-presentation-auditor` | as a tag, backticked and inside an explicit significance-tagging context, alongside `technical` and `bookkeeping`; unbackticked prose use stays adjectival |
 | `harness` | noun: the scaffold that produced an artifact; verb: on `epistemic-calibration-auditor`'s salesy-verb list | noun only. One part of speech per term, and this term's is taken. |
 | `Tier-1` | claim load; contribution significance | owned by the `claim-tiers` skill — write `Tier-1 contribution` in full. Cite it; do not restate it here. |
 | `satellite claim` | reads as a kind of claim; names a failure mode | `Satellite-claim instance`, never a bare noun phrase |

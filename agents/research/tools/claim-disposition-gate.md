@@ -37,7 +37,7 @@ The undispositioned residue **is** the risk register — reviewers strike exactl
 Enumeration is **total, not sampled**. Sweep every place a claim can hide, by clothing:
 
 - theorem/lemma/proposition statements and their stated scopes
-- **remarks, footnotes, and asides** (satellite formulas that were never formalized)
+- **remarks, footnotes, and asides** (peripheral formulas that were never formalized)
 - abstract and introduction numbers, counts, and quantifiers
 - figures and tables as claim carriers: the behaviors empirical figures visually assert (trends, orderings, gaps), the superiority claims table conventions encode (bold-best, ranking), and the structure or mechanism schematics commit the method to (components, arrows, causal flow) — the last are narrative claims in graphical clothing and get shadow pairs; captions on all of them
 - complexity, conditioning, runtime, and scaling assertions
@@ -48,7 +48,7 @@ Then verify coverage against the failure-mode grid. Each cell is a **search patt
 
 | Failure mode | Theory face | Empirical face | Interface face |
 |---|---|---|---|
-| **Satellite claim** | remark formula never formalized | prose number not pipeline-generated | theory constant hand-copied into code |
+| **Satellite-claim** | remark formula never formalized | prose number not pipeline-generated | theory constant hand-copied into code |
 | **Constant drift** | abstract count from an earlier version | stale figure/table/PDF | normalization changed on one side only |
 | **Statement drift** | proved over ℝ, stated over ℂ | prose says raw metric, script computes corrected | experiment "confirms" a weaker proxy |
 | **Vacuity** | hypothesis with no instances | baseline that cannot lose | theorem applied off its hypotheses |
